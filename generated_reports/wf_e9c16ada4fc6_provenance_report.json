@@ -1,0 +1,15 @@
+{
+  "report_id": "rep_92446027f742",
+  "workflow_id": "wf_e9c16ada4fc6",
+  "workflow_name": "Autonomous Compliance Audit",
+  "user_id": 9,
+  "status": "completed",
+  "started_at": "2026-11-04 20:44:51.056119+00:00",
+  "completed_at": "2026-11-04 20:44:56.973305+00:00",
+  "execution_duration_seconds": 5.92,
+  "model": "gemini-3.6-flash",
+  "evidence_captured": "Provenance is the recorded history of the origin, processing, and transformation of information.",
+  "agent_output": "To verify provenance for data source compliance and audit rules, follow these key steps:\n\n1. **Track Lineage:** Maintain complete records of the data's origin, owner, timestamps, and ingestion methods.\n2. **Document Transformations:** Log every alteration, processing step, and transfer to ensure data integrity and prevent tampering.\n3. **Validate Sources:** Cross-reference data origins against legal, regulatory (e.g., GDPR, HIPAA), and organizational compliance standards.\n4. **Automate Auditing:** Utilize immutable audit logs, digital signatures, or blockchain technology to provide verifiable proof of history for compliance auditors.",
+  "error": null,
+  "total_provenance_events": 8
+}

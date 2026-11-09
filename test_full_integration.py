@@ -15,7 +15,7 @@ print("Passed! Home and Health endpoints active.")
 print("=== 2. Auth Flow Check ===")
 login_res = client.post(
     "/api/auth/login",
-    data={"username": "demo@proofmesh.io", "password": "TestPassword123!"},
+    data={"username": "admin", "password": "AdminPass123!"},
 )
 assert login_res.status_code == 200, f"Login failed: {login_res.status_code} {login_res.text}"
 token = login_res.json()["access_token"]

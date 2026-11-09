@@ -1,7 +1,7 @@
 {
   "project": "ProofMesh",
   "analysis_type": "Dependency-Based Impact Analysis",
-  "generated_at": "2026-11-04T06:27:53.214061+00:00",
+  "generated_at": "2026-11-05T08:38:56.208509+00:00",
   "start_node": {
     "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:2",
     "node_type": "DataSource",
@@ -12,22 +12,8 @@
     }
   },
   "unreliable_source_test": true,
-  "integrity_verification": {
-    "verified": true,
-    "reason": "Current provenance log matches the valid saved hash chain.",
-    "errors": [],
-    "modified_event_ids": [],
-    "modified_events": [],
-    "event_count": 8,
-    "chain_record_count": 8
-  },
-  "source_attribution": {
-    "status": "NO_INTEGRITY_CHANGES_DETECTED",
-    "selected_source_id": null,
-    "matched_event_ids": [],
-    "unattributed_event_ids": [],
-    "explanation": "The current log matches the saved hash chain."
-  },
+  "integrity_verification": null,
+  "source_attribution": null,
   "nodes_visited": 3,
   "downstream_nodes": [
     {

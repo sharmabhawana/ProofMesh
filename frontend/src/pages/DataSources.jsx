@@ -661,24 +661,13 @@ export default function DataSources({
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               {isValidUrl(selectedItem.properties?.url || selectedItem.properties?.source_url) ? (
                 <button
+                  type="button"
+                  className="button button-primary"
                   onClick={() =>
                     handleOpenSourceUrl(
                       selectedItem.properties?.url || selectedItem.properties?.source_url
                     )
                   }
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    padding: "8px 16px",
-                    borderRadius: "8px",
-                    border: "none",
-                    background: "var(--accent)",
-                    color: "#fff",
-                    fontSize: "12px",
-                    fontWeight: 650,
-                    cursor: "pointer",
-                  }}
                 >
                   <span>Open Original Source</span>
                   <ExternalLink size={13} />
@@ -690,17 +679,9 @@ export default function DataSources({
               )}
 
               <button
+                type="button"
+                className="button button-secondary"
                 onClick={() => setSelectedItem(null)}
-                style={{
-                  padding: "8px 18px",
-                  borderRadius: "8px",
-                  border: "1px solid var(--border)",
-                  background: "var(--panel-soft)",
-                  color: "var(--text)",
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  cursor: "pointer",
-                }}
               >
                 Close
               </button>

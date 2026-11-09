@@ -14,6 +14,11 @@ import DataSources from "./pages/DataSources";
 import SystemHealth from "./pages/SystemHealth";
 import Settings from "./pages/Settings";
 import AdminDashboard from "./pages/AdminDashboard";
+import CreateWorkflow from "./pages/CreateWorkflow";
+import WorkflowHistory from "./pages/WorkflowHistory";
+import UploadCenter from "./pages/UploadCenter";
+import Reports from "./pages/Reports";
+import AgentDataExplorer from "./pages/AgentDataExplorer";
 import LoadingState from "./components/LoadingState";
 import dashboardService from "./services/dashboardService";
 import "./App.css";
@@ -38,6 +43,11 @@ function MainDashboard() {
       "health",
       "settings",
       "admin",
+      "create-workflow",
+      "history",
+      "upload",
+      "reports",
+      "agent-explorer",
     ];
     return validPages.includes(hash) ? hash : "overview";
   });
@@ -262,6 +272,26 @@ function MainDashboard() {
 
       case "admin":
         return <AdminDashboard />;
+
+      case "create-workflow":
+        return (
+          <CreateWorkflow
+            onNavigate={handleNavigate}
+            onWorkflowComplete={() => handleNavigate("history")}
+          />
+        );
+
+      case "history":
+        return <WorkflowHistory onNavigate={handleNavigate} />;
+
+      case "upload":
+        return <UploadCenter onNavigate={handleNavigate} />;
+
+      case "reports":
+        return <Reports onNavigate={handleNavigate} />;
+
+      case "agent-explorer":
+        return <AgentDataExplorer onNavigate={handleNavigate} />;
 
       default:
         return (

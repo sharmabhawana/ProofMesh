@@ -37,7 +37,7 @@ def get_database_url() -> str:
 
 
 def create_db_engine():
-    """Create and configure the SQLAlchemy engine."""
+    """Create and configure the SQLAlchemy engine with automatic SQLite fallback."""
     db_url = get_database_url()
 
     if db_url.startswith("sqlite"):
@@ -48,14 +48,30 @@ def create_db_engine():
         )
     else:
         # PostgreSQL with connection pooling and health pre-ping
-        engine = create_engine(
-            db_url,
-            pool_pre_ping=True,
-            pool_size=10,
-            max_overflow=20,
-            pool_recycle=300,
-            echo=False,
-        )
+        try:
+            engine = create_engine(
+                db_url,
+                pool_pre_ping=True,
+                pool_size=10,
+                max_overflow=20,
+                pool_recycle=300,
+                echo=False,
+            )
+            # Verify live connectivity
+            with engine.connect() as conn:
+                conn.execute(text("SELECT 1"))
+        except Exception as pg_err:
+            print(
+                f"[DATABASE NOTICE] PostgreSQL connection not available. "
+                f"Falling back to local SQLite at {DEFAULT_SQLITE_PATH.as_posix()}",
+                flush=True,
+            )
+            sqlite_url = f"sqlite:///{DEFAULT_SQLITE_PATH.as_posix()}"
+            engine = create_engine(
+                sqlite_url,
+                connect_args={"check_same_thread": False},
+                echo=False,
+            )
 
     return engine
 

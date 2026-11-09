@@ -10,6 +10,9 @@ import {
   Server,
   Database,
   ExternalLink,
+  Play,
+  Upload,
+  FileText,
 } from "lucide-react";
 import StatCard from "../components/StatCard";
 import TrustGauge from "../components/TrustGauge";
@@ -99,6 +102,100 @@ export default function Overview({
         </div>
       </div>
 
+      {/* Quick Actions */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          gap: "12px",
+        }}
+      >
+        {[
+          {
+            id: "create-workflow",
+            label: "Run AI Workflow",
+            desc: "Execute a live Gemini agent task",
+            icon: Play,
+            accent: "var(--accent)",
+            bg: "var(--accent-soft)",
+          },
+          {
+            id: "upload",
+            label: "Upload Agent Data",
+            desc: "Analyze external provenance logs",
+            icon: Upload,
+            accent: "#10b981",
+            bg: "rgba(16,185,129,0.1)",
+          },
+          {
+            id: "reports",
+            label: "View Reports",
+            desc: "Download and inspect run reports",
+            icon: FileText,
+            accent: "#a78bfa",
+            bg: "rgba(167,139,250,0.1)",
+          },
+          {
+            id: "agent-explorer",
+            label: "Agent Explorer",
+            desc: "Browse agent event traces",
+            icon: Network,
+            accent: "#f59e0b",
+            bg: "rgba(245,158,11,0.1)",
+          },
+        ].map(({ id, label, desc, icon: Icon, accent, bg }) => (
+          <button
+            key={id}
+            onClick={() => onNavigate(id)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "14px",
+              padding: "16px 18px",
+              background: "var(--panel)",
+              border: "1px solid var(--border)",
+              borderRadius: "12px",
+              cursor: "pointer",
+              textAlign: "left",
+              transition: "border-color 0.18s, background 0.18s",
+              color: "var(--text)",
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.borderColor = accent;
+              e.currentTarget.style.background = bg;
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.borderColor = "var(--border)";
+              e.currentTarget.style.background = "var(--panel)";
+            }}
+          >
+            <div
+              style={{
+                width: 38,
+                height: 38,
+                borderRadius: "10px",
+                background: bg,
+                display: "grid",
+                placeItems: "center",
+                flexShrink: 0,
+                color: accent,
+              }}
+            >
+              <Icon size={18} />
+            </div>
+            <div style={{ overflow: "hidden" }}>
+              <div style={{ fontSize: "13px", fontWeight: 650, color: "var(--text)", whiteSpace: "nowrap" }}>
+                {label}
+              </div>
+              <div style={{ fontSize: "11px", color: "var(--muted)", marginTop: "2px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                {desc}
+              </div>
+            </div>
+            <ArrowRight size={14} style={{ marginLeft: "auto", color: "var(--muted)", flexShrink: 0 }} />
+          </button>
+        ))}
+      </div>
+
       {/* KPI Stats Grid */}
       <section className="stats-grid">
         <StatCard
@@ -152,13 +249,13 @@ export default function Overview({
               </h3>
             </div>
             <button
+              type="button"
               onClick={() => onNavigate("trust")}
-              className="icon-button"
+              className="button button-sm button-secondary"
               title="View full Trust Analytics"
-              style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "12px", color: "var(--accent)" }}
             >
               <span>Details</span>
-              <ExternalLink size={14} />
+              <ExternalLink size={13} />
             </button>
           </div>
 
@@ -234,13 +331,13 @@ export default function Overview({
               </h3>
             </div>
             <button
+              type="button"
               onClick={() => onNavigate("integrity")}
-              className="icon-button"
+              className="button button-sm button-secondary"
               title="View full Integrity Center"
-              style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "12px", color: "var(--accent)" }}
             >
               <span>Inspect Chain</span>
-              <ExternalLink size={14} />
+              <ExternalLink size={13} />
             </button>
           </div>
 

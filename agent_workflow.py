@@ -112,7 +112,7 @@ def run_workflow(user_request: str):
     # Gemini model configuration
     # -----------------------------------------------------
 
-    model_name = "gemini-3.6-flash"
+    model_name = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
 
     llm = ChatGoogleGenerativeAI(
         model=model_name,

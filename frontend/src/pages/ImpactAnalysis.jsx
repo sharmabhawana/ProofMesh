@@ -194,24 +194,13 @@ export default function ImpactAnalysis({
 
           {/* Run Button */}
           <button
+            type="button"
+            className="button button-primary"
             onClick={runAnalysis}
             disabled={loading}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              padding: "10px 20px",
-              background: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
-              color: "#fff",
-              border: "none",
-              borderRadius: "8px",
-              fontSize: "13px",
-              fontWeight: 650,
-              cursor: loading ? "not-allowed" : "pointer",
-              boxShadow: "0 4px 14px rgba(37, 99, 235, 0.25)",
-            }}
+            style={{ height: "38px" }}
           >
-            <Play size={14} />
+            <Play size={14} className={loading ? "spin" : ""} />
             <span>{loading ? "Analyzing..." : "Execute Traversal"}</span>
           </button>
         </div>
@@ -250,7 +239,7 @@ export default function ImpactAnalysis({
               <div style={{ fontSize: "11px", color: "var(--muted)", textTransform: "uppercase" }}>
                 Target Source
               </div>
-              <strong style={{ fontSize: "16px", color: "var(--text)", wordBreak: "break-all" }}>
+              <strong style={{ fontSize: "15px", color: "var(--text)", wordBreak: "break-word", overflowWrap: "anywhere", display: "block", marginTop: "4px" }}>
                 {impactData.start_node?.name || selectedNodeId}
               </strong>
               <div style={{ fontSize: "11px", color: "var(--accent)", marginTop: "4px" }}>
@@ -371,14 +360,21 @@ export default function ImpactAnalysis({
                         style={{
                           display: "flex",
                           justifyContent: "space-between",
-                          alignItems: "center",
+                          alignItems: "flex-start",
                           flexWrap: "wrap",
                           gap: "8px",
                         }}
                       >
-                        <strong style={{ fontSize: "14px", color: "var(--text)" }}>
-                          {decision.name || decision.node_id}
-                        </strong>
+                        <div style={{ flex: "1 1 200px", minWidth: 0 }}>
+                          <strong style={{ fontSize: "14px", color: "var(--text)", wordBreak: "break-word", overflowWrap: "anywhere", display: "block" }}>
+                            {decision.name || decision.node_id}
+                          </strong>
+                          {decision.node_id && decision.name && decision.name !== decision.node_id && (
+                            <code style={{ fontSize: "11px", color: "var(--subtle)", wordBreak: "break-all", background: "var(--panel)", padding: "1px 5px", borderRadius: "3px" }}>
+                              {decision.node_id}
+                            </code>
+                          )}
+                        </div>
                         <span
                           style={{
                             fontSize: "11px",
@@ -387,6 +383,7 @@ export default function ImpactAnalysis({
                             borderRadius: "12px",
                             background: colors.bg,
                             color: colors.text,
+                            flexShrink: 0,
                           }}
                         >
                           {decision.status}
@@ -412,12 +409,12 @@ export default function ImpactAnalysis({
                             border: "1px solid var(--border)",
                           }}
                         >
-                          <span style={{ color: "var(--subtle)", fontWeight: 600 }}>Path:</span>
+                          <span style={{ color: "var(--subtle)", fontWeight: 600, flexShrink: 0 }}>Path:</span>
                           {decision.dependency_path.map((step, sIdx) => (
-                            <span key={sIdx} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                              <span style={{ color: "var(--accent)", fontWeight: 600 }}>{step}</span>
+                            <span key={sIdx} style={{ display: "flex", alignItems: "center", gap: "6px", wordBreak: "break-all" }}>
+                              <span style={{ color: "var(--accent)", fontWeight: 600, wordBreak: "break-all" }}>{step}</span>
                               {sIdx < decision.dependency_path.length - 1 && (
-                                <ArrowRight size={12} style={{ color: "var(--muted)" }} />
+                                <ArrowRight size={12} style={{ color: "var(--muted)", flexShrink: 0 }} />
                               )}
                             </span>
                           ))}

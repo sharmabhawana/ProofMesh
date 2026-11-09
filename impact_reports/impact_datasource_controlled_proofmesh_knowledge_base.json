@@ -1,51 +1,37 @@
 {
   "project": "ProofMesh",
   "analysis_type": "Dependency-Based Impact Analysis",
-  "generated_at": "2026-11-04T06:27:46.356986+00:00",
+  "generated_at": "2026-11-09T10:47:01.067260+00:00",
   "start_node": {
-    "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:2",
+    "node_id": "node_source_controlled_proofmesh_knowledge_base",
     "node_type": "DataSource",
     "name": "controlled_proofmesh_knowledge_base",
     "properties": {
-      "name": "Controlled ProofMesh Knowledge Base",
-      "source_id": "controlled_proofmesh_knowledge_base"
+      "source_id": "controlled_proofmesh_knowledge_base",
+      "name": "Controlled ProofMesh Knowledge Base"
     }
   },
   "unreliable_source_test": false,
-  "integrity_verification": {
-    "verified": true,
-    "reason": "Current provenance log matches the valid saved hash chain.",
-    "errors": [],
-    "modified_event_ids": [],
-    "modified_events": [],
-    "event_count": 8,
-    "chain_record_count": 8
-  },
-  "source_attribution": {
-    "status": "NO_INTEGRITY_CHANGES_DETECTED",
-    "selected_source_id": null,
-    "matched_event_ids": [],
-    "unattributed_event_ids": [],
-    "explanation": "The current log matches the saved hash chain."
-  },
+  "integrity_verification": null,
+  "source_attribution": null,
   "nodes_visited": 3,
   "downstream_nodes": [
     {
-      "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:3",
+      "node_id": "node_decision_3e8b87a4-2707-4904-9f0f-b648def449a4",
       "name": "decision_3e8b87a4-2707-4904-9f0f-b648def449a4",
       "labels": [
         "Decision"
       ],
       "path": [
         {
-          "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:2",
+          "node_id": "node_source_controlled_proofmesh_knowledge_base",
           "name": "controlled_proofmesh_knowledge_base",
           "labels": [
             "DataSource"
           ]
         },
         {
-          "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:3",
+          "node_id": "node_decision_3e8b87a4-2707-4904-9f0f-b648def449a4",
           "name": "decision_3e8b87a4-2707-4904-9f0f-b648def449a4",
           "labels": [
             "Decision"
@@ -54,21 +40,21 @@
       ]
     },
     {
-      "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:4",
+      "node_id": "node_decision_a7678f62-0ee5-4480-b262-1b918b45dc58",
       "name": "decision_a7678f62-0ee5-4480-b262-1b918b45dc58",
       "labels": [
         "Decision"
       ],
       "path": [
         {
-          "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:2",
+          "node_id": "node_source_controlled_proofmesh_knowledge_base",
           "name": "controlled_proofmesh_knowledge_base",
           "labels": [
             "DataSource"
           ]
         },
         {
-          "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:4",
+          "node_id": "node_decision_a7678f62-0ee5-4480-b262-1b918b45dc58",
           "name": "decision_a7678f62-0ee5-4480-b262-1b918b45dc58",
           "labels": [
             "Decision"
@@ -79,7 +65,7 @@
   ],
   "affected_decisions": [
     {
-      "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:3",
+      "node_id": "node_decision_3e8b87a4-2707-4904-9f0f-b648def449a4",
       "name": "decision_3e8b87a4-2707-4904-9f0f-b648def449a4",
       "status": "POTENTIALLY_AFFECTED",
       "reason": "A directed dependency path connects the selected node to this decision.",
@@ -89,7 +75,7 @@
       ]
     },
     {
-      "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:4",
+      "node_id": "node_decision_a7678f62-0ee5-4480-b262-1b918b45dc58",
       "name": "decision_a7678f62-0ee5-4480-b262-1b918b45dc58",
       "status": "POTENTIALLY_AFFECTED",
       "reason": "A directed dependency path connects the selected node to this decision.",
@@ -102,13 +88,13 @@
   "affected_decision_count": 2,
   "relationships_traversed": [
     {
-      "source": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:2",
-      "target": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:3",
+      "source": "node_source_controlled_proofmesh_knowledge_base",
+      "target": "node_decision_3e8b87a4-2707-4904-9f0f-b648def449a4",
       "relationship": "INFLUENCED"
     },
     {
-      "source": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:2",
-      "target": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:4",
+      "source": "node_source_controlled_proofmesh_knowledge_base",
+      "target": "node_decision_a7678f62-0ee5-4480-b262-1b918b45dc58",
       "relationship": "INFLUENCED"
     }
   ],

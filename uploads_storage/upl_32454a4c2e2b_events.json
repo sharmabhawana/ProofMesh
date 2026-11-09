@@ -1,0 +1,622 @@
+[
+  {
+    "event_id": "b5925f3e-2a60-4a88-913b-a715b2b7f7dc",
+    "workflow_id": "wf_synth_0001",
+    "event_type": "MODEL_DETAILS",
+    "timestamp": "2026-11-05T08:31:42.033032+00:00",
+    "agent": "agent_alpha_planner",
+    "model": "claude-3-5-sonnet",
+    "provider": "Anthropic",
+    "tool": null,
+    "input_data": null,
+    "output_data": null,
+    "metadata": {
+      "workflow_id": "wf_synth_0001",
+      "agent_id": "agent_alpha_planner",
+      "agent_name": "Alpha-Planner",
+      "is_synthetic": true,
+      "model": "claude-3-5-sonnet",
+      "provider": "Anthropic"
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "b1d27cb0-83e6-4a48-aede-78ca7fecaa27",
+    "workflow_id": "wf_synth_0001",
+    "event_type": "LLM_CALL_START",
+    "timestamp": "2026-11-05T08:31:44.033032+00:00",
+    "agent": "agent_alpha_planner",
+    "model": "claude-3-5-sonnet",
+    "provider": "Anthropic",
+    "tool": null,
+    "input_data": "Assess provenance integrity requirements for workflow wf_synth_0001.",
+    "output_data": null,
+    "metadata": {
+      "workflow_id": "wf_synth_0001",
+      "agent_id": "agent_alpha_planner",
+      "agent_name": "Alpha-Planner",
+      "is_synthetic": true
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "0d49c357-d5f0-4c78-838a-b2fad8badfd4",
+    "workflow_id": "wf_synth_0001",
+    "event_type": "TOOL_START",
+    "timestamp": "2026-11-05T08:31:45.033032+00:00",
+    "agent": "agent_alpha_planner",
+    "model": "claude-3-5-sonnet",
+    "provider": "Anthropic",
+    "tool": "web_search",
+    "input_data": {
+      "query": "provenance verification"
+    },
+    "output_data": null,
+    "metadata": {
+      "workflow_id": "wf_synth_0001",
+      "agent_id": "agent_alpha_planner",
+      "agent_name": "Alpha-Planner",
+      "is_synthetic": true
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "1d54c924-ce90-433c-853d-5aa01cb2525f",
+    "workflow_id": "wf_synth_0001",
+    "event_type": "TOOL_END",
+    "timestamp": "2026-11-05T08:31:46.033032+00:00",
+    "agent": "agent_alpha_planner",
+    "model": "claude-3-5-sonnet",
+    "provider": "Anthropic",
+    "tool": "web_search",
+    "input_data": null,
+    "output_data": "Data records retrieved successfully from ProofMesh Core KB.",
+    "metadata": {
+      "workflow_id": "wf_synth_0001",
+      "agent_id": "agent_alpha_planner",
+      "agent_name": "Alpha-Planner",
+      "is_synthetic": true
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "e6f00986-babb-427c-b37a-a9833b730775",
+    "workflow_id": "wf_synth_0001",
+    "event_type": "EVIDENCE_CAPTURED",
+    "timestamp": "2026-11-05T08:31:50.033032+00:00",
+    "agent": "agent_alpha_planner",
+    "model": "claude-3-5-sonnet",
+    "provider": "Anthropic",
+    "tool": "web_search",
+    "input_data": {
+      "source_id": "controlled_proofmesh_knowledge_base"
+    },
+    "output_data": "Data records retrieved successfully from ProofMesh Core KB.",
+    "metadata": {
+      "workflow_id": "wf_synth_0001",
+      "agent_id": "agent_alpha_planner",
+      "agent_name": "Alpha-Planner",
+      "is_synthetic": true,
+      "source_id": "controlled_proofmesh_knowledge_base",
+      "source_reliability": 1.0
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "49ef020d-b35a-4d70-86ba-a634d363f42a",
+    "workflow_id": "wf_synth_0001",
+    "event_type": "LLM_CALL_END",
+    "timestamp": "2026-11-05T08:31:51.033032+00:00",
+    "agent": "agent_beta_researcher",
+    "model": "claude-3-5-sonnet",
+    "provider": "Anthropic",
+    "tool": null,
+    "input_data": "Assess provenance integrity requirements for workflow wf_synth_0001.",
+    "output_data": "Synthesized answer using ProofMesh Core KB evidence under policy constraints.",
+    "metadata": {
+      "workflow_id": "wf_synth_0001",
+      "agent_id": "agent_beta_researcher",
+      "agent_name": "Beta-Researcher",
+      "is_synthetic": true
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "a35a0f0b-5357-4ee6-ab43-4b39ce70ed68",
+    "workflow_id": "wf_synth_0001",
+    "event_type": "INTERMEDIATE_DECISION",
+    "timestamp": "2026-11-05T08:31:52.033032+00:00",
+    "agent": "agent_beta_researcher",
+    "model": "claude-3-5-sonnet",
+    "provider": "Anthropic",
+    "tool": null,
+    "input_data": {
+      "evidence": "Data records retrieved successfully from ProofMesh Core KB."
+    },
+    "output_data": "Intermediate trust assertion: Evidence verified against schema.",
+    "metadata": {
+      "workflow_id": "wf_synth_0001",
+      "agent_id": "agent_beta_researcher",
+      "agent_name": "Beta-Researcher",
+      "is_synthetic": true
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "a137ee31-08ac-4c0a-9b81-f8f2872ae344",
+    "workflow_id": "wf_synth_0001",
+    "event_type": "DECISION",
+    "timestamp": "2026-11-05T08:31:53.033032+00:00",
+    "agent": "agent_beta_researcher",
+    "model": "claude-3-5-sonnet",
+    "provider": "Anthropic",
+    "tool": null,
+    "input_data": {
+      "task": "Assess provenance integrity requirements for workflow wf_synth_0001.",
+      "evidence": "Data records retrieved successfully from ProofMesh Core KB."
+    },
+    "output_data": "Final outcome verified and approved for synthetic workflow wf_synth_0001.",
+    "metadata": {
+      "workflow_id": "wf_synth_0001",
+      "agent_id": "agent_beta_researcher",
+      "agent_name": "Beta-Researcher",
+      "is_synthetic": true,
+      "decision_outcome": "APPROVED"
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "c82da310-e5ec-403b-89e5-01a1e300d257",
+    "workflow_id": "wf_synth_0002",
+    "event_type": "MODEL_DETAILS",
+    "timestamp": "2026-11-05T08:36:42.033032+00:00",
+    "agent": "agent_beta_researcher",
+    "model": "gemini-3.6-flash",
+    "provider": "Google Gemini",
+    "tool": null,
+    "input_data": null,
+    "output_data": null,
+    "metadata": {
+      "workflow_id": "wf_synth_0002",
+      "agent_id": "agent_beta_researcher",
+      "agent_name": "Beta-Researcher",
+      "is_synthetic": true,
+      "model": "gemini-3.6-flash",
+      "provider": "Google Gemini"
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "8d027aa0-455c-432c-b522-008d234cb64c",
+    "workflow_id": "wf_synth_0002",
+    "event_type": "LLM_CALL_START",
+    "timestamp": "2026-11-05T08:36:46.033032+00:00",
+    "agent": "agent_beta_researcher",
+    "model": "gemini-3.6-flash",
+    "provider": "Google Gemini",
+    "tool": null,
+    "input_data": "Assess provenance integrity requirements for workflow wf_synth_0002.",
+    "output_data": null,
+    "metadata": {
+      "workflow_id": "wf_synth_0002",
+      "agent_id": "agent_beta_researcher",
+      "agent_name": "Beta-Researcher",
+      "is_synthetic": true
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "35b17aec-1af1-4cd9-a0e7-7d79445029d7",
+    "workflow_id": "wf_synth_0002",
+    "event_type": "TOOL_START",
+    "timestamp": "2026-11-05T08:36:48.033032+00:00",
+    "agent": "agent_beta_researcher",
+    "model": "gemini-3.6-flash",
+    "provider": "Google Gemini",
+    "tool": "vector_store_retriever",
+    "input_data": {
+      "query": "provenance verification"
+    },
+    "output_data": null,
+    "metadata": {
+      "workflow_id": "wf_synth_0002",
+      "agent_id": "agent_beta_researcher",
+      "agent_name": "Beta-Researcher",
+      "is_synthetic": true
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "f9281d1b-0d7d-4a08-9a1b-e98e2d722036",
+    "workflow_id": "wf_synth_0002",
+    "event_type": "TOOL_END",
+    "timestamp": "2026-11-05T08:36:52.033032+00:00",
+    "agent": "agent_beta_researcher",
+    "model": "gemini-3.6-flash",
+    "provider": "Google Gemini",
+    "tool": "vector_store_retriever",
+    "input_data": null,
+    "output_data": "Data records retrieved successfully from ProofMesh Core KB.",
+    "metadata": {
+      "workflow_id": "wf_synth_0002",
+      "agent_id": "agent_beta_researcher",
+      "agent_name": "Beta-Researcher",
+      "is_synthetic": true
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "c8667d02-742e-478c-93df-453b05498010",
+    "workflow_id": "wf_synth_0002",
+    "event_type": "EVIDENCE_CAPTURED",
+    "timestamp": "2026-11-05T08:36:55.033032+00:00",
+    "agent": "agent_beta_researcher",
+    "model": "gemini-3.6-flash",
+    "provider": "Google Gemini",
+    "tool": "vector_store_retriever",
+    "input_data": {
+      "source_id": "controlled_proofmesh_knowledge_base"
+    },
+    "output_data": "Data records retrieved successfully from ProofMesh Core KB.",
+    "metadata": {
+      "workflow_id": "wf_synth_0002",
+      "agent_id": "agent_beta_researcher",
+      "agent_name": "Beta-Researcher",
+      "is_synthetic": true,
+      "source_id": "controlled_proofmesh_knowledge_base",
+      "source_reliability": 1.0
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "ea34106a-2ce0-4c0a-a2d7-8930e8d4939e",
+    "workflow_id": "wf_synth_0002",
+    "event_type": "LLM_CALL_END",
+    "timestamp": "2026-11-05T08:36:56.033032+00:00",
+    "agent": "agent_alpha_planner",
+    "model": "gemini-3.6-flash",
+    "provider": "Google Gemini",
+    "tool": null,
+    "input_data": "Assess provenance integrity requirements for workflow wf_synth_0002.",
+    "output_data": "Synthesized answer using ProofMesh Core KB evidence under policy constraints.",
+    "metadata": {
+      "workflow_id": "wf_synth_0002",
+      "agent_id": "agent_alpha_planner",
+      "agent_name": "Alpha-Planner",
+      "is_synthetic": true
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "90959a9a-11c9-4f2b-9a15-66b9b3e006c8",
+    "workflow_id": "wf_synth_0002",
+    "event_type": "INTERMEDIATE_DECISION",
+    "timestamp": "2026-11-05T08:36:58.033032+00:00",
+    "agent": "agent_alpha_planner",
+    "model": "gemini-3.6-flash",
+    "provider": "Google Gemini",
+    "tool": null,
+    "input_data": {
+      "evidence": "Data records retrieved successfully from ProofMesh Core KB."
+    },
+    "output_data": "Intermediate trust assertion: Evidence verified against schema.",
+    "metadata": {
+      "workflow_id": "wf_synth_0002",
+      "agent_id": "agent_alpha_planner",
+      "agent_name": "Alpha-Planner",
+      "is_synthetic": true
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "a8313b33-71c3-4d71-8ca3-ede2ad12dd81",
+    "workflow_id": "wf_synth_0002",
+    "event_type": "DECISION",
+    "timestamp": "2026-11-05T08:37:02.033032+00:00",
+    "agent": "agent_alpha_planner",
+    "model": "gemini-3.6-flash",
+    "provider": "Google Gemini",
+    "tool": null,
+    "input_data": {
+      "task": "Assess provenance integrity requirements for workflow wf_synth_0002.",
+      "evidence": "Data records retrieved successfully from ProofMesh Core KB."
+    },
+    "output_data": "Final outcome verified and approved for synthetic workflow wf_synth_0002.",
+    "metadata": {
+      "workflow_id": "wf_synth_0002",
+      "agent_id": "agent_alpha_planner",
+      "agent_name": "Alpha-Planner",
+      "is_synthetic": true,
+      "decision_outcome": "APPROVED"
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "0907a9a3-e5af-4dc0-882f-3d5978e21667",
+    "workflow_id": "wf_synth_0003",
+    "event_type": "MODEL_DETAILS",
+    "timestamp": "2026-11-05T08:41:43.033032+00:00",
+    "agent": "agent_gamma_auditor",
+    "model": "gemini-1.5-pro",
+    "provider": "Google Gemini",
+    "tool": null,
+    "input_data": null,
+    "output_data": null,
+    "metadata": {
+      "workflow_id": "wf_synth_0003",
+      "agent_id": "agent_gamma_auditor",
+      "agent_name": "Gamma-Auditor",
+      "is_synthetic": true,
+      "model": "gemini-1.5-pro",
+      "provider": "Google Gemini"
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "ff3f0cf1-481d-4114-92b7-bdf8f4fb92e4",
+    "workflow_id": "wf_synth_0003",
+    "event_type": "LLM_CALL_START",
+    "timestamp": "2026-11-05T08:41:44.033032+00:00",
+    "agent": "agent_gamma_auditor",
+    "model": "gemini-1.5-pro",
+    "provider": "Google Gemini",
+    "tool": null,
+    "input_data": "Assess provenance integrity requirements for workflow wf_synth_0003.",
+    "output_data": null,
+    "metadata": {
+      "workflow_id": "wf_synth_0003",
+      "agent_id": "agent_gamma_auditor",
+      "agent_name": "Gamma-Auditor",
+      "is_synthetic": true
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "f3addef6-f8b6-4ee4-b013-fd492bdc34c1",
+    "workflow_id": "wf_synth_0003",
+    "event_type": "TOOL_START",
+    "timestamp": "2026-11-05T08:41:45.033032+00:00",
+    "agent": "agent_gamma_auditor",
+    "model": "gemini-1.5-pro",
+    "provider": "Google Gemini",
+    "tool": "web_search",
+    "input_data": {
+      "query": "provenance verification"
+    },
+    "output_data": null,
+    "metadata": {
+      "workflow_id": "wf_synth_0003",
+      "agent_id": "agent_gamma_auditor",
+      "agent_name": "Gamma-Auditor",
+      "is_synthetic": true
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "4c05880b-fd4d-447c-b4bd-652751fded59",
+    "workflow_id": "wf_synth_0003",
+    "event_type": "TOOL_END",
+    "timestamp": "2026-11-05T08:41:49.033032+00:00",
+    "agent": "agent_gamma_auditor",
+    "model": "gemini-1.5-pro",
+    "provider": "Google Gemini",
+    "tool": "web_search",
+    "input_data": null,
+    "output_data": "Data records retrieved successfully from ProofMesh Core KB.",
+    "metadata": {
+      "workflow_id": "wf_synth_0003",
+      "agent_id": "agent_gamma_auditor",
+      "agent_name": "Gamma-Auditor",
+      "is_synthetic": true
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "66efe28e-6081-4fd8-8322-78f10918443a",
+    "workflow_id": "wf_synth_0003",
+    "event_type": "EVIDENCE_CAPTURED",
+    "timestamp": "2026-11-05T08:41:50.033032+00:00",
+    "agent": "agent_gamma_auditor",
+    "model": "gemini-1.5-pro",
+    "provider": "Google Gemini",
+    "tool": "web_search",
+    "input_data": {
+      "source_id": "controlled_proofmesh_knowledge_base"
+    },
+    "output_data": "Data records retrieved successfully from ProofMesh Core KB.",
+    "metadata": {
+      "workflow_id": "wf_synth_0003",
+      "agent_id": "agent_gamma_auditor",
+      "agent_name": "Gamma-Auditor",
+      "is_synthetic": true,
+      "source_id": "controlled_proofmesh_knowledge_base",
+      "source_reliability": 1.0
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "2dad6876-0fb6-4ad1-ab9a-e2b47742ebc1",
+    "workflow_id": "wf_synth_0003",
+    "event_type": "LLM_CALL_END",
+    "timestamp": "2026-11-05T08:41:53.033032+00:00",
+    "agent": "agent_beta_researcher",
+    "model": "gemini-1.5-pro",
+    "provider": "Google Gemini",
+    "tool": null,
+    "input_data": "Assess provenance integrity requirements for workflow wf_synth_0003.",
+    "output_data": "Synthesized answer using ProofMesh Core KB evidence under policy constraints.",
+    "metadata": {
+      "workflow_id": "wf_synth_0003",
+      "agent_id": "agent_beta_researcher",
+      "agent_name": "Beta-Researcher",
+      "is_synthetic": true
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "32339d42-f951-48de-b225-2634906bf7a8",
+    "workflow_id": "wf_synth_0003",
+    "event_type": "INTERMEDIATE_DECISION",
+    "timestamp": "2026-11-05T08:41:56.033032+00:00",
+    "agent": "agent_beta_researcher",
+    "model": "gemini-1.5-pro",
+    "provider": "Google Gemini",
+    "tool": null,
+    "input_data": {
+      "evidence": "Data records retrieved successfully from ProofMesh Core KB."
+    },
+    "output_data": "Intermediate trust assertion: Evidence verified against schema.",
+    "metadata": {
+      "workflow_id": "wf_synth_0003",
+      "agent_id": "agent_beta_researcher",
+      "agent_name": "Beta-Researcher",
+      "is_synthetic": true
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "4ca8b751-8471-493b-9cdb-eadfad5dc603",
+    "workflow_id": "wf_synth_0003",
+    "event_type": "DECISION",
+    "timestamp": "2026-11-05T08:41:59.033032+00:00",
+    "agent": "agent_beta_researcher",
+    "model": "gemini-1.5-pro",
+    "provider": "Google Gemini",
+    "tool": null,
+    "input_data": {
+      "task": "Assess provenance integrity requirements for workflow wf_synth_0003.",
+      "evidence": "Data records retrieved successfully from ProofMesh Core KB."
+    },
+    "output_data": "Final outcome verified and approved for synthetic workflow wf_synth_0003.",
+    "metadata": {
+      "workflow_id": "wf_synth_0003",
+      "agent_id": "agent_beta_researcher",
+      "agent_name": "Beta-Researcher",
+      "is_synthetic": true,
+      "decision_outcome": "APPROVED"
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "68db726d-d2ba-4f26-9991-9de39417634f",
+    "workflow_id": "wf_synth_0004",
+    "event_type": "MODEL_DETAILS",
+    "timestamp": "2026-11-05T08:46:41.033032+00:00",
+    "agent": "agent_alpha_planner",
+    "model": "gpt-4o",
+    "provider": "OpenAI",
+    "tool": null,
+    "input_data": null,
+    "output_data": null,
+    "metadata": {
+      "workflow_id": "wf_synth_0004",
+      "agent_id": "agent_alpha_planner",
+      "agent_name": "Alpha-Planner",
+      "is_synthetic": true,
+      "model": "gpt-4o",
+      "provider": "OpenAI"
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "a34ea59a-eef2-48e5-bb7e-a9bc92651a52",
+    "workflow_id": "wf_synth_0004",
+    "event_type": "LLM_CALL_START",
+    "timestamp": "2026-11-05T08:46:45.033032+00:00",
+    "agent": "agent_alpha_planner",
+    "model": "gpt-4o",
+    "provider": "OpenAI",
+    "tool": null,
+    "input_data": "Assess provenance integrity requirements for workflow wf_synth_0004.",
+    "output_data": null,
+    "metadata": {
+      "workflow_id": "wf_synth_0004",
+      "agent_id": "agent_alpha_planner",
+      "agent_name": "Alpha-Planner",
+      "is_synthetic": true
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "4bf86688-b466-45cd-8ebf-05b729d6e831",
+    "workflow_id": "wf_synth_0004",
+    "event_type": "TOOL_START",
+    "timestamp": "2026-11-05T08:46:46.033032+00:00",
+    "agent": "agent_alpha_planner",
+    "model": "gpt-4o",
+    "provider": "OpenAI",
+    "tool": "vector_store_retriever",
+    "input_data": {
+      "query": "provenance verification"
+    },
+    "output_data": null,
+    "metadata": {
+      "workflow_id": "wf_synth_0004",
+      "agent_id": "agent_alpha_planner",
+      "agent_name": "Alpha-Planner",
+      "is_synthetic": true
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "fff8ceb9-40a6-4a65-9087-f839fd7c4115",
+    "workflow_id": "wf_synth_0004",
+    "event_type": "TOOL_END",
+    "timestamp": "2026-11-05T08:46:49.033032+00:00",
+    "agent": "agent_alpha_planner",
+    "model": "gpt-4o",
+    "provider": "OpenAI",
+    "tool": "vector_store_retriever",
+    "input_data": null,
+    "output_data": "Data records retrieved successfully from ProofMesh Core KB.",
+    "metadata": {
+      "workflow_id": "wf_synth_0004",
+      "agent_id": "agent_alpha_planner",
+      "agent_name": "Alpha-Planner",
+      "is_synthetic": true
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "fdd8651a-d2af-4740-be90-050f2bfb6aaa",
+    "workflow_id": "wf_synth_0004",
+    "event_type": "EVIDENCE_CAPTURED",
+    "timestamp": "2026-11-05T08:46:52.033032+00:00",
+    "agent": "agent_alpha_planner",
+    "model": "gpt-4o",
+    "provider": "OpenAI",
+    "tool": "vector_store_retriever",
+    "input_data": {
+      "source_id": "controlled_proofmesh_knowledge_base"
+    },
+    "output_data": "Data records retrieved successfully from ProofMesh Core KB.",
+    "metadata": {
+      "workflow_id": "wf_synth_0004",
+      "agent_id": "agent_alpha_planner",
+      "agent_name": "Alpha-Planner",
+      "is_synthetic": true,
+      "source_id": "controlled_proofmesh_knowledge_base",
+      "source_reliability": 1.0
+    },
+    "is_synthetic": true
+  },
+  {
+    "event_id": "9364ab58-8b6d-49bd-abe2-1dae75423446",
+    "workflow_id": "wf_synth_0004",
+    "event_type": "LLM_CALL_END",
+    "timestamp": "2026-11-05T08:46:54.033032+00:00",
+    "agent": "agent_delta_executor",
+    "model": "gpt-4o",
+    "provider": "OpenAI",
+    "tool": null,
+    "input_data": "Assess provenance integrity requirements for workflow wf_synth_0004.",
+    "output_data": "Synthesized answer using ProofMesh Core KB evidence under policy constraints.",
+    "metadata": {
+      "workflow_id": "wf_synth_0004",
+      "agent_id": "agent_delta_executor",
+      "agent_name": "Delta-Executor",
+      "is_synthetic": true
+    },
+    "is_synthetic": true
+  }
+]

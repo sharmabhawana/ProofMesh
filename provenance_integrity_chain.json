@@ -3,16 +3,16 @@
     "description": "Hash chain for ProofMesh provenance records",
     "record_count": 8,
     "genesis_hash": "0000000000000000000000000000000000000000000000000000000000000000",
-    "chain_head": "66f5f07d0b23597c98332c4d68f216172ccda165bf7b2c5a5b3bb841af743fbf",
+    "chain_head": "9956dfb1544917bdf32bc1b92692f5a899a0a07de2bae730fca8f057e214b520",
     "records": [
         {
             "sequence": 1,
-            "event_id": "c95f88b5-460a-4ba1-90cb-5991b9b3e8b4",
+            "event_id": "fd8ec142-fa33-486d-a354-761dd1fd377c",
             "event_type": "MODEL_DETAILS",
             "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
             "event": {
-                "event_id": "c95f88b5-460a-4ba1-90cb-5991b9b3e8b4",
-                "timestamp": "2026-11-03T13:01:15.096495+00:00",
+                "event_id": "fd8ec142-fa33-486d-a354-761dd1fd377c",
+                "timestamp": "2026-11-09T09:35:45.126074+00:00",
                 "event_type": "MODEL_DETAILS",
                 "agent": "ProofMesh-Agent",
                 "model": "gemini-3.6-flash",
@@ -23,41 +23,42 @@
                     "model": "gemini-3.6-flash",
                     "provider": "Google Gemini",
                     "integration": "LangChain",
-                    "environment": "ProofMesh"
+                    "workflow_id": "wf_075f87e3b518",
+                    "operator": "stage3_test_user"
                 }
             },
-            "record_hash": "0ef5c6456ae05631fe46c40e8454af8c0d0a39207a82d94aad40913b9d636295"
+            "record_hash": "b19a6761fe2cb8887df20727f797b7feeb2028fb0a4dbf6d2463ebc8791239bb"
         },
         {
             "sequence": 2,
-            "event_id": "6e4a2119-5120-4678-9688-53bb46161026",
+            "event_id": "88fb5dee-643e-4f58-b4f5-7a9892bfd330",
             "event_type": "LLM_CALL_START",
-            "previous_hash": "0ef5c6456ae05631fe46c40e8454af8c0d0a39207a82d94aad40913b9d636295",
+            "previous_hash": "b19a6761fe2cb8887df20727f797b7feeb2028fb0a4dbf6d2463ebc8791239bb",
             "event": {
-                "event_id": "6e4a2119-5120-4678-9688-53bb46161026",
-                "timestamp": "2026-11-03T13:01:15.098645+00:00",
+                "event_id": "88fb5dee-643e-4f58-b4f5-7a9892bfd330",
+                "timestamp": "2026-11-09T09:35:45.128613+00:00",
                 "event_type": "LLM_CALL_START",
                 "agent": "ProofMesh-Agent",
                 "model": "gemini-3.6-flash",
                 "tool": null,
-                "input": "Explain how provenance improves trust in AI-agent workflows. Give exactly 3 short numbered points. Each point must contain one sentence only. Keep the total answer under 50 words. Do not provide private chain-of-thought.",
+                "input": "Verify provenance for data source compliance and audit rules.",
                 "output": null,
                 "metadata": {
                     "model": "gemini-3.6-flash",
                     "provider": "Google Gemini",
-                    "request_type": "External LLM API Request"
+                    "workflow_id": "wf_075f87e3b518"
                 }
             },
-            "record_hash": "c6a20e64e5bc37d287c239f30a7f69a35e4a54f8e5da27f1122d37c4b3be8d03"
+            "record_hash": "0a1fb9833fd2dcc7301b3fec29ed67e1fdf1d541be28080e75e80ccc06575577"
         },
         {
             "sequence": 3,
-            "event_id": "aa7ac3d0-a2b8-4b01-8bce-2119ff31720c",
+            "event_id": "0a8fbf52-baac-4b77-aca1-1a8a7b7827d5",
             "event_type": "TOOL_START",
-            "previous_hash": "c6a20e64e5bc37d287c239f30a7f69a35e4a54f8e5da27f1122d37c4b3be8d03",
+            "previous_hash": "0a1fb9833fd2dcc7301b3fec29ed67e1fdf1d541be28080e75e80ccc06575577",
             "event": {
-                "event_id": "aa7ac3d0-a2b8-4b01-8bce-2119ff31720c",
-                "timestamp": "2026-11-03T13:01:15.136125+00:00",
+                "event_id": "0a8fbf52-baac-4b77-aca1-1a8a7b7827d5",
+                "timestamp": "2026-11-09T09:35:47.284131+00:00",
                 "event_type": "TOOL_START",
                 "agent": "ProofMesh-Agent",
                 "model": null,
@@ -65,19 +66,19 @@
                 "input": "{'topic': 'provenance'}",
                 "output": null,
                 "metadata": {
-                    "run_id": "01a1a17f-e1ff-7ca3-8d01-3eb26bc5ce99"
+                    "run_id": "01a1bfa9-ee54-72e0-8360-280095f8090d"
                 }
             },
-            "record_hash": "b78ec6df785ba795606e0e83bd467be1faa2d60fba06dfb2b316af9510b7e2d0"
+            "record_hash": "94ec0d2cc4577a83e3efa462d18443dde1b8f2e4c8ebe491d247c8eb9508a064"
         },
         {
             "sequence": 4,
-            "event_id": "70e390bd-5678-4d1f-908a-b096ea053012",
+            "event_id": "ba006c48-73ba-4884-a812-ff00739f033a",
             "event_type": "TOOL_END",
-            "previous_hash": "b78ec6df785ba795606e0e83bd467be1faa2d60fba06dfb2b316af9510b7e2d0",
+            "previous_hash": "94ec0d2cc4577a83e3efa462d18443dde1b8f2e4c8ebe491d247c8eb9508a064",
             "event": {
-                "event_id": "70e390bd-5678-4d1f-908a-b096ea053012",
-                "timestamp": "2026-11-03T13:01:15.141944+00:00",
+                "event_id": "ba006c48-73ba-4884-a812-ff00739f033a",
+                "timestamp": "2026-11-09T09:35:47.287034+00:00",
                 "event_type": "TOOL_END",
                 "agent": "ProofMesh-Agent",
                 "model": null,
@@ -85,19 +86,19 @@
                 "input": null,
                 "output": "Provenance is the recorded history of the origin, processing, and transformation of information.",
                 "metadata": {
-                    "run_id": "01a1a17f-e1ff-7ca3-8d01-3eb26bc5ce99"
+                    "run_id": "01a1bfa9-ee54-72e0-8360-280095f8090d"
                 }
             },
-            "record_hash": "bc0ba13a93d860e8ae2f663af5de206c294c35f82c42dd873f92a191bf07aabc"
+            "record_hash": "2b81ed3ae8a8fc1ad02e1ec88e4973045b2fb48a9e64c12f9fc57c61abaea540"
         },
         {
             "sequence": 5,
-            "event_id": "50e175ce-fbaf-4102-92af-d1a4af1f48a4",
+            "event_id": "a0116b0d-bed8-4ec9-9bb4-b4d5a69280d2",
             "event_type": "EVIDENCE_CAPTURED",
-            "previous_hash": "bc0ba13a93d860e8ae2f663af5de206c294c35f82c42dd873f92a191bf07aabc",
+            "previous_hash": "2b81ed3ae8a8fc1ad02e1ec88e4973045b2fb48a9e64c12f9fc57c61abaea540",
             "event": {
-                "event_id": "50e175ce-fbaf-4102-92af-d1a4af1f48a4",
-                "timestamp": "2026-11-03T13:01:15.144898+00:00",
+                "event_id": "a0116b0d-bed8-4ec9-9bb4-b4d5a69280d2",
+                "timestamp": "2026-11-09T09:35:47.288847+00:00",
                 "event_type": "EVIDENCE_CAPTURED",
                 "agent": "ProofMesh-Agent",
                 "model": null,
@@ -108,84 +109,79 @@
                 "output": "Provenance is the recorded history of the origin, processing, and transformation of information.",
                 "metadata": {
                     "source": "Controlled ProofMesh Knowledge Base",
-                    "status": "CAPTURED"
+                    "status": "CAPTURED",
+                    "workflow_id": "wf_075f87e3b518"
                 }
             },
-            "record_hash": "0f478f625df6908674196b137271b438e99f2a841847247091bae37ddda42328"
+            "record_hash": "2b1d6be916cc7f709cc0d2e9a4462ba2808e40aa5693e47d2c1afb99fc3803cf"
         },
         {
             "sequence": 6,
-            "event_id": "e4dcc536-6f88-48e2-8d28-5f76ce1dffe2",
+            "event_id": "bde34304-e904-42a6-9f36-60429c7708e0",
             "event_type": "LLM_CALL_END",
-            "previous_hash": "0f478f625df6908674196b137271b438e99f2a841847247091bae37ddda42328",
+            "previous_hash": "2b1d6be916cc7f709cc0d2e9a4462ba2808e40aa5693e47d2c1afb99fc3803cf",
             "event": {
-                "event_id": "e4dcc536-6f88-48e2-8d28-5f76ce1dffe2",
-                "timestamp": "2026-11-03T13:01:29.364691+00:00",
+                "event_id": "bde34304-e904-42a6-9f36-60429c7708e0",
+                "timestamp": "2026-11-09T09:35:50.977887+00:00",
                 "event_type": "LLM_CALL_END",
                 "agent": "ProofMesh-Agent",
                 "model": "gemini-3.6-flash",
                 "tool": null,
-                "input": "Explain how provenance improves trust in AI-agent workflows. Give exactly 3 short numbered points. Each point must contain one sentence only. Keep the total answer under 50 words. Do not provide private chain-of-thought.",
-                "output": "1. Provenance provides verifiable audit trails that track every data source and action taken by AI agents.\n\n2. It prevents unauthorized tampering by ensuring all decision inputs and outputs remain transparent and authentic.\n\n3. It enables human operators to easily validate the accuracy and logic behind automated agent choices.",
+                "input": "Verify provenance for data source compliance and audit rules.",
+                "output": "To verify provenance for data source compliance and audit rules, follow these steps:\n\n1. **Track Origin:** Authenticate the data creator, initial ingestion point, and timestamp to ensure the source is trusted and legally compliant.\n2. **Log Transformations:** Maintain an immutable audit trail of all processing, modifications, access events, and data transfers.\n3. **Verify Integrity:** Use cryptographic hashes or digital signatures to ensure the data has not been tampered with.\n4. **Map to Standards:** Cross-reference the recorded lineage against specific regulatory rules (e.g., GDPR, HIPAA) and internal governance policies to confirm compliant handling throughout its lifecycle.",
                 "metadata": {
                     "model": "gemini-3.6-flash",
-                    "provider": "Google Gemini",
                     "status": "SUCCESS",
-                    "response_type": "LLM Generated Text"
+                    "workflow_id": "wf_075f87e3b518"
                 }
             },
-            "record_hash": "9521633efa5ab36738e7c35916646a564c633d8244c673e7360ca0bf504b0a2c"
+            "record_hash": "7d795ddac0c4dfe9da9c79ff980f6c6445b434668114c04817cb0af3990e35fa"
         },
         {
             "sequence": 7,
-            "event_id": "233f3601-4532-4cff-be41-3eeac8199032",
+            "event_id": "4b194b7a-cb79-48cb-95c4-cbc7f800b077",
             "event_type": "INTERMEDIATE_DECISION",
-            "previous_hash": "9521633efa5ab36738e7c35916646a564c633d8244c673e7360ca0bf504b0a2c",
+            "previous_hash": "7d795ddac0c4dfe9da9c79ff980f6c6445b434668114c04817cb0af3990e35fa",
             "event": {
-                "event_id": "233f3601-4532-4cff-be41-3eeac8199032",
-                "timestamp": "2026-11-03T13:01:29.367425+00:00",
+                "event_id": "4b194b7a-cb79-48cb-95c4-cbc7f800b077",
+                "timestamp": "2026-11-09T09:35:50.979872+00:00",
                 "event_type": "INTERMEDIATE_DECISION",
                 "agent": "ProofMesh-Agent",
-                "model": "gemini-3.6-flash",
+                "model": null,
                 "tool": "knowledge_lookup",
                 "input": {
-                    "evidence": "Provenance is the recorded history of the origin, processing, and transformation of information.",
-                    "llm_response": "1. Provenance provides verifiable audit trails that track every data source and action taken by AI agents.\n\n2. It prevents unauthorized tampering by ensuring all decision inputs and outputs remain transparent and authentic.\n\n3. It enables human operators to easily validate the accuracy and logic behind automated agent choices."
+                    "evidence": "Provenance is the recorded history of the origin, processing, and transformation of information."
                 },
-                "output": "The controlled knowledge tool returned observable evidence, and the external Gemini LLM successfully processed the user request. The evidence and model response were captured for provenance tracking.",
+                "output": "Evaluated evidence and model output against provenance rules.",
                 "metadata": {
-                    "model": "gemini-3.6-flash",
-                    "provider": "Google Gemini",
-                    "stage": "Evidence and LLM Response Evaluation",
-                    "status": "RECORDED"
+                    "stage": "Validation",
+                    "workflow_id": "wf_075f87e3b518"
                 }
             },
-            "record_hash": "7591a0c1b74e979c984e3ad15c219e38403c66ece7c96b1e3e170b623f2722b7"
+            "record_hash": "06256bfbe9f2cb0570f5fb9bd45c9dca51241e2f2f17a26026e0cbef44b3bfa7"
         },
         {
             "sequence": 8,
-            "event_id": "a7678f62-0ee5-4480-b262-1b918b45dc58",
+            "event_id": "92cafdf5-c627-4b35-8ead-e7fa4d061635",
             "event_type": "DECISION",
-            "previous_hash": "7591a0c1b74e979c984e3ad15c219e38403c66ece7c96b1e3e170b623f2722b7",
+            "previous_hash": "06256bfbe9f2cb0570f5fb9bd45c9dca51241e2f2f17a26026e0cbef44b3bfa7",
             "event": {
-                "event_id": "a7678f62-0ee5-4480-b262-1b918b45dc58",
-                "timestamp": "2026-11-03T13:01:29.369449+00:00",
+                "event_id": "92cafdf5-c627-4b35-8ead-e7fa4d061635",
+                "timestamp": "2026-11-09T09:35:50.983064+00:00",
                 "event_type": "DECISION",
                 "agent": "ProofMesh-Agent",
-                "model": "gemini-3.6-flash",
+                "model": null,
                 "tool": null,
                 "input": {
-                    "evidence": "Provenance is the recorded history of the origin, processing, and transformation of information.",
-                    "llm_response": "1. Provenance provides verifiable audit trails that track every data source and action taken by AI agents.\n\n2. It prevents unauthorized tampering by ensuring all decision inputs and outputs remain transparent and authentic.\n\n3. It enables human operators to easily validate the accuracy and logic behind automated agent choices."
+                    "request": "Verify provenance for data source compliance and audit rules."
                 },
-                "output": "The user request was processed using a real external Gemini LLM through LangChain. The ProofMesh provenance middleware recorded model details, API interaction, tool execution, evidence, intermediate workflow state, and the final decision.",
+                "output": "Final outcome verified and approved for workflow wf_075f87e3b518.",
                 "metadata": {
-                    "model": "gemini-3.6-flash",
-                    "provider": "Google Gemini",
-                    "status": "RECORDED"
+                    "status": "RECORDED",
+                    "workflow_id": "wf_075f87e3b518"
                 }
             },
-            "record_hash": "66f5f07d0b23597c98332c4d68f216172ccda165bf7b2c5a5b3bb841af743fbf"
+            "record_hash": "9956dfb1544917bdf32bc1b92692f5a899a0a07de2bae730fca8f057e214b520"
         }
     ]
 }

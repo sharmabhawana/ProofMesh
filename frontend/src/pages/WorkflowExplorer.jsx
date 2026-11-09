@@ -260,6 +260,8 @@ export default function WorkflowExplorer({
             {/* Quick Actions */}
             {(selectedNode.type === "DataSource" || selectedNode.type === "Agent") && (
               <button
+                type="button"
+                className="button button-primary"
                 onClick={() => {
                   if (onNavigateToImpact) {
                     onNavigateToImpact({
@@ -268,24 +270,10 @@ export default function WorkflowExplorer({
                     });
                   }
                 }}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "8px",
-                  padding: "9px 12px",
-                  background: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "8px",
-                  fontSize: "12px",
-                  fontWeight: 650,
-                  cursor: "pointer",
-                }}
+                style={{ width: "100%", height: "38px" }}
               >
                 <GitBranch size={14} />
-                <span>Run Impact Analysis</span>
-                <ArrowRight size={14} />
+                <span>Run Downstream Impact Analysis</span>
               </button>
             )}
 

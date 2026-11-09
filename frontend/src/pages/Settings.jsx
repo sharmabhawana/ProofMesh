@@ -288,40 +288,20 @@ export default function Settings() {
 
         <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
           <button
+            type="button"
+            className="button button-secondary"
             onClick={handleClearCache}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              padding: "10px 18px",
-              borderRadius: "8px",
-              border: "1px solid var(--border)",
-              background: "var(--panel-soft)",
-              color: "var(--text)",
-              fontSize: "13px",
-              fontWeight: 600,
-              cursor: "pointer",
-            }}
+            style={{ height: "38px" }}
           >
             <Trash2 size={16} />
             <span>{cacheCleared ? "Cache Cleared!" : "Clear Local Storage Cache"}</span>
           </button>
 
           <button
+            type="button"
+            className="button button-danger"
             onClick={logout}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              padding: "10px 18px",
-              borderRadius: "8px",
-              border: "1px solid rgba(239, 68, 68, 0.3)",
-              background: "rgba(239, 68, 68, 0.1)",
-              color: "#ef4444",
-              fontSize: "13px",
-              fontWeight: 650,
-              cursor: "pointer",
-            }}
+            style={{ height: "38px" }}
           >
             <LogOut size={16} />
             <span>End Session & Sign Out</span>
