@@ -11,6 +11,7 @@ from trust_assessment import assess_trust
 from impact_analysis import analyze
 
 from auth.auth_database import initialize_database
+from auth.db_session import check_db_connection
 from auth.auth_routes import router as auth_router
 from routers.workflows import router as workflows_router
 from routers.uploads import router as uploads_router
@@ -182,10 +183,13 @@ def home():
 @app.get("/health")
 def health_check():
 
+    db_status = check_db_connection()
+
     return {
         "status": "healthy",
         "backend": "FastAPI",
-        "project": "ProofMesh"
+        "project": "ProofMesh",
+        "database": db_status
     }
 
 

@@ -33,7 +33,7 @@ Open your web browser to: **`http://localhost:5173`**
 ### Step 1: Login & Executive Overview
 1. **Action:** Log into the dashboard using administrator credentials:
    - **Username / Email:** `admin` or `admin@proofmesh.local`
-   - **Password:** `AdminPass123!`
+   - **Password:** `<Configured Administrator Password>` (refer to your local environment configuration)
 2. **What to Show:**
    - The **Executive Overview** page (`/#/overview`) displaying high-level governance metrics: Trust Score Gauge ($100.0/100$), Cryptographic Integrity Pill (**Verified PASS**), Total Graph Nodes, Active Data Sources, and Affected Decisions count.
    - Click the **Sun / Moon** icon in the topbar to showcase instant, smooth Dark/Light theme switching.
@@ -128,5 +128,5 @@ Open your web browser to: **`http://localhost:5173`**
    ```
 2. **Show the Result:**
    - `VERIFICATION SUMMARY: 25/25 TESTS PASSED`
-   - Conclude by stating: *"ProofMesh has been validated with 100% automated test coverage across all authentication, cryptographic, graph, API, and agent execution layers."*
+   - Conclude by stating: *"ProofMesh has been validated with a 100% automated test-suite pass rate (25/25 validation tests, 25/25 DB & auth tests, 9/9 router tests) across authentication, cryptographic integrity, graph traversal, and agent execution layers."*
 

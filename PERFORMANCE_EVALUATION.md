@@ -8,6 +8,9 @@
 
 ## 1. Executive Summary
 
+> [!NOTE]
+> All performance metrics, throughput rates, and memory overhead values documented herein represent prototype benchmark measurements captured in a local test environment. Actual enterprise performance may vary based on cloud infrastructure, Neo4j clustering, and network conditions.
+
 A critical requirement for autonomous AI agent governance frameworks is that provenance capture and cryptographic integrity verification must not introduce prohibitive latency or memory overhead into real-time decision loops.
 
 This evaluation benchmarks:

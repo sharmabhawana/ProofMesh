@@ -55,7 +55,7 @@ During this audit, five critical system issues were diagnosed and systematically
 
 5. **Test User Credential Mismatch in Full Integration Test:**
    - *Issue:* `test_full_integration.py` attempted authentication with obsolete credentials (`demo@proofmesh.io`).
-   - *Remediation:* Standardized test credentials to use active administrator credentials (`admin` / `AdminPass123!`), achieving 100% test pass.
+   - *Remediation:* Standardized test credentials to use active administrator credentials configured via environment setup, achieving 100% test pass.
 
 ---
 

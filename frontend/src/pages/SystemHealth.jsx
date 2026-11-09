@@ -37,6 +37,13 @@ export default function SystemHealth({
     }
   };
 
+  const dbInfo = healthData?.database || {};
+  const isPostgres = dbInfo.url_type === "postgresql";
+  const isDbConnected = dbInfo.status === "connected";
+
+  const isNeo4jLive = workflowData?.source === "neo4j_live";
+  const isNeo4jFallback = workflowData?.source === "provenance_ledger_fallback";
+
   const services = [
     {
       name: "FastAPI Application Server",
@@ -51,27 +58,55 @@ export default function SystemHealth({
       ],
     },
     {
+      name: "Relational Database (SQLAlchemy)",
+      description: "Enterprise persistence for user accounts, credentials, workflows, and validation reports",
+      status: isDbConnected
+        ? isPostgres
+          ? "CONNECTED (PostgreSQL Primary)"
+          : "ACTIVE (SQLite Local Fallback)"
+        : "DISCONNECTED",
+      isHealthy: isDbConnected,
+      icon: Database,
+      details: [
+        { label: "Active Engine", value: isPostgres ? "PostgreSQL (Live Daemon)" : "SQLite (Local Isolated Engine)" },
+        { label: "Dialect", value: dbInfo.dialect || "sqlite" },
+        { label: "Connection Status", value: dbInfo.status || "Unverified" },
+        { label: "Architecture", value: "Dual-Database Automatic Fallback" },
+      ],
+    },
+    {
       name: "Neo4j Provenance Graph",
       description: "Graph database storing agent entities, tools, data sources, and causal links",
-      status: workflowData?.nodes ? "CONNECTED" : "UNAVAILABLE",
+      status: isNeo4jLive
+        ? "CONNECTED (Live Neo4j)"
+        : isNeo4jFallback
+        ? "ACTIVE (Verified Provenance Ledger)"
+        : workflowData?.nodes
+        ? "CONNECTED"
+        : "UNAVAILABLE",
       isHealthy: !!workflowData?.nodes,
       icon: Database,
       details: [
+        { label: "Data Pipeline", value: isNeo4jLive ? "Neo4j Live Bolt Server" : "Verified Provenance Ledger" },
         { label: "Indexed Nodes", value: `${workflowData?.total_nodes ?? workflowData?.nodes?.length ?? 0} Nodes` },
         { label: "Relationships", value: `${workflowData?.total_relationships ?? workflowData?.relationships?.length ?? 0} Edges` },
-        { label: "Database Name", value: "proofmesh" },
+        { label: "Graph Database", value: "proofmesh" },
       ],
     },
     {
       name: "SHA-256 Ledger & Hash Chain",
       description: "Cryptographic hash chain verifying provenance event sequencing and tamper detection",
-      status: integrityData?.integrity_verified ? "VERIFIED" : "ATTENTION",
+      status: integrityData?.integrity_verified
+        ? "VERIFIED (Intact)"
+        : integrityData
+        ? "ATTENTION"
+        : "UNVERIFIED",
       isHealthy: !!integrityData?.integrity_verified,
       icon: LockKeyhole,
       details: [
         { label: "Algorithm", value: "SHA-256" },
-        { label: "Integrity Status", value: integrityData?.status || "Unverified" },
-        { label: "Tampering", value: integrityData?.tampering_detected ? "Detected" : "None" },
+        { label: "Chain Status", value: integrityData?.status || "Unverified" },
+        { label: "Tampering Detected", value: integrityData?.tampering_detected === false ? "None (Cryptographically Intact)" : (integrityData?.tampering_detected ? "Detected" : "Pending Check") },
       ],
     },
     {

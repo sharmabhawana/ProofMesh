@@ -94,11 +94,17 @@ export default function Overview({
             border: "1px solid var(--border)",
             borderRadius: "10px",
             fontSize: "12px",
-            color: "var(--muted)",
+            color: health?.status === "healthy" ? "var(--text)" : "#f59e0b",
           }}
         >
-          <Clock size={15} style={{ color: "var(--accent)" }} />
-          <span>Real-time API sync active</span>
+          <span
+            className={`mini-dot ${health?.status === "healthy" ? "online" : "warning"}`}
+          />
+          <span>
+            {health?.status === "healthy"
+              ? "API Connected & Synced"
+              : "API Disconnected / Degraded"}
+          </span>
         </div>
       </div>
 
