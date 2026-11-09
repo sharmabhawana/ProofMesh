@@ -21,10 +21,16 @@ from auth.auth_database import find_user_by_id
 
 load_dotenv()
 
-JWT_SECRET_KEY = os.getenv(
-    "JWT_SECRET_KEY",
-    "proofmesh-default-secret-key-please-change-in-production-2024xyz"
-)
+def get_jwt_secret_key() -> str:
+    """Fail closed when a secure JWT signing secret has not been configured."""
+    secret = os.getenv("JWT_SECRET_KEY", "")
+    if len(secret) < 32 or secret.strip() != secret:
+        raise RuntimeError(
+            "JWT_SECRET_KEY must be configured as a non-whitespace secret "
+            "of at least 32 characters. Generate one with "
+            "python -c \"import secrets; print(secrets.token_urlsafe(48))\"."
+        )
+    return secret
 
 JWT_ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
@@ -104,7 +110,7 @@ def create_access_token(user_id) -> str:
         "iat": now,
         "exp": now + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
     }
-    return jwt.encode(payload, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
+    return jwt.encode(payload, get_jwt_secret_key(), algorithm=JWT_ALGORITHM)
 
 
 # ============================================================
@@ -121,7 +127,7 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
 
     try:
         payload = jwt.decode(
-            token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM]
+            token, get_jwt_secret_key(), algorithms=[JWT_ALGORITHM]
         )
         user_id = int(payload.get("sub"))
     except (jwt.InvalidTokenError, TypeError, ValueError):
