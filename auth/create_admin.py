@@ -37,8 +37,8 @@ def main():
         print("Passwords do not match.")
         return
 
-    if len(password) < 8 or len(password) > 12:
-        print("Admin password must contain between 8 and 12 characters.")
+    if len(password) < 12 or len(password) > 128:
+        print("Admin password must contain between 12 and 128 characters.")
         return
 
     password_hash = hash_password(password)
