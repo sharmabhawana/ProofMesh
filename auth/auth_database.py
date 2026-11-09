@@ -25,8 +25,10 @@ def get_connection():
 
 def initialize_database() -> None:
     """
-    Initialize database schema (creates tables if they do not exist)
-    and ensures default administrator credentials exist.
+    Initialize database schema (creates tables if they do not exist).
+
+    Administrator accounts must be provisioned explicitly with
+    python -m auth.create_admin; never bootstrap a public default password.
     """
     # Create all tables defined in SQLAlchemy models
     Base.metadata.create_all(bind=engine)
@@ -40,18 +42,6 @@ def initialize_database() -> None:
     except Exception:
         pass
 
-    # Ensure default admin account exists
-    from auth.security import hash_password
-
-    admin_user = find_user_by_username("admin")
-    if not admin_user:
-        create_user(
-            username="admin",
-            email="admin@proofmesh.local",
-            password_hash=hash_password("AdminPass123!"),
-            role="admin",
-            full_name="System Administrator",
-        )
 
 
 def find_user_by_email(email: str) -> Optional[User]:
