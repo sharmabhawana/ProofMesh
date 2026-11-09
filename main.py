@@ -61,15 +61,22 @@ app = FastAPI(
 # 3. CONFIGURE CORS FOR REACT FRONTEND
 # ============================================================
 
+# Comma-separated exact origins, e.g.:
+# CORS_ALLOWED_ORIGINS=https://proofmesh.example.com,http://localhost:5173
+_cors_origins = [
+    origin.strip()
+    for origin in os.getenv(
+        "CORS_ALLOWED_ORIGINS",
+        "http://localhost:3000,http://localhost:5173"
+    ).split(",")
+    if origin.strip()
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:5173"
-    ],
+    allow_origins=_cors_origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"]
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type"],
 )
 
 
