@@ -140,23 +140,13 @@ export default function SystemHealth({
           )}
 
           <button
+            type="button"
+            className="button button-primary"
             onClick={measureLatency}
             disabled={pinging}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              padding: "10px 18px",
-              background: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
-              color: "#fff",
-              border: "none",
-              borderRadius: "8px",
-              fontSize: "12px",
-              fontWeight: 650,
-              cursor: pinging ? "not-allowed" : "pointer",
-            }}
+            style={{ height: "38px" }}
           >
-            <Clock size={14} />
+            <Clock size={14} className={pinging ? "spin" : ""} />
             <span>{pinging ? "Pinging..." : "Test API Latency"}</span>
           </button>
         </div>

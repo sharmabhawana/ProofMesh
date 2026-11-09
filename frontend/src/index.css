@@ -6,4 +6,6 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--bg, #0b1220);
+  color: var(--text, #edf3fb);
 }

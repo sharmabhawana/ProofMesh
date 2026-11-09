@@ -164,21 +164,11 @@ export default function AdminDashboard() {
         </div>
 
         <button
+          type="button"
+          className="button button-secondary"
           onClick={fetchUsers}
           disabled={loading}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            padding: "9px 16px",
-            background: "var(--panel-soft)",
-            border: "1px solid var(--border)",
-            borderRadius: "8px",
-            fontSize: "12px",
-            fontWeight: 650,
-            color: "var(--text)",
-            cursor: loading ? "not-allowed" : "pointer",
-          }}
+          style={{ height: "38px" }}
         >
           <RefreshCw size={14} className={loading ? "spin" : ""} />
           <span>Refresh Directory</span>

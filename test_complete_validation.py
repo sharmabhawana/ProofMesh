@@ -13,6 +13,7 @@ from auth.auth_database import (
     find_user_by_username,
     find_user_by_email,
     get_connection,
+    create_user,
 )
 from auth.security import hash_password, verify_password, create_access_token
 
@@ -50,26 +51,30 @@ except Exception as e:
 print("\n--- TEST GROUP B: AUTHENTICATION & AUTHORIZATION (14 CASES) ---")
 
 # Setup a clean test admin and test user if not existing
-with get_connection() as conn:
-    # Ensure test admin exists for test suite
-    if not find_user_by_username("test_admin_suite"):
-        conn.execute(
-            "INSERT INTO users (username, email, password_hash, role, is_active) VALUES (?, ?, ?, 'admin', 1)",
-            ("test_admin_suite", "admin_suite@proofmesh.local", hash_password("AdminPass123!"))
-        )
-    # Ensure test normal user exists
-    if not find_user_by_username("test_user_suite"):
-        conn.execute(
-            "INSERT INTO users (username, email, password_hash, role, is_active) VALUES (?, ?, ?, 'user', 1)",
-            ("test_user_suite", "user_suite@proofmesh.local", hash_password("UserPass123!"))
-        )
-    # Ensure a disabled user exists for testing
-    if not find_user_by_username("test_disabled_user"):
-        conn.execute(
-            "INSERT INTO users (username, email, password_hash, role, is_active) VALUES (?, ?, ?, 'user', 0)",
-            ("test_disabled_user", "disabled@proofmesh.local", hash_password("UserPass123!"))
-        )
-    conn.commit()
+# Using ORM create_user (PostgreSQL-compatible; avoids raw SQL placeholder mismatch)
+from sqlalchemy.exc import IntegrityError as SAIntegrityError
+
+def _ensure_test_user(username, email, password, role, is_active=True):
+    """Create a test user via ORM if it does not already exist."""
+    if find_user_by_username(username):
+        return
+    try:
+        from auth.db_session import get_db_session
+        from auth.models import User
+        with get_db_session() as session:
+            session.add(User(
+                username=username,
+                email=email,
+                password_hash=hash_password(password),
+                role=role,
+                is_active=is_active,
+            ))
+    except Exception:
+        pass  # Already exists or concurrent insert — safe to ignore
+
+_ensure_test_user("test_admin_suite", "admin_suite@proofmesh.local", "AdminPass123!", "admin")
+_ensure_test_user("test_user_suite", "user_suite@proofmesh.local", "UserPass123!", "user")
+_ensure_test_user("test_disabled_user", "disabled@proofmesh.local", "UserPass123!", "user", is_active=False)
 
 # 1. Admin login with valid credentials
 res_b1 = client.post("/api/auth/login", data={"username": "test_admin_suite", "password": "AdminPass123!"})

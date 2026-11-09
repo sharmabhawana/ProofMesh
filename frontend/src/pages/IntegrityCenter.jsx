@@ -87,22 +87,11 @@ export default function IntegrityCenter({
         </div>
 
         <button
+          type="button"
+          className="button button-primary"
           onClick={handleVerifyChain}
           disabled={verifying}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            padding: "10px 18px",
-            background: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
-            color: "#fff",
-            border: "none",
-            borderRadius: "9px",
-            fontSize: "13px",
-            fontWeight: 650,
-            cursor: verifying ? "not-allowed" : "pointer",
-            boxShadow: "0 4px 14px rgba(37, 99, 235, 0.25)",
-          }}
+          style={{ height: "38px" }}
         >
           <RefreshCw size={15} className={verifying ? "spin" : ""} />
           <span>{verifying ? "Verifying SHA-256 Chain..." : "Re-Verify Ledger"}</span>

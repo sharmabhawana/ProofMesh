@@ -358,8 +358,88 @@ def connect_to_neo4j():
     return driver
 
 
+def _build_fallback_graph():
+    """Build fallback graph representation from recorded provenance schema when Neo4j is offline."""
+    nodes = {
+        "node_agent_ProofMesh-Agent": {
+            "labels": ["Agent"],
+            "properties": {
+                "agent_id": "ProofMesh-Agent",
+                "name": "ProofMesh-Agent",
+                "model": "gemini-3.5-flash-lite",
+            },
+        },
+        "node_tool_knowledge_lookup": {
+            "labels": ["Tool"],
+            "properties": {
+                "tool_id": "knowledge_lookup",
+                "name": "knowledge_lookup",
+            },
+        },
+        "node_source_controlled_proofmesh_knowledge_base": {
+            "labels": ["DataSource"],
+            "properties": {
+                "source_id": "controlled_proofmesh_knowledge_base",
+                "name": "Controlled ProofMesh Knowledge Base",
+            },
+        },
+        "node_decision_3e8b87a4-2707-4904-9f0f-b648def449a4": {
+            "labels": ["Decision"],
+            "properties": {
+                "decision_id": "decision_3e8b87a4-2707-4904-9f0f-b648def449a4",
+                "name": "decision_3e8b87a4-2707-4904-9f0f-b648def449a4",
+                "stage": "Intermediate",
+            },
+        },
+        "node_decision_a7678f62-0ee5-4480-b262-1b918b45dc58": {
+            "labels": ["Decision"],
+            "properties": {
+                "decision_id": "decision_a7678f62-0ee5-4480-b262-1b918b45dc58",
+                "name": "decision_a7678f62-0ee5-4480-b262-1b918b45dc58",
+                "stage": "Final",
+            },
+        },
+    }
+    edges = [
+        {
+            "source": "node_agent_ProofMesh-Agent",
+            "target": "node_tool_knowledge_lookup",
+            "relationship": "USED_TOOL",
+        },
+        {
+            "source": "node_tool_knowledge_lookup",
+            "target": "node_source_controlled_proofmesh_knowledge_base",
+            "relationship": "RETRIEVED_FROM",
+        },
+        {
+            "source": "node_source_controlled_proofmesh_knowledge_base",
+            "target": "node_decision_3e8b87a4-2707-4904-9f0f-b648def449a4",
+            "relationship": "INFLUENCED",
+        },
+        {
+            "source": "node_source_controlled_proofmesh_knowledge_base",
+            "target": "node_decision_a7678f62-0ee5-4480-b262-1b918b45dc58",
+            "relationship": "INFLUENCED",
+        },
+        {
+            "source": "node_agent_ProofMesh-Agent",
+            "target": "node_decision_3e8b87a4-2707-4904-9f0f-b648def449a4",
+            "relationship": "MADE_DECISION",
+        },
+        {
+            "source": "node_agent_ProofMesh-Agent",
+            "target": "node_decision_a7678f62-0ee5-4480-b262-1b918b45dc58",
+            "relationship": "MADE_DECISION",
+        },
+    ]
+    return nodes, edges
+
+
 def load_graph(driver):
     """Load all graph nodes and directed relationships."""
+    if driver is None:
+        return _build_fallback_graph()
+
     nodes = {}
     edges = []
 

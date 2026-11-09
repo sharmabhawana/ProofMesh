@@ -1,24 +1,34 @@
 import {
   LayoutDashboard,
-  Network,
-  LockKeyhole,
+  PlayCircle,
+  History,
+  CloudUpload,
+  Bot,
+  Workflow,
   ShieldCheck,
+  ChartNoAxesCombined,
   GitBranch,
   Database,
   Activity,
+  FileText,
   Settings,
+  Shield,
   LogOut,
   X,
   User,
-  ShieldAlert,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 export const BASE_NAVIGATION_ITEMS = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
-  { id: "workflow", label: "Workflow Explorer", icon: Network },
-  { id: "integrity", label: "Integrity Center", icon: LockKeyhole },
-  { id: "trust", label: "Trust Analytics", icon: ShieldCheck },
+  { id: "create-workflow", label: "Run Workflow", icon: PlayCircle },
+  { id: "history", label: "Workflow History", icon: History },
+  { id: "upload", label: "Upload Center", icon: CloudUpload },
+  { id: "agent-explorer", label: "Agent Explorer", icon: Bot },
+  { id: "reports", label: "Reports", icon: FileText },
+  { id: "workflow", label: "Workflow Explorer", icon: Workflow },
+  { id: "integrity", label: "Integrity Center", icon: ShieldCheck },
+  { id: "trust", label: "Trust Analytics", icon: ChartNoAxesCombined },
   { id: "impact", label: "Impact Analysis", icon: GitBranch },
   { id: "sources", label: "Data Sources", icon: Database },
   { id: "health", label: "System Health", icon: Activity },
@@ -28,7 +38,7 @@ export const BASE_NAVIGATION_ITEMS = [
 export const ADMIN_NAVIGATION_ITEM = {
   id: "admin",
   label: "Admin Console",
-  icon: ShieldAlert,
+  icon: Shield,
   badge: "Admin",
 };
 
@@ -114,15 +124,15 @@ export default function Sidebar({
         </nav>
 
         {/* Bottom Section */}
-        <div className="sidebar-bottom">
+        <div className="sidebar-bottom" style={{ background: "var(--sidebar)" }}>
           {/* Status badge */}
-          <div className="sidebar-status">
+          <div className="sidebar-status" style={{ background: "var(--panel-soft)", border: "1px solid var(--border)" }}>
             <span
               className={`mini-dot ${backendConnected ? "online" : "warning"}`}
             />
             <div>
-              <strong>Backend Status</strong>
-              <small>
+              <strong style={{ color: "var(--text)" }}>Backend Status</strong>
+              <small style={{ color: "var(--muted)" }}>
                 {backendConnected ? "FastAPI Operational" : "Backend Offline"}
               </small>
             </div>
@@ -165,7 +175,7 @@ export default function Sidebar({
                     flexShrink: 0,
                   }}
                 >
-                  {isAdmin ? <ShieldAlert size={16} /> : <User size={16} />}
+                  {isAdmin ? <Shield size={16} /> : <User size={16} />}
                 </div>
                 <div style={{ overflow: "hidden" }}>
                   <div
