@@ -33,7 +33,7 @@ AGENTS = [
 ]
 
 MODELS = [
-    {"model": "gemini-3.6-flash", "provider": "Google Gemini"},
+    {"model": "gemini-3.5-flash-lite", "provider": "Google Gemini"},
     {"model": "gemini-1.5-pro", "provider": "Google Gemini"},
     {"model": "claude-3-5-sonnet", "provider": "Anthropic"},
     {"model": "gpt-4o", "provider": "OpenAI"},

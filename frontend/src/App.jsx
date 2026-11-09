@@ -66,7 +66,7 @@ function MainDashboard() {
 
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState([]);
-  const [backendConnected, setBackendConnected] = useState(true);
+  const [backendConnected, setBackendConnected] = useState(false);
 
   // Listen for hash changes
   useEffect(() => {
@@ -115,8 +115,12 @@ function MainDashboard() {
         updated.workflow = workflowRes.value;
       else failed.push("Workflow graph");
 
-      if (healthRes.status === "fulfilled") updated.health = healthRes.value;
-      else failed.push("System health");
+      const isHealthOk = healthRes.status === "fulfilled" && healthRes.value?.status === "healthy";
+      if (isHealthOk) {
+        updated.health = healthRes.value;
+      } else {
+        failed.push("System health");
+      }
 
       // Attempt default impact analysis
       try {
@@ -133,7 +137,7 @@ function MainDashboard() {
 
       setDashboardData((prev) => ({ ...prev, ...updated }));
       setErrors(failed);
-      setBackendConnected(failed.length < 4);
+      setBackendConnected(isHealthOk);
     } catch (globalErr) {
       console.error("Dashboard fetch error:", globalErr);
       setBackendConnected(false);

@@ -309,13 +309,13 @@ function ProvenanceEdge({
 
   return (
     <>
-      <BaseEdge
+        <BaseEdge
         id={id}
         path={edgePath}
         style={{
           ...style,
           stroke: isHighlighted ? "#38bdf8" : edgeColor,
-          strokeWidth: isHighlighted ? 2.75 : 1.75,
+          strokeWidth: isHighlighted ? 3 : 2.2,
           transition: "stroke 0.2s ease, stroke-width 0.2s ease",
         }}
         markerEnd={markerEnd}
@@ -328,11 +328,11 @@ function ProvenanceEdge({
               transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
               pointerEvents: "all",
               cursor: "pointer",
-              fontSize: "10px",
-              fontWeight: 700,
+              fontSize: "10.5px",
+              fontWeight: 750,
               letterSpacing: "0.5px",
               textTransform: "uppercase",
-              padding: "3px 8px",
+              padding: "4px 9px",
               borderRadius: "6px",
               background: theme === "dark" ? "#0f172a" : "#ffffff",
               border: `1.5px solid ${isHighlighted ? "#38bdf8" : edgeColor}`,
@@ -342,8 +342,8 @@ function ProvenanceEdge({
                 ? "#edf3fb"
                 : "#0f172a",
               boxShadow: isHighlighted
-                ? "0 0 12px rgba(56, 189, 248, 0.45)"
-                : "0 2px 6px rgba(0,0,0,0.15)",
+                ? "0 0 14px rgba(56, 189, 248, 0.5)"
+                : "0 2px 8px rgba(0,0,0,0.18)",
               transition: "all 0.2s ease",
               userSelect: "none",
               zIndex: 10,
@@ -549,8 +549,8 @@ export default function WorkflowGraph({
         markerEnd: {
           type: MarkerType.ArrowClosed,
           color: isHighlighted ? "#38bdf8" : relConfig.color,
-          width: 18,
-          height: 18,
+          width: 22,
+          height: 22,
         },
         data: {
           color: relConfig.color,
