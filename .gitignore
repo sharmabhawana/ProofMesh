@@ -1,27 +1,21 @@
-# Environment variables and secrets
+
+# Environment files
 .env
 .env.*
 !.env.example
 
+# Database files and backups
+*.db
+*.sqlite
+*.sqlite3
+*.db.backup*
+auth/*backup*
+
 # Python
-.venv/
-venv/
 __pycache__/
 *.pyc
+.venv/
 
 # Node
 node_modules/
 frontend/dist/
-dist/
-
-# Databases
-*.db
-*.sqlite
-*.sqlite3
-
-# Uploaded data and logs
-uploads_storage/
-*.log
-
-# Sensitive local configuration
-secrets/
