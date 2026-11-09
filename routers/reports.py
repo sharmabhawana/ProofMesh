@@ -64,7 +64,7 @@ def download_report(
 
         # Path traversal guard: verify file resides within allowed directories
         is_safe = any(
-            str(file_path).startswith(str(root)) for root in ALLOWED_STORAGE_ROOTS
+            file_path.is_relative_to(root) for root in ALLOWED_STORAGE_ROOTS
         )
         if not is_safe or not file_path.exists() or not file_path.is_file():
             raise HTTPException(

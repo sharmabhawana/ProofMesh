@@ -51,6 +51,13 @@ def execute_workflow(
     7. Creates an analytical report record
     8. Updates PostgreSQL with execution status and duration
     """
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Live Gemini execution is unavailable: GEMINI_API_KEY is not configured.",
+        )
+
     workflow_id = f"wf_{uuid.uuid4().hex[:12]}"
     user_id = current_user["id"]
     start_time = time.time()
@@ -77,7 +84,6 @@ def execute_workflow(
 
     try:
         # 2. Configure model & tool execution
-        api_key = os.getenv("GEMINI_API_KEY")
         model_name = request.model_name or os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
 
         # Record Model Event
@@ -147,11 +153,8 @@ def execute_workflow(
             response = llm.invoke([HumanMessage(content=prompt)])
             output_text = extract_text(response)
         else:
-            # Fallback if API key not supplied in environment
-            output_text = (
-                f"[ProofMesh Autonomous Agent Result]: Processed request '{request.task_description}'. "
-                f"Evidence derived from controlled knowledge base: '{evidence_text}'."
-            )
+            # Defensive guard: the preflight check above must prevent simulated success.
+            raise RuntimeError("Gemini API key became unavailable during workflow execution.")
 
         # Record LLM Response Event
         logger._record_event(

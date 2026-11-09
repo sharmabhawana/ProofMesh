@@ -32,7 +32,8 @@ UPLOAD_STORAGE_DIR.mkdir(parents=True, exist_ok=True)
 REPORTS_DIR = Path("generated_reports")
 REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 
-MAX_FILE_SIZE_BYTES = 25 * 1024 * 1024  # 25 MB limit
+MAX_FILE_SIZE_BYTES = 25 * 1024 * 1024  # 25 MB upload limit
+MAX_ZIP_ENTRIES = 1000
 ALLOWED_EXTENSIONS = {".json", ".jsonl", ".csv", ".txt", ".zip"}
 
 
@@ -87,13 +88,29 @@ def parse_events_from_content(content_bytes: bytes, filename: str) -> List[dict]
 
     elif ext == ".zip":
         with zipfile.ZipFile(io.BytesIO(content_bytes), "r") as zf:
-            for zip_info in zf.infolist():
-                # Protect against ZIP path traversal attacks
-                if zip_info.is_dir() or ".." in zip_info.filename or zip_info.filename.startswith("/"):
+            entries = zf.infolist()
+            if len(entries) > MAX_ZIP_ENTRIES:
+                raise ValueError("ZIP archive contains too many entries.")
+            total_uncompressed = 0
+            for zip_info in entries:
+                # Reject unsafe names and bound decompression to mitigate ZIP bombs.
+                member_path = Path(zip_info.filename)
+                if (
+                    zip_info.is_dir()
+                    or ".." in member_path.parts
+                    or member_path.is_absolute()
+                    or member_path.drive
+                ):
                     continue
-                inner_ext = Path(zip_info.filename).suffix.lower()
+                inner_ext = member_path.suffix.lower()
                 if inner_ext in {".json", ".jsonl", ".csv", ".txt"}:
-                    inner_bytes = zf.read(zip_info.filename)
+                    total_uncompressed += zip_info.file_size
+                    if total_uncompressed > MAX_FILE_SIZE_BYTES:
+                        raise ValueError("ZIP archive expands beyond the 25 MB processing limit.")
+                    with zf.open(zip_info, "r") as member:
+                        inner_bytes = member.read(MAX_FILE_SIZE_BYTES + 1)
+                    if len(inner_bytes) > MAX_FILE_SIZE_BYTES:
+                        raise ValueError("ZIP member exceeds the 25 MB processing limit.")
                     sub_events = parse_events_from_content(inner_bytes, zip_info.filename)
                     events.extend(sub_events)
 
@@ -147,11 +164,31 @@ async def upload_agent_data(
             detail=f"Unsupported file format '{ext}'. Allowed formats: JSON, JSONL, CSV, TXT, ZIP.",
         )
 
-    content = await file.read()
-    if len(content) > MAX_FILE_SIZE_BYTES:
+    # Read in bounded chunks so oversized requests cannot be loaded fully into memory.
+    chunks = []
+    total_bytes = 0
+    while True:
+        chunk = await file.read(1024 * 1024)
+        if not chunk:
+            break
+        total_bytes += len(chunk)
+        if total_bytes > MAX_FILE_SIZE_BYTES:
+            raise HTTPException(
+                status_code=413,
+                detail=f"File exceeds maximum allowed size of {MAX_FILE_SIZE_BYTES // (1024*1024)} MB.",
+            )
+        chunks.append(chunk)
+    content = b"".join(chunks)
+
+    # Parse before persisting any user-controlled file.
+    try:
+        raw_events = parse_events_from_content(content, filename)
+        if not isinstance(raw_events, list) or any(not isinstance(ev, dict) for ev in raw_events):
+            raise ValueError("The uploaded data must contain JSON objects representing events.")
+    except Exception as parse_err:
         raise HTTPException(
             status_code=400,
-            detail=f"File exceeds maximum allowed size of {MAX_FILE_SIZE_BYTES // (1024*1024)} MB.",
+            detail=f"Failed to parse uploaded file: {str(parse_err)}",
         )
 
     upload_id = f"upl_{uuid.uuid4().hex[:12]}"
@@ -159,22 +196,10 @@ async def upload_agent_data(
     safe_filename = f"{upload_id}_{filename}"
     storage_path = UPLOAD_STORAGE_DIR / safe_filename
 
-    # Save original uploaded file safely
+    # Calculate SHA-256 snapshot digest and persist only after validation.
+    snapshot_hash = calculate_sha256(content)
     with open(storage_path, "wb") as f:
         f.write(content)
-
-    # Calculate SHA-256 snapshot digest
-    snapshot_hash = calculate_sha256(content)
-
-    # Parse and normalize events
-    raw_events = []
-    try:
-        raw_events = parse_events_from_content(content, filename)
-    except Exception as parse_err:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Failed to parse uploaded file: {str(parse_err)}",
-        )
 
     normalized_events = [normalize_event(ev, idx, upload_id) for idx, ev in enumerate(raw_events)]
 
