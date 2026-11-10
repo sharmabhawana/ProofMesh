@@ -14,6 +14,7 @@ import { useAuth } from "../context/AuthContext";
 export default function Login({
   onSwitchToRegister,
   onLoginSuccess,
+  onForgotPassword,
   defaultMode = "user", // "user" | "admin"
 }) {
   const { login, logout } = useAuth();
@@ -327,6 +328,27 @@ export default function Login({
               </button>
             </div>
           </div>
+
+          {/* Forgot password — only shown in user mode */}
+          {!isAdminMode && onForgotPassword && (
+            <div style={{ textAlign: "right", marginTop: "-6px" }}>
+              <button
+                type="button"
+                onClick={onForgotPassword}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "var(--accent)",
+                  fontSize: "12px",
+                  cursor: "pointer",
+                  padding: 0,
+                  opacity: 0.85,
+                }}
+              >
+                Forgot Password?
+              </button>
+            </div>
+          )}
 
           <button
             type="submit"

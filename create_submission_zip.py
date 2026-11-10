@@ -1,7 +1,7 @@
 """
 ProofMesh — Submission Package Builder
 Creates a clean, production-ready, verifiable submission archive
-strictly excluding credentials, virtualenvs, node_modules, and cache files.
+strictly excluding credentials, databases, backups, virtualenvs, node_modules, and cache files.
 """
 
 import os
@@ -34,6 +34,8 @@ EXCLUDE_EXTENSIONS = {
     ".pyd",
     ".db",
     ".log",
+    ".sqlite",
+    ".bak",
 }
 
 
@@ -51,12 +53,15 @@ def build_submission_zip():
                 file_path = Path(root) / file
                 rel_path = file_path.relative_to(ROOT_DIR)
 
-                # Security check: never include .env or credential databases
-                if file in EXCLUDE_FILES or file.endswith(".env"):
+                # Security check: never include .env, credential databases, or backups
+                file_lower = file.lower()
+                if file_lower == ".env" or (file_lower.startswith(".env.") and file_lower != ".env.example"):
                     continue
-                if file_path.suffix in EXCLUDE_EXTENSIONS:
+                if file in EXCLUDE_FILES:
                     continue
-                if "backup" in file.lower() and file.endswith(".db"):
+                if file_path.suffix.lower() in EXCLUDE_EXTENSIONS:
+                    continue
+                if any(k in file_lower for k in [".db", ".sqlite", ".bak", "backup"]):
                     continue
 
                 zipf.write(file_path, arcname=str(rel_path.as_posix()))

@@ -1,0 +1,911 @@
+{
+  "dataset_id": "ds_synth_af49356ff0",
+  "dataset_name": "Synthetic Dataset (multi_agent_execution, 30 events)",
+  "description": "Controlled synthetic provenance trace generated under profile 'multi_agent_execution'.",
+  "source": "ProofMesh Controlled Synthetic Dataset Generator",
+  "source_type": "synthetic",
+  "is_synthetic": true,
+  "profile": "multi_agent_execution",
+  "random_seed": 42,
+  "schema_version": "1.0.0",
+  "created_at": "2026-11-05T10:26:40.033015+00:00",
+  "total_events": 30,
+  "events": [
+    {
+      "event_id": "b5925f3e-2a60-4a88-913b-a715b2b7f7dc",
+      "workflow_id": "wf_synth_0001",
+      "event_type": "MODEL_DETAILS",
+      "timestamp": "2026-11-05T08:31:42.033032+00:00",
+      "agent": "agent_alpha_planner",
+      "model": "claude-3-5-sonnet",
+      "provider": "Anthropic",
+      "tool": null,
+      "input_data": null,
+      "output_data": null,
+      "metadata": {
+        "workflow_id": "wf_synth_0001",
+        "agent_id": "agent_alpha_planner",
+        "agent_name": "Alpha-Planner",
+        "is_synthetic": true,
+        "model": "claude-3-5-sonnet",
+        "provider": "Anthropic"
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "b1d27cb0-83e6-4a48-aede-78ca7fecaa27",
+      "workflow_id": "wf_synth_0001",
+      "event_type": "LLM_CALL_START",
+      "timestamp": "2026-11-05T08:31:44.033032+00:00",
+      "agent": "agent_alpha_planner",
+      "model": "claude-3-5-sonnet",
+      "provider": "Anthropic",
+      "tool": null,
+      "input_data": "Assess provenance integrity requirements for workflow wf_synth_0001.",
+      "output_data": null,
+      "metadata": {
+        "workflow_id": "wf_synth_0001",
+        "agent_id": "agent_alpha_planner",
+        "agent_name": "Alpha-Planner",
+        "is_synthetic": true
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "0d49c357-d5f0-4c78-838a-b2fad8badfd4",
+      "workflow_id": "wf_synth_0001",
+      "event_type": "TOOL_START",
+      "timestamp": "2026-11-05T08:31:45.033032+00:00",
+      "agent": "agent_alpha_planner",
+      "model": "claude-3-5-sonnet",
+      "provider": "Anthropic",
+      "tool": "web_search",
+      "input_data": {
+        "query": "provenance verification"
+      },
+      "output_data": null,
+      "metadata": {
+        "workflow_id": "wf_synth_0001",
+        "agent_id": "agent_alpha_planner",
+        "agent_name": "Alpha-Planner",
+        "is_synthetic": true
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "1d54c924-ce90-433c-853d-5aa01cb2525f",
+      "workflow_id": "wf_synth_0001",
+      "event_type": "TOOL_END",
+      "timestamp": "2026-11-05T08:31:46.033032+00:00",
+      "agent": "agent_alpha_planner",
+      "model": "claude-3-5-sonnet",
+      "provider": "Anthropic",
+      "tool": "web_search",
+      "input_data": null,
+      "output_data": "Data records retrieved successfully from ProofMesh Core KB.",
+      "metadata": {
+        "workflow_id": "wf_synth_0001",
+        "agent_id": "agent_alpha_planner",
+        "agent_name": "Alpha-Planner",
+        "is_synthetic": true
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "e6f00986-babb-427c-b37a-a9833b730775",
+      "workflow_id": "wf_synth_0001",
+      "event_type": "EVIDENCE_CAPTURED",
+      "timestamp": "2026-11-05T08:31:50.033032+00:00",
+      "agent": "agent_alpha_planner",
+      "model": "claude-3-5-sonnet",
+      "provider": "Anthropic",
+      "tool": "web_search",
+      "input_data": {
+        "source_id": "controlled_proofmesh_knowledge_base"
+      },
+      "output_data": "Data records retrieved successfully from ProofMesh Core KB.",
+      "metadata": {
+        "workflow_id": "wf_synth_0001",
+        "agent_id": "agent_alpha_planner",
+        "agent_name": "Alpha-Planner",
+        "is_synthetic": true,
+        "source_id": "controlled_proofmesh_knowledge_base",
+        "source_reliability": 1.0
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "49ef020d-b35a-4d70-86ba-a634d363f42a",
+      "workflow_id": "wf_synth_0001",
+      "event_type": "LLM_CALL_END",
+      "timestamp": "2026-11-05T08:31:51.033032+00:00",
+      "agent": "agent_beta_researcher",
+      "model": "claude-3-5-sonnet",
+      "provider": "Anthropic",
+      "tool": null,
+      "input_data": "Assess provenance integrity requirements for workflow wf_synth_0001.",
+      "output_data": "Synthesized answer using ProofMesh Core KB evidence under policy constraints.",
+      "metadata": {
+        "workflow_id": "wf_synth_0001",
+        "agent_id": "agent_beta_researcher",
+        "agent_name": "Beta-Researcher",
+        "is_synthetic": true
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "a35a0f0b-5357-4ee6-ab43-4b39ce70ed68",
+      "workflow_id": "wf_synth_0001",
+      "event_type": "INTERMEDIATE_DECISION",
+      "timestamp": "2026-11-05T08:31:52.033032+00:00",
+      "agent": "agent_beta_researcher",
+      "model": "claude-3-5-sonnet",
+      "provider": "Anthropic",
+      "tool": null,
+      "input_data": {
+        "evidence": "Data records retrieved successfully from ProofMesh Core KB."
+      },
+      "output_data": "Intermediate trust assertion: Evidence verified against schema.",
+      "metadata": {
+        "workflow_id": "wf_synth_0001",
+        "agent_id": "agent_beta_researcher",
+        "agent_name": "Beta-Researcher",
+        "is_synthetic": true
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "a137ee31-08ac-4c0a-9b81-f8f2872ae344",
+      "workflow_id": "wf_synth_0001",
+      "event_type": "DECISION",
+      "timestamp": "2026-11-05T08:31:53.033032+00:00",
+      "agent": "agent_beta_researcher",
+      "model": "claude-3-5-sonnet",
+      "provider": "Anthropic",
+      "tool": null,
+      "input_data": {
+        "task": "Assess provenance integrity requirements for workflow wf_synth_0001.",
+        "evidence": "Data records retrieved successfully from ProofMesh Core KB."
+      },
+      "output_data": "Final outcome verified and approved for synthetic workflow wf_synth_0001.",
+      "metadata": {
+        "workflow_id": "wf_synth_0001",
+        "agent_id": "agent_beta_researcher",
+        "agent_name": "Beta-Researcher",
+        "is_synthetic": true,
+        "decision_outcome": "APPROVED"
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "c82da310-e5ec-403b-89e5-01a1e300d257",
+      "workflow_id": "wf_synth_0002",
+      "event_type": "MODEL_DETAILS",
+      "timestamp": "2026-11-05T08:36:42.033032+00:00",
+      "agent": "agent_beta_researcher",
+      "model": "gemini-3.6-flash",
+      "provider": "Google Gemini",
+      "tool": null,
+      "input_data": null,
+      "output_data": null,
+      "metadata": {
+        "workflow_id": "wf_synth_0002",
+        "agent_id": "agent_beta_researcher",
+        "agent_name": "Beta-Researcher",
+        "is_synthetic": true,
+        "model": "gemini-3.6-flash",
+        "provider": "Google Gemini"
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "8d027aa0-455c-432c-b522-008d234cb64c",
+      "workflow_id": "wf_synth_0002",
+      "event_type": "LLM_CALL_START",
+      "timestamp": "2026-11-05T08:36:46.033032+00:00",
+      "agent": "agent_beta_researcher",
+      "model": "gemini-3.6-flash",
+      "provider": "Google Gemini",
+      "tool": null,
+      "input_data": "Assess provenance integrity requirements for workflow wf_synth_0002.",
+      "output_data": null,
+      "metadata": {
+        "workflow_id": "wf_synth_0002",
+        "agent_id": "agent_beta_researcher",
+        "agent_name": "Beta-Researcher",
+        "is_synthetic": true
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "35b17aec-1af1-4cd9-a0e7-7d79445029d7",
+      "workflow_id": "wf_synth_0002",
+      "event_type": "TOOL_START",
+      "timestamp": "2026-11-05T08:36:48.033032+00:00",
+      "agent": "agent_beta_researcher",
+      "model": "gemini-3.6-flash",
+      "provider": "Google Gemini",
+      "tool": "vector_store_retriever",
+      "input_data": {
+        "query": "provenance verification"
+      },
+      "output_data": null,
+      "metadata": {
+        "workflow_id": "wf_synth_0002",
+        "agent_id": "agent_beta_researcher",
+        "agent_name": "Beta-Researcher",
+        "is_synthetic": true
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "f9281d1b-0d7d-4a08-9a1b-e98e2d722036",
+      "workflow_id": "wf_synth_0002",
+      "event_type": "TOOL_END",
+      "timestamp": "2026-11-05T08:36:52.033032+00:00",
+      "agent": "agent_beta_researcher",
+      "model": "gemini-3.6-flash",
+      "provider": "Google Gemini",
+      "tool": "vector_store_retriever",
+      "input_data": null,
+      "output_data": "Data records retrieved successfully from ProofMesh Core KB.",
+      "metadata": {
+        "workflow_id": "wf_synth_0002",
+        "agent_id": "agent_beta_researcher",
+        "agent_name": "Beta-Researcher",
+        "is_synthetic": true
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "c8667d02-742e-478c-93df-453b05498010",
+      "workflow_id": "wf_synth_0002",
+      "event_type": "EVIDENCE_CAPTURED",
+      "timestamp": "2026-11-05T08:36:55.033032+00:00",
+      "agent": "agent_beta_researcher",
+      "model": "gemini-3.6-flash",
+      "provider": "Google Gemini",
+      "tool": "vector_store_retriever",
+      "input_data": {
+        "source_id": "controlled_proofmesh_knowledge_base"
+      },
+      "output_data": "Data records retrieved successfully from ProofMesh Core KB.",
+      "metadata": {
+        "workflow_id": "wf_synth_0002",
+        "agent_id": "agent_beta_researcher",
+        "agent_name": "Beta-Researcher",
+        "is_synthetic": true,
+        "source_id": "controlled_proofmesh_knowledge_base",
+        "source_reliability": 1.0
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "ea34106a-2ce0-4c0a-a2d7-8930e8d4939e",
+      "workflow_id": "wf_synth_0002",
+      "event_type": "LLM_CALL_END",
+      "timestamp": "2026-11-05T08:36:56.033032+00:00",
+      "agent": "agent_alpha_planner",
+      "model": "gemini-3.6-flash",
+      "provider": "Google Gemini",
+      "tool": null,
+      "input_data": "Assess provenance integrity requirements for workflow wf_synth_0002.",
+      "output_data": "Synthesized answer using ProofMesh Core KB evidence under policy constraints.",
+      "metadata": {
+        "workflow_id": "wf_synth_0002",
+        "agent_id": "agent_alpha_planner",
+        "agent_name": "Alpha-Planner",
+        "is_synthetic": true
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "90959a9a-11c9-4f2b-9a15-66b9b3e006c8",
+      "workflow_id": "wf_synth_0002",
+      "event_type": "INTERMEDIATE_DECISION",
+      "timestamp": "2026-11-05T08:36:58.033032+00:00",
+      "agent": "agent_alpha_planner",
+      "model": "gemini-3.6-flash",
+      "provider": "Google Gemini",
+      "tool": null,
+      "input_data": {
+        "evidence": "Data records retrieved successfully from ProofMesh Core KB."
+      },
+      "output_data": "Intermediate trust assertion: Evidence verified against schema.",
+      "metadata": {
+        "workflow_id": "wf_synth_0002",
+        "agent_id": "agent_alpha_planner",
+        "agent_name": "Alpha-Planner",
+        "is_synthetic": true
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "a8313b33-71c3-4d71-8ca3-ede2ad12dd81",
+      "workflow_id": "wf_synth_0002",
+      "event_type": "DECISION",
+      "timestamp": "2026-11-05T08:37:02.033032+00:00",
+      "agent": "agent_alpha_planner",
+      "model": "gemini-3.6-flash",
+      "provider": "Google Gemini",
+      "tool": null,
+      "input_data": {
+        "task": "Assess provenance integrity requirements for workflow wf_synth_0002.",
+        "evidence": "Data records retrieved successfully from ProofMesh Core KB."
+      },
+      "output_data": "Final outcome verified and approved for synthetic workflow wf_synth_0002.",
+      "metadata": {
+        "workflow_id": "wf_synth_0002",
+        "agent_id": "agent_alpha_planner",
+        "agent_name": "Alpha-Planner",
+        "is_synthetic": true,
+        "decision_outcome": "APPROVED"
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "0907a9a3-e5af-4dc0-882f-3d5978e21667",
+      "workflow_id": "wf_synth_0003",
+      "event_type": "MODEL_DETAILS",
+      "timestamp": "2026-11-05T08:41:43.033032+00:00",
+      "agent": "agent_gamma_auditor",
+      "model": "gemini-1.5-pro",
+      "provider": "Google Gemini",
+      "tool": null,
+      "input_data": null,
+      "output_data": null,
+      "metadata": {
+        "workflow_id": "wf_synth_0003",
+        "agent_id": "agent_gamma_auditor",
+        "agent_name": "Gamma-Auditor",
+        "is_synthetic": true,
+        "model": "gemini-1.5-pro",
+        "provider": "Google Gemini"
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "ff3f0cf1-481d-4114-92b7-bdf8f4fb92e4",
+      "workflow_id": "wf_synth_0003",
+      "event_type": "LLM_CALL_START",
+      "timestamp": "2026-11-05T08:41:44.033032+00:00",
+      "agent": "agent_gamma_auditor",
+      "model": "gemini-1.5-pro",
+      "provider": "Google Gemini",
+      "tool": null,
+      "input_data": "Assess provenance integrity requirements for workflow wf_synth_0003.",
+      "output_data": null,
+      "metadata": {
+        "workflow_id": "wf_synth_0003",
+        "agent_id": "agent_gamma_auditor",
+        "agent_name": "Gamma-Auditor",
+        "is_synthetic": true
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "f3addef6-f8b6-4ee4-b013-fd492bdc34c1",
+      "workflow_id": "wf_synth_0003",
+      "event_type": "TOOL_START",
+      "timestamp": "2026-11-05T08:41:45.033032+00:00",
+      "agent": "agent_gamma_auditor",
+      "model": "gemini-1.5-pro",
+      "provider": "Google Gemini",
+      "tool": "web_search",
+      "input_data": {
+        "query": "provenance verification"
+      },
+      "output_data": null,
+      "metadata": {
+        "workflow_id": "wf_synth_0003",
+        "agent_id": "agent_gamma_auditor",
+        "agent_name": "Gamma-Auditor",
+        "is_synthetic": true
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "4c05880b-fd4d-447c-b4bd-652751fded59",
+      "workflow_id": "wf_synth_0003",
+      "event_type": "TOOL_END",
+      "timestamp": "2026-11-05T08:41:49.033032+00:00",
+      "agent": "agent_gamma_auditor",
+      "model": "gemini-1.5-pro",
+      "provider": "Google Gemini",
+      "tool": "web_search",
+      "input_data": null,
+      "output_data": "Data records retrieved successfully from ProofMesh Core KB.",
+      "metadata": {
+        "workflow_id": "wf_synth_0003",
+        "agent_id": "agent_gamma_auditor",
+        "agent_name": "Gamma-Auditor",
+        "is_synthetic": true
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "66efe28e-6081-4fd8-8322-78f10918443a",
+      "workflow_id": "wf_synth_0003",
+      "event_type": "EVIDENCE_CAPTURED",
+      "timestamp": "2026-11-05T08:41:50.033032+00:00",
+      "agent": "agent_gamma_auditor",
+      "model": "gemini-1.5-pro",
+      "provider": "Google Gemini",
+      "tool": "web_search",
+      "input_data": {
+        "source_id": "controlled_proofmesh_knowledge_base"
+      },
+      "output_data": "Data records retrieved successfully from ProofMesh Core KB.",
+      "metadata": {
+        "workflow_id": "wf_synth_0003",
+        "agent_id": "agent_gamma_auditor",
+        "agent_name": "Gamma-Auditor",
+        "is_synthetic": true,
+        "source_id": "controlled_proofmesh_knowledge_base",
+        "source_reliability": 1.0
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "2dad6876-0fb6-4ad1-ab9a-e2b47742ebc1",
+      "workflow_id": "wf_synth_0003",
+      "event_type": "LLM_CALL_END",
+      "timestamp": "2026-11-05T08:41:53.033032+00:00",
+      "agent": "agent_beta_researcher",
+      "model": "gemini-1.5-pro",
+      "provider": "Google Gemini",
+      "tool": null,
+      "input_data": "Assess provenance integrity requirements for workflow wf_synth_0003.",
+      "output_data": "Synthesized answer using ProofMesh Core KB evidence under policy constraints.",
+      "metadata": {
+        "workflow_id": "wf_synth_0003",
+        "agent_id": "agent_beta_researcher",
+        "agent_name": "Beta-Researcher",
+        "is_synthetic": true
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "32339d42-f951-48de-b225-2634906bf7a8",
+      "workflow_id": "wf_synth_0003",
+      "event_type": "INTERMEDIATE_DECISION",
+      "timestamp": "2026-11-05T08:41:56.033032+00:00",
+      "agent": "agent_beta_researcher",
+      "model": "gemini-1.5-pro",
+      "provider": "Google Gemini",
+      "tool": null,
+      "input_data": {
+        "evidence": "Data records retrieved successfully from ProofMesh Core KB."
+      },
+      "output_data": "Intermediate trust assertion: Evidence verified against schema.",
+      "metadata": {
+        "workflow_id": "wf_synth_0003",
+        "agent_id": "agent_beta_researcher",
+        "agent_name": "Beta-Researcher",
+        "is_synthetic": true
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "4ca8b751-8471-493b-9cdb-eadfad5dc603",
+      "workflow_id": "wf_synth_0003",
+      "event_type": "DECISION",
+      "timestamp": "2026-11-05T08:41:59.033032+00:00",
+      "agent": "agent_beta_researcher",
+      "model": "gemini-1.5-pro",
+      "provider": "Google Gemini",
+      "tool": null,
+      "input_data": {
+        "task": "Assess provenance integrity requirements for workflow wf_synth_0003.",
+        "evidence": "Data records retrieved successfully from ProofMesh Core KB."
+      },
+      "output_data": "Final outcome verified and approved for synthetic workflow wf_synth_0003.",
+      "metadata": {
+        "workflow_id": "wf_synth_0003",
+        "agent_id": "agent_beta_researcher",
+        "agent_name": "Beta-Researcher",
+        "is_synthetic": true,
+        "decision_outcome": "APPROVED"
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "68db726d-d2ba-4f26-9991-9de39417634f",
+      "workflow_id": "wf_synth_0004",
+      "event_type": "MODEL_DETAILS",
+      "timestamp": "2026-11-05T08:46:41.033032+00:00",
+      "agent": "agent_alpha_planner",
+      "model": "gpt-4o",
+      "provider": "OpenAI",
+      "tool": null,
+      "input_data": null,
+      "output_data": null,
+      "metadata": {
+        "workflow_id": "wf_synth_0004",
+        "agent_id": "agent_alpha_planner",
+        "agent_name": "Alpha-Planner",
+        "is_synthetic": true,
+        "model": "gpt-4o",
+        "provider": "OpenAI"
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "a34ea59a-eef2-48e5-bb7e-a9bc92651a52",
+      "workflow_id": "wf_synth_0004",
+      "event_type": "LLM_CALL_START",
+      "timestamp": "2026-11-05T08:46:45.033032+00:00",
+      "agent": "agent_alpha_planner",
+      "model": "gpt-4o",
+      "provider": "OpenAI",
+      "tool": null,
+      "input_data": "Assess provenance integrity requirements for workflow wf_synth_0004.",
+      "output_data": null,
+      "metadata": {
+        "workflow_id": "wf_synth_0004",
+        "agent_id": "agent_alpha_planner",
+        "agent_name": "Alpha-Planner",
+        "is_synthetic": true
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "4bf86688-b466-45cd-8ebf-05b729d6e831",
+      "workflow_id": "wf_synth_0004",
+      "event_type": "TOOL_START",
+      "timestamp": "2026-11-05T08:46:46.033032+00:00",
+      "agent": "agent_alpha_planner",
+      "model": "gpt-4o",
+      "provider": "OpenAI",
+      "tool": "vector_store_retriever",
+      "input_data": {
+        "query": "provenance verification"
+      },
+      "output_data": null,
+      "metadata": {
+        "workflow_id": "wf_synth_0004",
+        "agent_id": "agent_alpha_planner",
+        "agent_name": "Alpha-Planner",
+        "is_synthetic": true
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "fff8ceb9-40a6-4a65-9087-f839fd7c4115",
+      "workflow_id": "wf_synth_0004",
+      "event_type": "TOOL_END",
+      "timestamp": "2026-11-05T08:46:49.033032+00:00",
+      "agent": "agent_alpha_planner",
+      "model": "gpt-4o",
+      "provider": "OpenAI",
+      "tool": "vector_store_retriever",
+      "input_data": null,
+      "output_data": "Data records retrieved successfully from ProofMesh Core KB.",
+      "metadata": {
+        "workflow_id": "wf_synth_0004",
+        "agent_id": "agent_alpha_planner",
+        "agent_name": "Alpha-Planner",
+        "is_synthetic": true
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "fdd8651a-d2af-4740-be90-050f2bfb6aaa",
+      "workflow_id": "wf_synth_0004",
+      "event_type": "EVIDENCE_CAPTURED",
+      "timestamp": "2026-11-05T08:46:52.033032+00:00",
+      "agent": "agent_alpha_planner",
+      "model": "gpt-4o",
+      "provider": "OpenAI",
+      "tool": "vector_store_retriever",
+      "input_data": {
+        "source_id": "controlled_proofmesh_knowledge_base"
+      },
+      "output_data": "Data records retrieved successfully from ProofMesh Core KB.",
+      "metadata": {
+        "workflow_id": "wf_synth_0004",
+        "agent_id": "agent_alpha_planner",
+        "agent_name": "Alpha-Planner",
+        "is_synthetic": true,
+        "source_id": "controlled_proofmesh_knowledge_base",
+        "source_reliability": 1.0
+      },
+      "is_synthetic": true
+    },
+    {
+      "event_id": "9364ab58-8b6d-49bd-abe2-1dae75423446",
+      "workflow_id": "wf_synth_0004",
+      "event_type": "LLM_CALL_END",
+      "timestamp": "2026-11-05T08:46:54.033032+00:00",
+      "agent": "agent_delta_executor",
+      "model": "gpt-4o",
+      "provider": "OpenAI",
+      "tool": null,
+      "input_data": "Assess provenance integrity requirements for workflow wf_synth_0004.",
+      "output_data": "Synthesized answer using ProofMesh Core KB evidence under policy constraints.",
+      "metadata": {
+        "workflow_id": "wf_synth_0004",
+        "agent_id": "agent_delta_executor",
+        "agent_name": "Delta-Executor",
+        "is_synthetic": true
+      },
+      "is_synthetic": true
+    }
+  ],
+  "hash_chain": [
+    {
+      "block_index": 0,
+      "event_id": "b5925f3e-2a60-4a88-913b-a715b2b7f7dc",
+      "event_type": "MODEL_DETAILS",
+      "timestamp": "2026-11-05T08:31:42.033032+00:00",
+      "payload_hash": "9efe0edcda4172ee7415461c6e50aafd99c4ddbad27060ac913dcf38fe507933",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "current_hash": "780b0d62f5889702dff9e79ac4d096872c7adc86047002157019a2472d98ebab"
+    },
+    {
+      "block_index": 1,
+      "event_id": "b1d27cb0-83e6-4a48-aede-78ca7fecaa27",
+      "event_type": "LLM_CALL_START",
+      "timestamp": "2026-11-05T08:31:44.033032+00:00",
+      "payload_hash": "12615348c9e71cf644e7f09466faca0ae89ba038887e10043fac708df4aa85e1",
+      "prev_hash": "780b0d62f5889702dff9e79ac4d096872c7adc86047002157019a2472d98ebab",
+      "current_hash": "96d14a40977651c0d315c6988cc245dfe18cb4fa424f7c6c88da42062159555b"
+    },
+    {
+      "block_index": 2,
+      "event_id": "0d49c357-d5f0-4c78-838a-b2fad8badfd4",
+      "event_type": "TOOL_START",
+      "timestamp": "2026-11-05T08:31:45.033032+00:00",
+      "payload_hash": "8bb4628b2866f3016f63da93023de99ac6201241ca8bf7e854dda2d558d1a874",
+      "prev_hash": "96d14a40977651c0d315c6988cc245dfe18cb4fa424f7c6c88da42062159555b",
+      "current_hash": "f5c90d9a5eee26408a03bdf77a8234a45af9f32df62621d9c95839223ad20221"
+    },
+    {
+      "block_index": 3,
+      "event_id": "1d54c924-ce90-433c-853d-5aa01cb2525f",
+      "event_type": "TOOL_END",
+      "timestamp": "2026-11-05T08:31:46.033032+00:00",
+      "payload_hash": "69d3bc5c09ec0f059753d65650a06118ba9e4c2c393040486e9f3ddf555eb18d",
+      "prev_hash": "f5c90d9a5eee26408a03bdf77a8234a45af9f32df62621d9c95839223ad20221",
+      "current_hash": "0177473fd90d96858360d094513fc8f86d6ce9be13b0202185d6129c864978d2"
+    },
+    {
+      "block_index": 4,
+      "event_id": "e6f00986-babb-427c-b37a-a9833b730775",
+      "event_type": "EVIDENCE_CAPTURED",
+      "timestamp": "2026-11-05T08:31:50.033032+00:00",
+      "payload_hash": "a974617287d9bfe1f8e467a53d465a487d81e5ec3e716e301dbbae88e3a006ca",
+      "prev_hash": "0177473fd90d96858360d094513fc8f86d6ce9be13b0202185d6129c864978d2",
+      "current_hash": "29fa09e37db69a74a9fc4f4f5e1d2211ab3deb8b7f0c93e90fe08dd1437fcb18"
+    },
+    {
+      "block_index": 5,
+      "event_id": "49ef020d-b35a-4d70-86ba-a634d363f42a",
+      "event_type": "LLM_CALL_END",
+      "timestamp": "2026-11-05T08:31:51.033032+00:00",
+      "payload_hash": "08ad5420831c3a79d300fdb614b340e70e1290214051cc0e4f3236683f51eb34",
+      "prev_hash": "29fa09e37db69a74a9fc4f4f5e1d2211ab3deb8b7f0c93e90fe08dd1437fcb18",
+      "current_hash": "b2d238030cb088954632617cb5237aa4b49d2bd0f9f46d01b334ac25b9e66c8a"
+    },
+    {
+      "block_index": 6,
+      "event_id": "a35a0f0b-5357-4ee6-ab43-4b39ce70ed68",
+      "event_type": "INTERMEDIATE_DECISION",
+      "timestamp": "2026-11-05T08:31:52.033032+00:00",
+      "payload_hash": "1cb1f45940c3591b1be87dc2e9748b1450dc1194aff921dab73453cb333ef411",
+      "prev_hash": "b2d238030cb088954632617cb5237aa4b49d2bd0f9f46d01b334ac25b9e66c8a",
+      "current_hash": "7fe500a903abef46e11452ab5592f718975806304065755bcdf425ae58bdd8d6"
+    },
+    {
+      "block_index": 7,
+      "event_id": "a137ee31-08ac-4c0a-9b81-f8f2872ae344",
+      "event_type": "DECISION",
+      "timestamp": "2026-11-05T08:31:53.033032+00:00",
+      "payload_hash": "8c58193443af6b4ffc4638bb38ca32a5b92e24fc9cb62f999446edc096b2307d",
+      "prev_hash": "7fe500a903abef46e11452ab5592f718975806304065755bcdf425ae58bdd8d6",
+      "current_hash": "3013528075a043cda9cb1ab8529465c6f50847c3c2bc3bb920e1a3590422e3c5"
+    },
+    {
+      "block_index": 8,
+      "event_id": "c82da310-e5ec-403b-89e5-01a1e300d257",
+      "event_type": "MODEL_DETAILS",
+      "timestamp": "2026-11-05T08:36:42.033032+00:00",
+      "payload_hash": "abe6102dc438686df1139c35f5235fe121181d392879d8aac50fc9b9558e718e",
+      "prev_hash": "3013528075a043cda9cb1ab8529465c6f50847c3c2bc3bb920e1a3590422e3c5",
+      "current_hash": "000d22bee29e22a5b8ce0e6b41910b6eb139afc17fd2a235b7cd8ec77bfd3fbc"
+    },
+    {
+      "block_index": 9,
+      "event_id": "8d027aa0-455c-432c-b522-008d234cb64c",
+      "event_type": "LLM_CALL_START",
+      "timestamp": "2026-11-05T08:36:46.033032+00:00",
+      "payload_hash": "a45543b6695db8c1a89237fe8a07f28acf6ec1b47712fa61770cba99d7c6ab2c",
+      "prev_hash": "000d22bee29e22a5b8ce0e6b41910b6eb139afc17fd2a235b7cd8ec77bfd3fbc",
+      "current_hash": "aecc33a9bd0cee46916afdade0e225844add2b9122527d4fc2558ade129b7dc5"
+    },
+    {
+      "block_index": 10,
+      "event_id": "35b17aec-1af1-4cd9-a0e7-7d79445029d7",
+      "event_type": "TOOL_START",
+      "timestamp": "2026-11-05T08:36:48.033032+00:00",
+      "payload_hash": "3a1d93e3e53f1b63dc75de3e295185f588aefd0ce7a962e749c6b47526c72a7b",
+      "prev_hash": "aecc33a9bd0cee46916afdade0e225844add2b9122527d4fc2558ade129b7dc5",
+      "current_hash": "9b4d85a94b82d94f803a3203073a2bc88c32acc49ee1bbffe52029290d263b2d"
+    },
+    {
+      "block_index": 11,
+      "event_id": "f9281d1b-0d7d-4a08-9a1b-e98e2d722036",
+      "event_type": "TOOL_END",
+      "timestamp": "2026-11-05T08:36:52.033032+00:00",
+      "payload_hash": "7ae12aae96cbfcc60567b1e9ef4ed1cb40c45b708f8eb3fe0259afb238dc1959",
+      "prev_hash": "9b4d85a94b82d94f803a3203073a2bc88c32acc49ee1bbffe52029290d263b2d",
+      "current_hash": "5ebf0f848719c7a0a6e5bed152eff8e30e51dd10c6e019e9edda7dc76e776419"
+    },
+    {
+      "block_index": 12,
+      "event_id": "c8667d02-742e-478c-93df-453b05498010",
+      "event_type": "EVIDENCE_CAPTURED",
+      "timestamp": "2026-11-05T08:36:55.033032+00:00",
+      "payload_hash": "7d4b5fb64c2d2b348563a2f61f6dcda6c34a0edb4a153d2680821666a963fdf3",
+      "prev_hash": "5ebf0f848719c7a0a6e5bed152eff8e30e51dd10c6e019e9edda7dc76e776419",
+      "current_hash": "b10f66c384aed0db24e2e348892013043171ebe348fc5f36bef41536e52ec5ae"
+    },
+    {
+      "block_index": 13,
+      "event_id": "ea34106a-2ce0-4c0a-a2d7-8930e8d4939e",
+      "event_type": "LLM_CALL_END",
+      "timestamp": "2026-11-05T08:36:56.033032+00:00",
+      "payload_hash": "0470db0cb067b02c30725e47cdd5a1313535ff9a5fc7d6d2b1b750e4ce771077",
+      "prev_hash": "b10f66c384aed0db24e2e348892013043171ebe348fc5f36bef41536e52ec5ae",
+      "current_hash": "d49e2cb526ba759e367e26b9b00f1354fdca55e374f47acdd13d944111e6649c"
+    },
+    {
+      "block_index": 14,
+      "event_id": "90959a9a-11c9-4f2b-9a15-66b9b3e006c8",
+      "event_type": "INTERMEDIATE_DECISION",
+      "timestamp": "2026-11-05T08:36:58.033032+00:00",
+      "payload_hash": "b17420bc640372d1a87e4a962f814034085b5b078cc3480281361a2c84cf0855",
+      "prev_hash": "d49e2cb526ba759e367e26b9b00f1354fdca55e374f47acdd13d944111e6649c",
+      "current_hash": "ed630f887458c7083c804f64fe4a885fc58356859b6d99a201de7484a06011b2"
+    },
+    {
+      "block_index": 15,
+      "event_id": "a8313b33-71c3-4d71-8ca3-ede2ad12dd81",
+      "event_type": "DECISION",
+      "timestamp": "2026-11-05T08:37:02.033032+00:00",
+      "payload_hash": "bba9df85cfe9a116dbea1ecbfc1982687b09f7839117c83b2c9a52d166fa447e",
+      "prev_hash": "ed630f887458c7083c804f64fe4a885fc58356859b6d99a201de7484a06011b2",
+      "current_hash": "f0c104fcfb056704758d0e5ca2330b6f0775d5bf3cd2d30dc6853f2448506cf6"
+    },
+    {
+      "block_index": 16,
+      "event_id": "0907a9a3-e5af-4dc0-882f-3d5978e21667",
+      "event_type": "MODEL_DETAILS",
+      "timestamp": "2026-11-05T08:41:43.033032+00:00",
+      "payload_hash": "d7f98b3677cda35c983a2f02e016c7a0272950f809dc0589793d5827bf5a0c93",
+      "prev_hash": "f0c104fcfb056704758d0e5ca2330b6f0775d5bf3cd2d30dc6853f2448506cf6",
+      "current_hash": "ab0af0e600b924397784f66614e7c973a6c541137b2ae967c01116187e3323e6"
+    },
+    {
+      "block_index": 17,
+      "event_id": "ff3f0cf1-481d-4114-92b7-bdf8f4fb92e4",
+      "event_type": "LLM_CALL_START",
+      "timestamp": "2026-11-05T08:41:44.033032+00:00",
+      "payload_hash": "7a0cec8f425e5d6daf8b1bf934a3e2048bc31cfe79926d05c11a73792f8085c5",
+      "prev_hash": "ab0af0e600b924397784f66614e7c973a6c541137b2ae967c01116187e3323e6",
+      "current_hash": "9e63c05c0dbab01d21ffb01105c21f49b9ab3bf9c1e895777b263511fd6567de"
+    },
+    {
+      "block_index": 18,
+      "event_id": "f3addef6-f8b6-4ee4-b013-fd492bdc34c1",
+      "event_type": "TOOL_START",
+      "timestamp": "2026-11-05T08:41:45.033032+00:00",
+      "payload_hash": "694b57f1ea9531859b4cd76e14a568b62820fd1f1e9eafd06a940334658bcb5a",
+      "prev_hash": "9e63c05c0dbab01d21ffb01105c21f49b9ab3bf9c1e895777b263511fd6567de",
+      "current_hash": "5184528d42975bd41cf887224339e201b254bb3b9ac4357edd89534e44a629ec"
+    },
+    {
+      "block_index": 19,
+      "event_id": "4c05880b-fd4d-447c-b4bd-652751fded59",
+      "event_type": "TOOL_END",
+      "timestamp": "2026-11-05T08:41:49.033032+00:00",
+      "payload_hash": "171a22b1f1259e0ef135a121803d78141a5ebc01bf9fdc2738cb2cd6872cac79",
+      "prev_hash": "5184528d42975bd41cf887224339e201b254bb3b9ac4357edd89534e44a629ec",
+      "current_hash": "758f1f939c83f3e31556d30e34686abef50c4aee89e5ce3720788175b47998df"
+    },
+    {
+      "block_index": 20,
+      "event_id": "66efe28e-6081-4fd8-8322-78f10918443a",
+      "event_type": "EVIDENCE_CAPTURED",
+      "timestamp": "2026-11-05T08:41:50.033032+00:00",
+      "payload_hash": "c7d5878dc53ef5bfdda943f2a9078965b84ce6e17500d99063f7412cd6f58d7f",
+      "prev_hash": "758f1f939c83f3e31556d30e34686abef50c4aee89e5ce3720788175b47998df",
+      "current_hash": "b35d31dd4143d07e211629637dd3bf5a9fa3846a56164e6a5da1faec8b3133c4"
+    },
+    {
+      "block_index": 21,
+      "event_id": "2dad6876-0fb6-4ad1-ab9a-e2b47742ebc1",
+      "event_type": "LLM_CALL_END",
+      "timestamp": "2026-11-05T08:41:53.033032+00:00",
+      "payload_hash": "f681503b9aa2137f04cea92362ab1c67c2d3930a7b288dea7d3f448fe5447f68",
+      "prev_hash": "b35d31dd4143d07e211629637dd3bf5a9fa3846a56164e6a5da1faec8b3133c4",
+      "current_hash": "fc8cd2bb246c1c6a672b41e6b04bab726559c5408e67da034f75786ae7ca5f6f"
+    },
+    {
+      "block_index": 22,
+      "event_id": "32339d42-f951-48de-b225-2634906bf7a8",
+      "event_type": "INTERMEDIATE_DECISION",
+      "timestamp": "2026-11-05T08:41:56.033032+00:00",
+      "payload_hash": "aa3720f1307b5d79f97cfc4123d73fdeab83bcde48ba537863ab69c8eff7393c",
+      "prev_hash": "fc8cd2bb246c1c6a672b41e6b04bab726559c5408e67da034f75786ae7ca5f6f",
+      "current_hash": "940a8374b74a55bb403ff1f1fb696e464dc4fc1b264905cca80e174808cea654"
+    },
+    {
+      "block_index": 23,
+      "event_id": "4ca8b751-8471-493b-9cdb-eadfad5dc603",
+      "event_type": "DECISION",
+      "timestamp": "2026-11-05T08:41:59.033032+00:00",
+      "payload_hash": "8c85c2b25efae3a20555730908074389d2093b3378c93e315519c4f15fb307aa",
+      "prev_hash": "940a8374b74a55bb403ff1f1fb696e464dc4fc1b264905cca80e174808cea654",
+      "current_hash": "cf565878b312a6f3803bd4757ffe8089eb9435fdd651cff05d3aafe548459f4a"
+    },
+    {
+      "block_index": 24,
+      "event_id": "68db726d-d2ba-4f26-9991-9de39417634f",
+      "event_type": "MODEL_DETAILS",
+      "timestamp": "2026-11-05T08:46:41.033032+00:00",
+      "payload_hash": "ee8e89ce6fc591d45768bfa64007014bd4f7729253627aeec08d2c8dd67ad544",
+      "prev_hash": "cf565878b312a6f3803bd4757ffe8089eb9435fdd651cff05d3aafe548459f4a",
+      "current_hash": "3db9344f68b2fa630dceb439e8a701bcd29155ac875c25cbcea4b187ec6f977e"
+    },
+    {
+      "block_index": 25,
+      "event_id": "a34ea59a-eef2-48e5-bb7e-a9bc92651a52",
+      "event_type": "LLM_CALL_START",
+      "timestamp": "2026-11-05T08:46:45.033032+00:00",
+      "payload_hash": "b306929805f6d34d4aadec31685cb1a518cd5141c6219fe8cb76b4ec4e4cb7cd",
+      "prev_hash": "3db9344f68b2fa630dceb439e8a701bcd29155ac875c25cbcea4b187ec6f977e",
+      "current_hash": "0ce1871e2de65f5cba4d6eb67ba3467a41e5837730eacbd19b22823ac550d0f5"
+    },
+    {
+      "block_index": 26,
+      "event_id": "4bf86688-b466-45cd-8ebf-05b729d6e831",
+      "event_type": "TOOL_START",
+      "timestamp": "2026-11-05T08:46:46.033032+00:00",
+      "payload_hash": "32c39a5c5e2017587cc7869790642db49c46126b2c00337325c975c9f7f77839",
+      "prev_hash": "0ce1871e2de65f5cba4d6eb67ba3467a41e5837730eacbd19b22823ac550d0f5",
+      "current_hash": "e3e9661e736cce1e8df36922f2b61ef2f843501eada3016be381f3604442c5ea"
+    },
+    {
+      "block_index": 27,
+      "event_id": "fff8ceb9-40a6-4a65-9087-f839fd7c4115",
+      "event_type": "TOOL_END",
+      "timestamp": "2026-11-05T08:46:49.033032+00:00",
+      "payload_hash": "87b4fffb1414020acf9dbc6b8c3c3c322695efb563ef6a6fca32f2cf210e6eba",
+      "prev_hash": "e3e9661e736cce1e8df36922f2b61ef2f843501eada3016be381f3604442c5ea",
+      "current_hash": "21b99edfac633dd9f2dc1e77e6adcb73592016a288bdc546a31a5be50b1adabf"
+    },
+    {
+      "block_index": 28,
+      "event_id": "fdd8651a-d2af-4740-be90-050f2bfb6aaa",
+      "event_type": "EVIDENCE_CAPTURED",
+      "timestamp": "2026-11-05T08:46:52.033032+00:00",
+      "payload_hash": "895926dcc287d1bf1db26319de7e956cb069079009408f95349728f48076bb91",
+      "prev_hash": "21b99edfac633dd9f2dc1e77e6adcb73592016a288bdc546a31a5be50b1adabf",
+      "current_hash": "2486658a5f3f75e8684e5f8a7cf1d26a337e2b3d3eb8865d405b088122b81b6a"
+    },
+    {
+      "block_index": 29,
+      "event_id": "9364ab58-8b6d-49bd-abe2-1dae75423446",
+      "event_type": "LLM_CALL_END",
+      "timestamp": "2026-11-05T08:46:54.033032+00:00",
+      "payload_hash": "8b3b9395a1681688ee9c2126b0e09ee51f2e1ea9efd36e03991a02122fe677cd",
+      "prev_hash": "2486658a5f3f75e8684e5f8a7cf1d26a337e2b3d3eb8865d405b088122b81b6a",
+      "current_hash": "5914eb6b11f6c8ac88144cca7a09d8086a935e04668afd17dfcb4c48d56a6036"
+    }
+  ],
+  "metadata": {
+    "generated_workflows": 4,
+    "chain_head": "5914eb6b11f6c8ac88144cca7a09d8086a935e04668afd17dfcb4c48d56a6036"
+  }
+}

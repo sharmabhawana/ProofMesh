@@ -56,12 +56,20 @@ export const authService = {
   },
 
   /**
-   * Logout user and purge local credentials
+   * Logout user, notify backend to revoke token, and purge local credentials
    */
-  logout() {
-    localStorage.removeItem("proofmesh_token");
-    localStorage.removeItem("proofmesh_user");
-    window.dispatchEvent(new CustomEvent("proofmesh-auth-change"));
+  async logout() {
+    try {
+      if (this.getToken()) {
+        await api.post("/api/auth/logout");
+      }
+    } catch {
+      // Ignore network errors during logout to guarantee client session cleanup
+    } finally {
+      localStorage.removeItem("proofmesh_token");
+      localStorage.removeItem("proofmesh_user");
+      window.dispatchEvent(new CustomEvent("proofmesh-auth-change"));
+    }
   },
 
   getToken() {
@@ -80,6 +88,31 @@ export const authService = {
 
   isAuthenticated() {
     return !!localStorage.getItem("proofmesh_token");
+  },
+
+  /**
+   * Request a password-reset link for the given email.
+   * Always resolves successfully (generic response – no enumeration).
+   * @param {string} email
+   */
+  async forgotPassword(email) {
+    const response = await api.post("/api/auth/forgot-password", {
+      email: email.trim().toLowerCase(),
+    });
+    return response.data;
+  },
+
+  /**
+   * Reset the user's password using a single-use token from the reset email.
+   * @param {string} token  - raw token from URL query string
+   * @param {string} newPassword
+   */
+  async resetPassword(token, newPassword) {
+    const response = await api.post("/api/auth/reset-password", {
+      token,
+      new_password: newPassword,
+    });
+    return response.data;
   },
 };
 

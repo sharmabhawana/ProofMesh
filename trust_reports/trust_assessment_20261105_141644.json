@@ -1,0 +1,46 @@
+{
+  "project": "ProofMesh",
+  "assessment_time": "2026-11-05T14:16:44.433455+00:00",
+  "trust_score": 60.0,
+  "trust_category": "Moderate",
+  "weights": {
+    "source_reliability": 0.4,
+    "provenance_completeness": 0.3,
+    "integrity_verification": 0.3
+  },
+  "metrics": {
+    "source_reliability": {
+      "score": 0,
+      "details": {
+        "evidence_events": 0,
+        "identified_sources": 0,
+        "description": "No evidence-capture events found"
+      }
+    },
+    "provenance_completeness": {
+      "score": 100,
+      "details": {
+        "total_events": 3,
+        "complete_events": 3,
+        "required_fields": [
+          "event_id",
+          "timestamp",
+          "event_type",
+          "agent"
+        ]
+      }
+    },
+    "integrity_verification": {
+      "score": 100,
+      "verified": true,
+      "message": "SHA-256 hash chain and source log verified"
+    }
+  },
+  "warning": null,
+  "limitations": [
+    "Source identification does not prove factual reliability.",
+    "Completeness checks core event fields only.",
+    "A valid hash chain proves consistency with the saved chain, not that the original data is true.",
+    "A chain and its source log can both be rewritten by an attacker with access to both files. External trusted checkpoints or digital signatures are needed for stronger tamper resistance."
+  ]
+}

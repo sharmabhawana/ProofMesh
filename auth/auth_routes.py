@@ -1,6 +1,21 @@
-import re
+"""
+ProofMesh — Authentication Routes
 
-from fastapi import APIRouter, Depends, HTTPException, status
+Provides endpoints for:
+- User registration with password complexity enforcement and rate limiting
+- User and admin login (OAuth2 password flow) with rate limiting
+- Server-side logout and token revocation
+- Forgot password / password reset (single-use token, email delivery)
+- Current user profile retrieval (/me)
+- Administrator user management (/admin/users, /admin/users/{id}/status)
+"""
+
+import hashlib
+import re
+from datetime import datetime, timezone, timedelta
+
+import jwt
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel, Field
 
@@ -11,6 +26,10 @@ from auth.auth_database import (
     find_user_by_username_or_email,
     list_users,
     update_user_status,
+    revoke_token,
+    create_password_reset_token,
+    verify_password_reset_token,
+    consume_password_reset_token,
 )
 
 from auth.security import (
@@ -19,7 +38,16 @@ from auth.security import (
     create_access_token,
     get_current_user,
     require_admin,
+    validate_password_strength,
+    login_rate_limiter,
+    register_rate_limiter,
+    forgot_password_rate_limiter,
+    oauth2_scheme,
+    resolve_jwt_secret,
+    JWT_ALGORITHM,
 )
+
+from auth.email_service import send_password_reset_email
 
 router = APIRouter(
     prefix="/api/auth",
@@ -39,6 +67,7 @@ class UserStatusRequest(BaseModel):
 
 
 def public_user(user):
+    """Return a safe dictionary representation of a user without password hashes."""
     user_dict = dict(user)
     return {
         "id": user_dict["id"],
@@ -47,12 +76,32 @@ def public_user(user):
         "full_name": user_dict.get("full_name") or user_dict["username"],
         "role": user_dict["role"],
         "is_active": bool(user_dict["is_active"]),
-        "created_at": user_dict["created_at"],
+        "created_at": str(user_dict.get("created_at", "")),
     }
 
 
+def get_client_ip(request: Request) -> str:
+    """Extract client IP safely from request headers or socket address."""
+    forwarded = request.headers.get("x-forwarded-for")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    return request.client.host if request.client else "127.0.0.1"
+
+
 @router.post("/register", status_code=status.HTTP_201_CREATED)
-def register_user(data: RegisterRequest):
+def register_user(data: RegisterRequest, request: Request):
+    """
+    Register a new user account.
+    Enforces password complexity, unique username/email, and rate limiting.
+    Always assigns the standard 'user' role.
+    """
+    client_ip = get_client_ip(request)
+    if not register_rate_limiter.is_allowed(client_ip):
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Too many registration attempts. Please try again later."
+        )
+
     username = data.username.strip()
     email = data.email.strip().lower()
 
@@ -92,11 +141,13 @@ def register_user(data: RegisterRequest):
             detail="An account with this username already exists."
         )
 
-    # Password strength check
-    if len(data.password) < 8:
+    # Validate password complexity
+    try:
+        validate_password_strength(data.password)
+    except ValueError as val_err:
         raise HTTPException(
             status_code=400,
-            detail="Password must be at least 8 characters long."
+            detail=str(val_err)
         )
 
     password_hash = hash_password(data.password)
@@ -109,7 +160,6 @@ def register_user(data: RegisterRequest):
             role="user",
             full_name=data.full_name
         )
-
     except Exception:
         raise HTTPException(
             status_code=409,
@@ -125,24 +175,37 @@ def register_user(data: RegisterRequest):
 
 @router.post("/login")
 def login_user(
-    form_data: OAuth2PasswordRequestForm = Depends()
+    request: Request,
+    form_data: OAuth2PasswordRequestForm = Depends(),
 ):
+    """
+    Authenticate user via OAuth2 password grant.
+    Enforces rate limiting, constant-time verification, and checks active account status.
+    """
+    client_ip = get_client_ip(request)
+    if not login_rate_limiter.is_allowed(client_ip):
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Too many login attempts. Please try again later."
+        )
+
     identifier = form_data.username.strip()
     user = find_user_by_username_or_email(identifier)
 
-    if not user or not verify_password(
-        form_data.password,
-        user["password_hash"]
-    ):
+    # Verify password with constant-time computation
+    stored_hash = user["password_hash"] if user else ""
+    is_valid = verify_password(form_data.password, stored_hash)
+
+    if not user or not is_valid:
         raise HTTPException(
-            status_code=401,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username/email or password.",
             headers={"WWW-Authenticate": "Bearer"}
         )
 
     if not user["is_active"]:
         raise HTTPException(
-            status_code=403,
+            status_code=status.HTTP_403_FORBIDDEN,
             detail="Your account has been disabled. Contact an administrator."
         )
 
@@ -155,10 +218,41 @@ def login_user(
     }
 
 
+@router.post("/logout")
+def logout_user(
+    token: str = Depends(oauth2_scheme),
+    current_user: dict = Depends(get_current_user),
+):
+    """
+    Server-side logout: Invalidates current JWT by recording its SHA-256 hash
+    in the revoked_tokens database table. Subsequent requests with this token are rejected.
+    """
+    token_hash = hashlib.sha256(token.encode("utf-8")).hexdigest()
+    secret = resolve_jwt_secret()
+
+    try:
+        payload = jwt.decode(token, secret, algorithms=[JWT_ALGORITHM])
+        exp_timestamp = payload.get("exp")
+        if exp_timestamp:
+            expires_at = datetime.fromtimestamp(exp_timestamp, tz=timezone.utc)
+        else:
+            expires_at = datetime.now(timezone.utc) + timedelta(hours=1)
+    except Exception:
+        expires_at = datetime.now(timezone.utc) + timedelta(hours=1)
+
+    revoke_token(token_hash, current_user["id"], expires_at)
+
+    return {
+        "message": "Logged out successfully. Session invalidated.",
+        "revoked": True
+    }
+
+
 @router.get("/me")
 def get_profile(
     current_user=Depends(get_current_user)
 ):
+    """Return the profile of the currently authenticated user."""
     return public_user(current_user)
 
 
@@ -166,9 +260,11 @@ def get_profile(
 def admin_get_users(
     admin=Depends(require_admin)
 ):
+    """Administrator-only: list all registered users."""
+    users = list_users()
     return {
-        "total_users": len(list_users()),
-        "users": list_users()
+        "total_users": len(users),
+        "users": users
     }
 
 
@@ -178,6 +274,7 @@ def admin_update_user(
     data: UserStatusRequest,
     admin=Depends(require_admin)
 ):
+    """Administrator-only: update user active/disabled status. Prevents self-disabling."""
     if user_id == admin["id"] and not data.is_active:
         raise HTTPException(
             status_code=400,
@@ -197,4 +294,98 @@ def admin_update_user(
         "message": "User account status updated.",
         "user_id": user_id,
         "is_active": data.is_active
+    }
+
+
+# ---------------------------------------------------------------------------
+# Password Reset Flow
+# ---------------------------------------------------------------------------
+
+class ForgotPasswordRequest(BaseModel):
+    email: str = Field(max_length=254)
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str = Field(min_length=10)
+    new_password: str = Field(min_length=8, max_length=128)
+
+
+@router.post("/forgot-password")
+def forgot_password(data: ForgotPasswordRequest, request: Request):
+    """
+    Request a password-reset link.
+
+    Always returns HTTP 200 with a generic message regardless of whether the
+    email address is registered. This prevents user-enumeration attacks.
+    Rate-limited to 5 requests per 60 seconds per client IP.
+    """
+    client_ip = get_client_ip(request)
+    if not forgot_password_rate_limiter.is_allowed(client_ip):
+        raise HTTPException(
+            status_code=429,
+            detail="Too many requests. Please try again later."
+        )
+
+    # Generic response — never reveal whether the email is registered
+    generic_response = {
+        "message": (
+            "If an account with that email exists, "
+            "a password reset link has been sent."
+        )
+    }
+
+    email = data.email.strip().lower()
+    user = find_user_by_email(email)
+    if user and user.get("is_active"):
+        raw_token = create_password_reset_token(user["id"], expires_minutes=15)
+        send_password_reset_email(
+            to_email=email,
+            raw_token=raw_token,
+            expires_minutes=15,
+        )
+
+    return generic_response
+
+
+@router.post("/reset-password")
+def reset_password(data: ResetPasswordRequest):
+    """
+    Validate a single-use password-reset token and update the user's password.
+
+    The token is consumed (invalidated) on first successful use.
+    Returns HTTP 400 for invalid, expired, or already-used tokens.
+    """
+    user_id = verify_password_reset_token(data.token)
+    if not user_id:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "This password reset link is invalid or has expired. "
+                "Please request a new one."
+            ),
+        )
+
+    # Validate new password strength before consuming the token
+    try:
+        validate_password_strength(data.new_password)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+
+    new_hash = hash_password(data.new_password)
+    success = consume_password_reset_token(data.token, new_hash)
+
+    if not success:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "This password reset link is invalid or has expired. "
+                "Please request a new one."
+            ),
+        )
+
+    return {
+        "message": (
+            "Your password has been updated successfully. "
+            "You can now sign in with your new password."
+        )
     }

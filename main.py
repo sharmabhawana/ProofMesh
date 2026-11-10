@@ -61,15 +61,29 @@ app = FastAPI(
 # 3. CONFIGURE CORS FOR REACT FRONTEND
 # ============================================================
 
+DEFAULT_CORS_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:5173",
+]
+
+env_cors = os.getenv("CORS_ORIGINS", "").strip()
+allowed_origins = list(DEFAULT_CORS_ORIGINS)
+
+if env_cors:
+    for origin in env_cors.split(","):
+        cleaned = origin.strip()
+        # Disallow wildcard origin with credentialed requests per CORS security spec
+        if cleaned and cleaned != "*" and cleaned not in allowed_origins:
+            allowed_origins.append(cleaned)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:5173"
-    ],
+    allow_origins=allowed_origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"]
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allow_headers=["*"],
 )
 
 

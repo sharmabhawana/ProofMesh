@@ -1,0 +1,181 @@
+{
+  "project": "ProofMesh",
+  "analysis_type": "Dependency-Based Impact Analysis",
+  "generated_at": "2026-11-05T08:38:42.336204+00:00",
+  "start_node": {
+    "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:0",
+    "node_type": "Agent",
+    "name": "ProofMesh-Agent",
+    "properties": {
+      "agent_id": "ProofMesh-Agent",
+      "model": "gemini-3.6-flash"
+    }
+  },
+  "unreliable_source_test": true,
+  "integrity_verification": null,
+  "source_attribution": null,
+  "nodes_visited": 5,
+  "downstream_nodes": [
+    {
+      "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:1",
+      "name": "knowledge_lookup",
+      "labels": [
+        "Tool"
+      ],
+      "path": [
+        {
+          "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:0",
+          "name": "ProofMesh-Agent",
+          "labels": [
+            "Agent"
+          ]
+        },
+        {
+          "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:1",
+          "name": "knowledge_lookup",
+          "labels": [
+            "Tool"
+          ]
+        }
+      ]
+    },
+    {
+      "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:3",
+      "name": "decision_3e8b87a4-2707-4904-9f0f-b648def449a4",
+      "labels": [
+        "Decision"
+      ],
+      "path": [
+        {
+          "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:0",
+          "name": "ProofMesh-Agent",
+          "labels": [
+            "Agent"
+          ]
+        },
+        {
+          "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:3",
+          "name": "decision_3e8b87a4-2707-4904-9f0f-b648def449a4",
+          "labels": [
+            "Decision"
+          ]
+        }
+      ]
+    },
+    {
+      "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:4",
+      "name": "decision_a7678f62-0ee5-4480-b262-1b918b45dc58",
+      "labels": [
+        "Decision"
+      ],
+      "path": [
+        {
+          "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:0",
+          "name": "ProofMesh-Agent",
+          "labels": [
+            "Agent"
+          ]
+        },
+        {
+          "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:4",
+          "name": "decision_a7678f62-0ee5-4480-b262-1b918b45dc58",
+          "labels": [
+            "Decision"
+          ]
+        }
+      ]
+    },
+    {
+      "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:2",
+      "name": "controlled_proofmesh_knowledge_base",
+      "labels": [
+        "DataSource"
+      ],
+      "path": [
+        {
+          "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:0",
+          "name": "ProofMesh-Agent",
+          "labels": [
+            "Agent"
+          ]
+        },
+        {
+          "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:1",
+          "name": "knowledge_lookup",
+          "labels": [
+            "Tool"
+          ]
+        },
+        {
+          "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:2",
+          "name": "controlled_proofmesh_knowledge_base",
+          "labels": [
+            "DataSource"
+          ]
+        }
+      ]
+    }
+  ],
+  "affected_decisions": [
+    {
+      "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:3",
+      "name": "decision_3e8b87a4-2707-4904-9f0f-b648def449a4",
+      "status": "FLAGGED_UNRELIABLE_SOURCE",
+      "reason": "This decision is downstream of a node explicitly marked unreliable for the simulation.",
+      "dependency_path": [
+        "ProofMesh-Agent",
+        "decision_3e8b87a4-2707-4904-9f0f-b648def449a4"
+      ]
+    },
+    {
+      "node_id": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:4",
+      "name": "decision_a7678f62-0ee5-4480-b262-1b918b45dc58",
+      "status": "FLAGGED_UNRELIABLE_SOURCE",
+      "reason": "This decision is downstream of a node explicitly marked unreliable for the simulation.",
+      "dependency_path": [
+        "ProofMesh-Agent",
+        "decision_a7678f62-0ee5-4480-b262-1b918b45dc58"
+      ]
+    }
+  ],
+  "affected_decision_count": 2,
+  "relationships_traversed": [
+    {
+      "source": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:0",
+      "target": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:1",
+      "relationship": "USED_TOOL"
+    },
+    {
+      "source": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:0",
+      "target": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:3",
+      "relationship": "MADE_DECISION"
+    },
+    {
+      "source": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:0",
+      "target": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:4",
+      "relationship": "MADE_DECISION"
+    },
+    {
+      "source": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:1",
+      "target": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:2",
+      "relationship": "RETRIEVED_FROM"
+    },
+    {
+      "source": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:2",
+      "target": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:3",
+      "relationship": "INFLUENCED"
+    },
+    {
+      "source": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:2",
+      "target": "4:5a6e2b02-4424-45f2-9431-0135b96b6b8f:4",
+      "relationship": "INFLUENCED"
+    }
+  ],
+  "limitations": [
+    "Traversal follows outgoing Neo4j relationships only.",
+    "Only decisions reachable from the selected node are included.",
+    "Source attribution requires changed events to explicitly contain a matching source_id or supported metadata source ID.",
+    "A source-ID match identifies a related event; it does not prove the source content caused the change.",
+    "A SHA-256 chain can be recalculated by an attacker who can rewrite the log, chain, and chain head. A trusted external checkpoint or digital signature is needed for stronger tamper resistance."
+  ]
+}

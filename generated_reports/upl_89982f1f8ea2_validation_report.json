@@ -1,0 +1,21 @@
+{
+  "upload_id": "upl_89982f1f8ea2",
+  "filename": "agent_security_audit.json",
+  "snapshot_sha256": "d9f8c5da590482db57c2e49a84e27c3fea3d82c496ce2afdb299cf63d62be6f3",
+  "total_events": 3,
+  "total_agents": 1,
+  "total_workflows": 1,
+  "agents": [
+    "SecurityAgent-Alpha"
+  ],
+  "models": [
+    "gemini-3.6-flash",
+    "Unspecified Model"
+  ],
+  "tools": [
+    "cve_scanner"
+  ],
+  "status": "VALIDATED",
+  "ingestion_timestamp": "2026-11-04T19:49:28.478817+00:00",
+  "integrity_category": "Snapshot hashed at ingestion"
+}
