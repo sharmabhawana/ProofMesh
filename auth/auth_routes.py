@@ -5,6 +5,7 @@ Provides endpoints for:
 - User registration with password complexity enforcement and rate limiting
 - User and admin login (OAuth2 password flow) with rate limiting
 - Server-side logout and token revocation
+- Forgot password / password reset (single-use token, email delivery)
 - Current user profile retrieval (/me)
 - Administrator user management (/admin/users, /admin/users/{id}/status)
 """
@@ -26,6 +27,9 @@ from auth.auth_database import (
     list_users,
     update_user_status,
     revoke_token,
+    create_password_reset_token,
+    verify_password_reset_token,
+    consume_password_reset_token,
 )
 
 from auth.security import (
@@ -37,10 +41,13 @@ from auth.security import (
     validate_password_strength,
     login_rate_limiter,
     register_rate_limiter,
+    forgot_password_rate_limiter,
     oauth2_scheme,
     resolve_jwt_secret,
     JWT_ALGORITHM,
 )
+
+from auth.email_service import send_password_reset_email
 
 router = APIRouter(
     prefix="/api/auth",
@@ -287,4 +294,98 @@ def admin_update_user(
         "message": "User account status updated.",
         "user_id": user_id,
         "is_active": data.is_active
+    }
+
+
+# ---------------------------------------------------------------------------
+# Password Reset Flow
+# ---------------------------------------------------------------------------
+
+class ForgotPasswordRequest(BaseModel):
+    email: str = Field(max_length=254)
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str = Field(min_length=10)
+    new_password: str = Field(min_length=8, max_length=128)
+
+
+@router.post("/forgot-password")
+def forgot_password(data: ForgotPasswordRequest, request: Request):
+    """
+    Request a password-reset link.
+
+    Always returns HTTP 200 with a generic message regardless of whether the
+    email address is registered. This prevents user-enumeration attacks.
+    Rate-limited to 5 requests per 60 seconds per client IP.
+    """
+    client_ip = get_client_ip(request)
+    if not forgot_password_rate_limiter.is_allowed(client_ip):
+        raise HTTPException(
+            status_code=429,
+            detail="Too many requests. Please try again later."
+        )
+
+    # Generic response — never reveal whether the email is registered
+    generic_response = {
+        "message": (
+            "If an account with that email exists, "
+            "a password reset link has been sent."
+        )
+    }
+
+    email = data.email.strip().lower()
+    user = find_user_by_email(email)
+    if user and user.get("is_active"):
+        raw_token = create_password_reset_token(user["id"], expires_minutes=15)
+        send_password_reset_email(
+            to_email=email,
+            raw_token=raw_token,
+            expires_minutes=15,
+        )
+
+    return generic_response
+
+
+@router.post("/reset-password")
+def reset_password(data: ResetPasswordRequest):
+    """
+    Validate a single-use password-reset token and update the user's password.
+
+    The token is consumed (invalidated) on first successful use.
+    Returns HTTP 400 for invalid, expired, or already-used tokens.
+    """
+    user_id = verify_password_reset_token(data.token)
+    if not user_id:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "This password reset link is invalid or has expired. "
+                "Please request a new one."
+            ),
+        )
+
+    # Validate new password strength before consuming the token
+    try:
+        validate_password_strength(data.new_password)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+
+    new_hash = hash_password(data.new_password)
+    success = consume_password_reset_token(data.token, new_hash)
+
+    if not success:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "This password reset link is invalid or has expired. "
+                "Please request a new one."
+            ),
+        )
+
+    return {
+        "message": (
+            "Your password has been updated successfully. "
+            "You can now sign in with your new password."
+        )
     }

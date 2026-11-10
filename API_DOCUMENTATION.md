@@ -117,6 +117,45 @@ This document provides the complete API specification for the ProofMesh FastAPI 
   - `200 OK`: Status updated.
   - `400 Bad Request`: Prevents administrator self-lockout.
 
+### 2.7 Forgot Password (Request Reset Link)
+- **Endpoint:** `POST /api/auth/forgot-password`
+- **Auth:** Public (Rate-limited to 5 requests / 60 seconds per IP)
+- **Description:** Generates a cryptographically secure 32-byte single-use token valid for 15 minutes, stores its SHA-256 hash in `password_reset_tokens`, and dispatches an email (or logs to console in development). Always returns HTTP 200 generic message to prevent user enumeration attacks.
+- **Request Body:**
+  ```json
+  {
+    "email": "user@example.com"
+  }
+  ```
+- **Responses:**
+  - `200 OK`:
+    ```json
+    {
+      "message": "If an account with that email exists, a password reset link has been sent."
+    }
+    ```
+  - `429 Too Many Requests`: IP rate limit exceeded.
+
+### 2.8 Reset Password (Consume Reset Token)
+- **Endpoint:** `POST /api/auth/reset-password`
+- **Auth:** Public
+- **Description:** Validates a single-use token against `password_reset_tokens` (checks hash match, non-expired, and unused). Validates password complexity, securely updates password hash via bcrypt, and invalidates the token upon completion.
+- **Request Body:**
+  ```json
+  {
+    "token": "dGhpc19pc19hbl9leGFtcGxlX3Rva2VuX3VybHNhZmU",
+    "new_password": "NewSecurePassword123!@#"
+  }
+  ```
+- **Responses:**
+  - `200 OK`:
+    ```json
+    {
+      "message": "Your password has been updated successfully. You can now sign in with your new password."
+    }
+    ```
+  - `400 Bad Request`: Token invalid, expired, already consumed, or password does not meet security requirements.
+
 ---
 
 ## 3. Autonomous AI Workflow Execution

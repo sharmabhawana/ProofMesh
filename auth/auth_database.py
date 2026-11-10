@@ -5,12 +5,14 @@ SQLAlchemy ORM database layer supporting PostgreSQL and SQLite.
 Preserves existing method signatures and data contracts.
 """
 
-from datetime import datetime, timezone
+import hashlib
+import secrets
+from datetime import datetime, timezone, timedelta
 from typing import Optional, List, Dict, Any
 from sqlalchemy import func, or_
 from sqlalchemy.exc import IntegrityError
 
-from auth.models import Base, User, RevokedToken
+from auth.models import Base, User, RevokedToken, PasswordResetToken
 from auth.db_session import (
     engine,
     get_db_session,
@@ -218,4 +220,92 @@ def cleanup_expired_revoked_tokens() -> int:
             .delete(synchronize_session=False)
         )
         return deleted
+
+
+def create_password_reset_token(user_id: int, expires_minutes: int = 15) -> str:
+    """
+    Generate a cryptographically secure, single-use password reset token.
+    Stores the SHA-256 hash in the database and returns the raw secret token.
+    """
+    raw_token = secrets.token_urlsafe(32)
+    token_hash = hashlib.sha256(raw_token.encode("utf-8")).hexdigest()
+    expires_at = datetime.now(timezone.utc) + timedelta(minutes=expires_minutes)
+
+    with get_db_session() as session:
+        # Invalidate any existing unused reset tokens for this user
+        session.query(PasswordResetToken).filter(
+            PasswordResetToken.user_id == user_id,
+            PasswordResetToken.used_at.is_(None)
+        ).update({"used_at": datetime.now(timezone.utc)}, synchronize_session=False)
+
+        reset_record = PasswordResetToken(
+            token_hash=token_hash,
+            user_id=user_id,
+            expires_at=expires_at,
+        )
+        session.add(reset_record)
+
+    return raw_token
+
+
+def verify_password_reset_token(raw_token: str) -> Optional[int]:
+    """
+    Verify a password reset token:
+    Checks that the token exists, is not expired, and has not been used.
+    Returns the user_id if valid, or None if invalid or expired.
+    """
+    if not raw_token or not isinstance(raw_token, str):
+        return None
+
+    token_hash = hashlib.sha256(raw_token.encode("utf-8")).hexdigest()
+    now = datetime.now(timezone.utc)
+
+    with get_db_session() as session:
+        record = (
+            session.query(PasswordResetToken)
+            .filter(
+                PasswordResetToken.token_hash == token_hash,
+                PasswordResetToken.used_at.is_(None),
+                PasswordResetToken.expires_at > now,
+            )
+            .first()
+        )
+        if record:
+            return record.user_id
+    return None
+
+
+def consume_password_reset_token(raw_token: str, new_password_hash: str) -> bool:
+    """
+    Atomically validate the reset token, update the user's password hash,
+    and mark the reset token as used (single-use enforcement).
+    """
+    if not raw_token or not new_password_hash:
+        return False
+
+    token_hash = hashlib.sha256(raw_token.encode("utf-8")).hexdigest()
+    now = datetime.now(timezone.utc)
+
+    with get_db_session() as session:
+        token_record = (
+            session.query(PasswordResetToken)
+            .filter(
+                PasswordResetToken.token_hash == token_hash,
+                PasswordResetToken.used_at.is_(None),
+                PasswordResetToken.expires_at > now,
+            )
+            .first()
+        )
+        if not token_record:
+            return False
+
+        user = session.query(User).filter(User.id == token_record.user_id).first()
+        if not user:
+            return False
+
+        # Update password hash and mark token used
+        user.password_hash = new_password_hash
+        token_record.used_at = now
+        return True
+
 

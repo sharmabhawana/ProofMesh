@@ -5,6 +5,8 @@ import Sidebar from "./components/Sidebar";
 import Topbar from "./components/Topbar";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Overview from "./pages/Overview";
 import WorkflowExplorer from "./pages/WorkflowExplorer";
 import IntegrityCenter from "./pages/IntegrityCenter";
@@ -28,7 +30,12 @@ function MainDashboard() {
   const { isAuthenticated, isLoading: authLoading } = useAuth();
 
   // Authentication view switcher (when unauthenticated)
-  const [authView, setAuthView] = useState("login"); // "login" | "register"
+  const [authView, setAuthView] = useState(() => {
+    // If the URL contains ?token=... land directly on the reset-password view
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("token")) return "reset-password";
+    return "login"; // "login" | "register" | "forgot-password" | "reset-password"
+  });
 
   // Active page state with hash support
   const [activePage, setActivePage] = useState(() => {
@@ -189,9 +196,15 @@ function MainDashboard() {
           <Login
             onSwitchToRegister={() => setAuthView("register")}
             onLoginSuccess={(target) => handleNavigate(target || "overview")}
+            onForgotPassword={() => setAuthView("forgot-password")}
           />
-        ) : (
+        ) : authView === "register" ? (
           <Register onSwitchToLogin={() => setAuthView("login")} />
+        ) : authView === "forgot-password" ? (
+          <ForgotPassword onBackToLogin={() => setAuthView("login")} />
+        ) : (
+          /* reset-password — token is read from URL inside the component */
+          <ResetPassword onBackToLogin={() => setAuthView("login")} />
         )}
       </div>
     );

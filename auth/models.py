@@ -262,3 +262,33 @@ class RevokedToken(Base):
     def __getitem__(self, key):
         return self.to_dict()[key]
 
+
+class PasswordResetToken(Base):
+    __tablename__ = "password_reset_tokens"
+
+    id = Column(Integer, primary_key=True, autoincrement=True, index=True)
+    token_hash = Column(String(64), nullable=False, unique=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    created_at = Column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+    )
+    expires_at = Column(DateTime(timezone=True), nullable=False, index=True)
+    used_at = Column(DateTime(timezone=True), nullable=True)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "token_hash": self.token_hash,
+            "user_id": self.user_id,
+            "created_at": str(self.created_at) if self.created_at else "",
+            "expires_at": str(self.expires_at) if self.expires_at else "",
+            "used_at": str(self.used_at) if self.used_at else None,
+        }
+
+    def __getitem__(self, key):
+        return self.to_dict()[key]
+
+
+

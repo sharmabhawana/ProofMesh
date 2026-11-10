@@ -46,6 +46,15 @@
   - Administrative routes (`GET /api/auth/admin/users`, `PATCH /api/auth/admin/users/{id}/status`) strictly require `require_admin` dependency.
   - Administrators are prevented from disabling their own accounts.
 
+### 2.4 Single-Use Password Reset Tokens & Enumeration Prevention
+- **Cryptographic Token Generation:** Generates 32-byte URL-safe cryptographic tokens (`secrets.token_urlsafe(32)`).
+- **Zero Raw Token Persistence:** The backend only stores the SHA-256 hash of the token (`token_hash`) in `password_reset_tokens`; raw tokens are never persisted in the database.
+- **Strict Expiration:** Reset tokens expire automatically after 15 minutes (`expires_at`).
+- **Single-Use Enforcement:** Upon successful consumption, `used_at` timestamp is written and previous unused tokens for the same user are invalidated, preventing replay attacks.
+- **Anti-Enumeration Safeguards:** `POST /api/auth/forgot-password` unconditionally returns HTTP 200 with identical generic messaging regardless of whether the email is present in the database, preventing username/email discovery.
+- **Rate Limiting:** IP-based rate limiting (5 requests per 60 seconds) prevents denial-of-service or email-bombing attacks.
+- **Configurable Delivery:** Dispatches links via standard TLS-encrypted SMTP in production; falls back to secure developer console logging in local development.
+
 ---
 
 ## 3. Explicit System Limitations & Honest Scope Boundaries

@@ -229,6 +229,7 @@ class InMemoryRateLimiter:
 
 login_rate_limiter = InMemoryRateLimiter(max_requests=10, window_seconds=60)
 register_rate_limiter = InMemoryRateLimiter(max_requests=5, window_seconds=60)
+forgot_password_rate_limiter = InMemoryRateLimiter(max_requests=5, window_seconds=60)
 
 
 # ============================================================
