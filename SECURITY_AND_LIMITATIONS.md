@@ -46,14 +46,16 @@
   - Administrative routes (`GET /api/auth/admin/users`, `PATCH /api/auth/admin/users/{id}/status`) strictly require `require_admin` dependency.
   - Administrators are prevented from disabling their own accounts.
 
-### 2.4 Single-Use Password Reset Tokens & Enumeration Prevention
+### 2.4 Single-Use Password Reset Tokens & Role-Isolated Recovery
 - **Cryptographic Token Generation:** Generates 32-byte URL-safe cryptographic tokens (`secrets.token_urlsafe(32)`).
 - **Zero Raw Token Persistence:** The backend only stores the SHA-256 hash of the token (`token_hash`) in `password_reset_tokens`; raw tokens are never persisted in the database.
+- **Strict Role Isolation (`role_scope`):** Every token record stores a `role_scope` column (`'user'` or `'admin'`). A user token cannot be consumed on the admin recovery endpoint, and an admin recovery token cannot be used on the user endpoint.
+- **Admin Server-Side Role Enforcement:** The administrator recovery flow (`POST /api/auth/admin/forgot-password`) strictly verifies that the account exists AND holds the active `admin` role in the database before generating any token or dispatching an email. Normal users requesting admin recovery receive the generic response with zero tokens or emails generated.
 - **Strict Expiration:** Reset tokens expire automatically after 15 minutes (`expires_at`).
 - **Single-Use Enforcement:** Upon successful consumption, `used_at` timestamp is written and previous unused tokens for the same user are invalidated, preventing replay attacks.
-- **Anti-Enumeration Safeguards:** `POST /api/auth/forgot-password` unconditionally returns HTTP 200 with identical generic messaging regardless of whether the email is present in the database, preventing username/email discovery.
-- **Rate Limiting:** IP-based rate limiting (5 requests per 60 seconds) prevents denial-of-service or email-bombing attacks.
-- **Configurable Delivery:** Dispatches links via standard TLS-encrypted SMTP in production; falls back to secure developer console logging in local development.
+- **Anti-Enumeration Safeguards:** Both user and administrator endpoints unconditionally return HTTP 200 with identical generic messaging regardless of whether the email is present or whether the account holds the requested role, preventing username and role discovery.
+- **Rate Limiting:** IP-based rate limiting (5 requests per 60 seconds) prevents denial-of-service, brute force, and email-bombing attacks.
+- **Dual-Engine Email Delivery:** Supports direct TLS/SSL SMTP (Gmail App Password, SendGrid, custom on port 587 or 465) and firewall-proof Resend HTTPS REST API (port 443), with safe masked logging and fallback for headless development/testing.
 
 ---
 

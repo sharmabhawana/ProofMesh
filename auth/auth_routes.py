@@ -313,7 +313,7 @@ class ResetPasswordRequest(BaseModel):
 @router.post("/forgot-password")
 def forgot_password(data: ForgotPasswordRequest, request: Request):
     """
-    Request a password-reset link.
+    Request a standard user password-reset link.
 
     Always returns HTTP 200 with a generic message regardless of whether the
     email address is registered. This prevents user-enumeration attacks.
@@ -337,10 +337,11 @@ def forgot_password(data: ForgotPasswordRequest, request: Request):
     email = data.email.strip().lower()
     user = find_user_by_email(email)
     if user and user.get("is_active"):
-        raw_token = create_password_reset_token(user["id"], expires_minutes=15)
+        raw_token = create_password_reset_token(user["id"], role_scope="user", expires_minutes=15)
         send_password_reset_email(
             to_email=email,
             raw_token=raw_token,
+            role_scope="user",
             expires_minutes=15,
         )
 
@@ -351,16 +352,17 @@ def forgot_password(data: ForgotPasswordRequest, request: Request):
 def reset_password(data: ResetPasswordRequest):
     """
     Validate a single-use password-reset token and update the user's password.
+    Enforces that the token was issued for standard user scope ('user').
 
     The token is consumed (invalidated) on first successful use.
-    Returns HTTP 400 for invalid, expired, or already-used tokens.
+    Returns HTTP 400 for invalid, expired, role-mismatched, or already-used tokens.
     """
-    user_id = verify_password_reset_token(data.token)
+    user_id = verify_password_reset_token(data.token, expected_role="user")
     if not user_id:
         raise HTTPException(
             status_code=400,
             detail=(
-                "This password reset link is invalid or has expired. "
+                "This password reset link is invalid, expired, or does not match this recovery portal. "
                 "Please request a new one."
             ),
         )
@@ -372,13 +374,13 @@ def reset_password(data: ResetPasswordRequest):
         raise HTTPException(status_code=400, detail=str(exc))
 
     new_hash = hash_password(data.new_password)
-    success = consume_password_reset_token(data.token, new_hash)
+    success = consume_password_reset_token(data.token, new_hash, expected_role="user")
 
     if not success:
         raise HTTPException(
             status_code=400,
             detail=(
-                "This password reset link is invalid or has expired. "
+                "This password reset link is invalid, expired, or does not match this recovery portal. "
                 "Please request a new one."
             ),
         )
@@ -387,5 +389,93 @@ def reset_password(data: ResetPasswordRequest):
         "message": (
             "Your password has been updated successfully. "
             "You can now sign in with your new password."
+        )
+    }
+
+
+# ---------------------------------------------------------------------------
+# Administrator Password Recovery Flow (Strict Role Isolation)
+# ---------------------------------------------------------------------------
+
+@router.post("/admin/forgot-password")
+def admin_forgot_password(data: ForgotPasswordRequest, request: Request):
+    """
+    Administrator Password Recovery:
+    Validates that the email belongs to an ACTIVE ADMINISTRATOR account.
+    If the account exists but has 'user' privileges, NO token is generated,
+    preventing privilege-escalation / unauthorized admin password resets.
+
+    Always returns HTTP 200 with generic messaging to prevent role discovery.
+    """
+    client_ip = get_client_ip(request)
+    if not forgot_password_rate_limiter.is_allowed(client_ip):
+        raise HTTPException(
+            status_code=429,
+            detail="Too many requests. Please try again later."
+        )
+
+    generic_response = {
+        "message": (
+            "If an administrator account with that email exists, "
+            "a password reset link has been sent."
+        )
+    }
+
+    email = data.email.strip().lower()
+    user = find_user_by_email(email)
+
+    # Server-side role enforcement: MUST be an active administrator
+    if user and user.get("is_active") and user.get("role") == "admin":
+        raw_token = create_password_reset_token(user["id"], role_scope="admin", expires_minutes=15)
+        send_password_reset_email(
+            to_email=email,
+            raw_token=raw_token,
+            role_scope="admin",
+            expires_minutes=15,
+        )
+
+    return generic_response
+
+
+@router.post("/admin/reset-password")
+def admin_reset_password(data: ResetPasswordRequest):
+    """
+    Validate an administrator-scoped single-use reset token and update the admin's password.
+    Strictly verifies that:
+      1. The token was generated via the administrator recovery flow (role_scope='admin').
+      2. The account is currently an active administrator.
+      3. The token has not expired and has not been used.
+    """
+    user_id = verify_password_reset_token(data.token, expected_role="admin")
+    if not user_id:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "This administrator reset link is invalid, expired, or unauthorized for admin recovery. "
+                "Please request a new reset link."
+            ),
+        )
+
+    try:
+        validate_password_strength(data.new_password)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+
+    new_hash = hash_password(data.new_password)
+    success = consume_password_reset_token(data.token, new_hash, expected_role="admin")
+
+    if not success:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "This administrator reset link is invalid, expired, or unauthorized for admin recovery. "
+                "Please request a new reset link."
+            ),
+        )
+
+    return {
+        "message": (
+            "Administrator password updated successfully. "
+            "You can now sign in to the Admin Portal with your new credentials."
         )
     }

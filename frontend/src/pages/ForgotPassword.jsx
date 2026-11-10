@@ -6,10 +6,12 @@ import {
   CheckCircle,
   AlertCircle,
   Loader,
+  KeyRound,
 } from "lucide-react";
 import authService from "../services/authService";
 
-export default function ForgotPassword({ onBackToLogin }) {
+export default function ForgotPassword({ onBackToLogin, mode = "user" }) {
+  const isAdmin = mode === "admin";
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -34,7 +36,11 @@ export default function ForgotPassword({ onBackToLogin }) {
     setError(null);
 
     try {
-      await authService.forgotPassword(cleanEmail);
+      if (isAdmin) {
+        await authService.adminForgotPassword(cleanEmail);
+      } else {
+        await authService.forgotPassword(cleanEmail);
+      }
       setSubmitted(true);
     } catch (err) {
       const detail =
@@ -45,6 +51,14 @@ export default function ForgotPassword({ onBackToLogin }) {
       setLoading(false);
     }
   };
+
+  const accentColor = isAdmin ? "#f59e0b" : "#3b82f6";
+  const accentGradient = isAdmin
+    ? "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)"
+    : "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)";
+  const accentShadow = isAdmin
+    ? "rgba(245, 158, 11, 0.35)"
+    : "rgba(59, 130, 246, 0.3)";
 
   return (
     <div
@@ -66,7 +80,7 @@ export default function ForgotPassword({ onBackToLogin }) {
           width: "100%",
           maxWidth: "450px",
           background: "var(--panel)",
-          border: "1px solid var(--border)",
+          border: `1px solid ${isAdmin ? "rgba(245, 158, 11, 0.4)" : "var(--border)"}`,
           borderRadius: "16px",
           padding: "36px 32px",
           boxShadow: "var(--shadow)",
@@ -80,15 +94,31 @@ export default function ForgotPassword({ onBackToLogin }) {
               width: 52,
               height: 52,
               borderRadius: "14px",
-              background: "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)",
+              background: accentGradient,
               color: "#fff",
               display: "grid",
               placeItems: "center",
               margin: "0 auto 14px",
-              boxShadow: "0 6px 18px rgba(59, 130, 246, 0.3)",
+              boxShadow: `0 6px 18px ${accentShadow}`,
             }}
           >
-            <ShieldCheck size={28} />
+            {isAdmin ? <KeyRound size={26} /> : <ShieldCheck size={28} />}
+          </div>
+          <div
+            style={{
+              display: "inline-block",
+              fontSize: "10px",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+              padding: "3px 8px",
+              borderRadius: "5px",
+              background: isAdmin ? "rgba(245, 158, 11, 0.15)" : "rgba(59, 130, 246, 0.15)",
+              color: accentColor,
+              marginBottom: "8px",
+            }}
+          >
+            {isAdmin ? "Administrator Portal" : "Account Recovery"}
           </div>
           <h2
             style={{
@@ -98,17 +128,19 @@ export default function ForgotPassword({ onBackToLogin }) {
               margin: 0,
             }}
           >
-            Reset Your Password
+            {isAdmin ? "Administrator Password Recovery" : "Reset Your Password"}
           </h2>
           <p
             style={{
               fontSize: "12px",
               color: "var(--muted)",
               marginTop: "6px",
+              lineHeight: 1.5,
             }}
           >
-            Enter your registered email address and we&apos;ll send you a secure
-            reset link.
+            {isAdmin
+              ? "Enter your registered administrator email address to receive a secure recovery link."
+              : "Enter your registered email address and we'll send you a secure reset link."}
           </p>
         </div>
 
@@ -151,15 +183,16 @@ export default function ForgotPassword({ onBackToLogin }) {
                     margin: 0,
                   }}
                 >
-                  If an account with that email exists, we&apos;ve sent a
-                  password reset link. The link will expire in 15 minutes.
+                  {isAdmin
+                    ? "If an administrator account with that email exists, we've sent a password reset link. The link will expire in 15 minutes."
+                    : "If an account with that email exists, we've sent a password reset link. The link will expire in 15 minutes."}
                 </p>
               </div>
             </div>
 
             <button
               type="button"
-              onClick={onBackToLogin}
+              onClick={() => onBackToLogin(isAdmin ? "admin" : "user")}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -177,7 +210,7 @@ export default function ForgotPassword({ onBackToLogin }) {
               }}
             >
               <ArrowLeft size={15} />
-              Back to Sign In
+              {isAdmin ? "Back to Admin Sign In" : "Back to Sign In"}
             </button>
           </div>
         ) : (
@@ -222,7 +255,7 @@ export default function ForgotPassword({ onBackToLogin }) {
                     marginBottom: "6px",
                   }}
                 >
-                  Email Address
+                  {isAdmin ? "Administrator Email Address" : "Email Address"}
                 </label>
                 <div style={{ position: "relative" }}>
                   <Mail
@@ -237,7 +270,7 @@ export default function ForgotPassword({ onBackToLogin }) {
                   />
                   <input
                     type="email"
-                    placeholder="Enter your registered email"
+                    placeholder={isAdmin ? "admin@domain.com" : "user@domain.com"}
                     autoComplete="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -271,25 +304,24 @@ export default function ForgotPassword({ onBackToLogin }) {
                   padding: "12px",
                   borderRadius: "9px",
                   border: "none",
-                  background:
-                    "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
+                  background: accentGradient,
                   color: "#fff",
                   fontSize: "13px",
                   fontWeight: 650,
                   cursor: loading ? "not-allowed" : "pointer",
                   opacity: loading ? 0.75 : 1,
-                  boxShadow: "0 4px 14px rgba(37, 99, 235, 0.25)",
+                  boxShadow: `0 4px 14px ${accentShadow}`,
                 }}
               >
                 {loading ? (
                   <>
                     <Loader size={15} className="spin" />
-                    Sending reset link...
+                    Sending recovery link...
                   </>
                 ) : (
                   <>
                     <Mail size={15} />
-                    Send Reset Link
+                    {isAdmin ? "Send Admin Recovery Link" : "Send Reset Link"}
                   </>
                 )}
               </button>
@@ -309,17 +341,17 @@ export default function ForgotPassword({ onBackToLogin }) {
               Remember your password?{" "}
               <button
                 type="button"
-                onClick={onBackToLogin}
+                onClick={() => onBackToLogin(isAdmin ? "admin" : "user")}
                 style={{
                   background: "none",
                   border: "none",
-                  color: "var(--accent)",
+                  color: accentColor,
                   fontWeight: 650,
                   cursor: "pointer",
                   padding: 0,
                 }}
               >
-                Back to Sign In
+                {isAdmin ? "Back to Admin Sign In" : "Back to Sign In"}
               </button>
             </div>
           </>
@@ -328,4 +360,3 @@ export default function ForgotPassword({ onBackToLogin }) {
     </div>
   );
 }
-

@@ -21,6 +21,9 @@ impact_reports/
 # Provenance runtime files
 provenance_logs*.json
 provenance_integrity_chain*.json
+audit_run_results*.json
+neo4j_verification_results*.json
+resend_verification_results*.json
 
 # Backup files
 *.bak

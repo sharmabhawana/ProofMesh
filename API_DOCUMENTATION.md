@@ -139,7 +139,7 @@ This document provides the complete API specification for the ProofMesh FastAPI 
 ### 2.8 Reset Password (Consume Reset Token)
 - **Endpoint:** `POST /api/auth/reset-password`
 - **Auth:** Public
-- **Description:** Validates a single-use token against `password_reset_tokens` (checks hash match, non-expired, and unused). Validates password complexity, securely updates password hash via bcrypt, and invalidates the token upon completion.
+- **Description:** Validates a user-scoped single-use token against `password_reset_tokens` (checks hash match, non-expired, `role_scope == 'user'`, and unused). Validates password complexity, securely updates password hash via bcrypt, and invalidates the token upon completion.
 - **Request Body:**
   ```json
   {
@@ -154,7 +154,46 @@ This document provides the complete API specification for the ProofMesh FastAPI 
       "message": "Your password has been updated successfully. You can now sign in with your new password."
     }
     ```
-  - `400 Bad Request`: Token invalid, expired, already consumed, or password does not meet security requirements.
+  - `400 Bad Request`: Token invalid, expired, already consumed, role-mismatched, or password does not meet security requirements.
+
+### 2.9 Administrator Forgot Password (Request Admin Reset Link)
+- **Endpoint:** `POST /api/auth/admin/forgot-password`
+- **Auth:** Public (Rate-limited to 5 requests / 60 seconds per IP)
+- **Description:** Administrator account password recovery. Verifies that the target email exists AND holds the active `admin` role. If verified, generates a cryptographically secure single-use token bound to `role_scope='admin'` and dispatches a dedicated administrator recovery email. Unconditionally returns HTTP 200 with generic messaging to prevent role discovery.
+- **Request Body:**
+  ```json
+  {
+    "email": "admin@proofmesh.local"
+  }
+  ```
+- **Responses:**
+  - `200 OK`:
+    ```json
+    {
+      "message": "If an administrator account with that email exists, a password reset link has been sent."
+    }
+    ```
+  - `429 Too Many Requests`: IP rate limit exceeded.
+
+### 2.10 Administrator Reset Password (Consume Admin Token)
+- **Endpoint:** `POST /api/auth/admin/reset-password`
+- **Auth:** Public
+- **Description:** Validates an administrator-scoped token against `password_reset_tokens` (verifies hash match, unexpired, unconsumed, and `role_scope == 'admin'`). Verifies target user currently holds `admin` role in the database. Updates password hash via bcrypt, marks token as consumed, and prevents reuse.
+- **Request Body:**
+  ```json
+  {
+    "token": "YWRtaW5fc2NvcGVkX3Jlc2V0X3Rva2VuX3VybHNhZmU",
+    "new_password": "NewAdminSecurePassword123!@#"
+  }
+  ```
+- **Responses:**
+  - `200 OK`:
+    ```json
+    {
+      "message": "Administrator password updated successfully. You can now sign in to the Admin Portal with your new credentials."
+    }
+    ```
+  - `400 Bad Request`: Token invalid, expired, role-mismatched, unauthorized for admin recovery, or password does not meet security requirements.
 
 ---
 

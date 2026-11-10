@@ -329,23 +329,25 @@ export default function Login({
             </div>
           </div>
 
-          {/* Forgot password — only shown in user mode */}
-          {!isAdminMode && onForgotPassword && (
+          {/* Forgot password — supported for both User and Admin portals */}
+          {onForgotPassword && (
             <div style={{ textAlign: "right", marginTop: "-6px" }}>
               <button
                 type="button"
-                onClick={onForgotPassword}
+                onClick={() => onForgotPassword(isAdminMode ? "admin" : "user")}
                 style={{
                   background: "none",
                   border: "none",
-                  color: "var(--accent)",
+                  color: isAdminMode ? "#f59e0b" : "var(--accent)",
                   fontSize: "12px",
                   cursor: "pointer",
                   padding: 0,
-                  opacity: 0.85,
+                  opacity: 0.9,
+                  fontWeight: 600,
+                  transition: "opacity 0.2s ease",
                 }}
               >
-                Forgot Password?
+                {isAdminMode ? "Forgot Administrator Password?" : "Forgot Password?"}
               </button>
             </div>
           )}

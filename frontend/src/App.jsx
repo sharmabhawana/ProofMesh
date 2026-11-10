@@ -37,6 +37,11 @@ function MainDashboard() {
     return "login"; // "login" | "register" | "forgot-password" | "reset-password"
   });
 
+  const [authRecoveryMode, setAuthRecoveryMode] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("mode") === "admin" ? "admin" : "user";
+  });
+
   // Active page state with hash support
   const [activePage, setActivePage] = useState(() => {
     const hash = window.location.hash.replace("#/", "").replace("#", "");
@@ -194,17 +199,33 @@ function MainDashboard() {
       >
         {authView === "login" ? (
           <Login
+            defaultMode={authRecoveryMode}
             onSwitchToRegister={() => setAuthView("register")}
             onLoginSuccess={(target) => handleNavigate(target || "overview")}
-            onForgotPassword={() => setAuthView("forgot-password")}
+            onForgotPassword={(mode) => {
+              setAuthRecoveryMode(mode || "user");
+              setAuthView("forgot-password");
+            }}
           />
         ) : authView === "register" ? (
           <Register onSwitchToLogin={() => setAuthView("login")} />
         ) : authView === "forgot-password" ? (
-          <ForgotPassword onBackToLogin={() => setAuthView("login")} />
+          <ForgotPassword
+            mode={authRecoveryMode}
+            onBackToLogin={(mode) => {
+              if (mode) setAuthRecoveryMode(mode);
+              setAuthView("login");
+            }}
+          />
         ) : (
-          /* reset-password — token is read from URL inside the component */
-          <ResetPassword onBackToLogin={() => setAuthView("login")} />
+          /* reset-password — token and mode are read from URL or state */
+          <ResetPassword
+            defaultMode={authRecoveryMode}
+            onBackToLogin={(mode) => {
+              if (mode) setAuthRecoveryMode(mode);
+              setAuthView("login");
+            }}
+          />
         )}
       </div>
     );

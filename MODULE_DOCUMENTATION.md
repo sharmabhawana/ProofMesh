@@ -76,8 +76,19 @@ This document provides an exhaustive reference for all core backend Python modul
 - **`Report`:** Generated audit artifacts, `report_id`, `report_type`, `report_name`, and canonical `safe_file_reference`.
 - **`Upload`:** Customer-submitted dataset metadata, `upload_id`, `original_filename`, `file_type`, `total_events`, `total_agents`, `processing_status`, and `validation_summary`.
 - **`RevokedToken`:** Server-side invalidated JWT tokens (`token_hash`, `user_id`, `revoked_at`, `expires_at`). Indexed by `token_hash` and `expires_at` for high-throughput lookup.
+- **`PasswordResetToken`:** Cryptographically hashed single-use recovery tokens (`token_hash`, `user_id`, `role_scope`, `created_at`, `expires_at`, `used_at`). Binds recovery tokens strictly to either `'user'` or `'admin'` scope to prevent cross-role privilege abuse.
 
-### 4.2 `auth/db_session.py` — Database Engine & Session Management
+### 4.2 `auth/email_service.py` — Enterprise Email Dispatcher & Recovery Service
+- **Purpose:** Dispatches password reset emails for user and administrator accounts via multiple production engines with automatic fallback.
+- **Engines:**
+  - **SMTP Engine:** Port 587 (STARTTLS) or Port 465 (SSL/TLS) supporting Gmail App Passwords, SendGrid, Brevo, AWS SES, and custom SMTP servers.
+  - **Resend REST API Engine:** HTTPS port 443 dispatch using native `urllib.request` (free-tier cloud friendly, zero port throttling).
+  - **Development Mode:** Safe masked console logging for automated testing and local developer environments.
+- **Key Functions:**
+  - `get_email_config()`: Resolves and normalizes SMTP and Resend environment variables.
+  - `send_password_reset_email(to_email, raw_token, role_scope, expires_minutes)`: Generates branded HTML and plain-text emails, renders reset links, and dispatches via the active engine.
+
+### 4.3 `auth/db_session.py` — Database Engine & Session Management
 - **Production Strictness:** In production (`ENVIRONMENT=production`), PostgreSQL is strictly required; connection failures raise fatal exceptions to prevent silent fallback to SQLite.
 - **Development Support:** In local development mode, falls back to local SQLite (`auth/users.db`) with identical schema definitions when PostgreSQL is offline.
 - **Context Management:** `get_db_session()` provides atomic commit/rollback session management with connection pre-ping.

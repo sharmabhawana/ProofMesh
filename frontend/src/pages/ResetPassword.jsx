@@ -23,13 +23,19 @@ const PASSWORD_RULES = [
   },
 ];
 
-export default function ResetPassword({ onBackToLogin }) {
-  // Extract ?token= from the URL
+export default function ResetPassword({ onBackToLogin, defaultMode = "user" }) {
+  // Extract ?token= and ?mode= from URL
   const [token] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     return params.get("token") || "";
   });
 
+  const [mode] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("mode") || defaultMode || "user";
+  });
+
+  const isAdmin = mode === "admin";
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showNew, setShowNew] = useState(false);
@@ -42,7 +48,7 @@ export default function ResetPassword({ onBackToLogin }) {
   useEffect(() => {
     if (!token) {
       setError(
-        "Invalid or missing reset link. Please request a new password reset."
+        "Invalid or missing reset link. Please request a new password recovery link."
       );
     }
   }, [token]);
@@ -53,12 +59,12 @@ export default function ResetPassword({ onBackToLogin }) {
     e.preventDefault();
 
     if (!token) {
-      setError("Invalid reset link. Please request a new password reset.");
+      setError("Invalid reset link. Please request a new password recovery link.");
       return;
     }
 
     if (!allRulesMet) {
-      setError("Password does not meet the requirements below.");
+      setError("Password does not meet the complexity requirements below.");
       return;
     }
 
@@ -71,19 +77,31 @@ export default function ResetPassword({ onBackToLogin }) {
     setError(null);
 
     try {
-      await authService.resetPassword(token, newPassword);
+      if (isAdmin) {
+        await authService.adminResetPassword(token, newPassword);
+      } else {
+        await authService.resetPassword(token, newPassword);
+      }
       setSuccess(true);
-      // Remove the token from the URL so a refresh doesn't re-submit
+      // Clean query parameters from URL so refresh does not re-submit
       window.history.replaceState({}, "", window.location.pathname);
     } catch (err) {
       const detail =
         err?.response?.data?.detail ||
-        "Something went wrong. Please try again or request a new reset link.";
+        "Something went wrong. Please request a new password recovery link.";
       setError(detail);
     } finally {
       setLoading(false);
     }
   };
+
+  const accentColor = isAdmin ? "#f59e0b" : "#3b82f6";
+  const accentGradient = isAdmin
+    ? "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)"
+    : "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)";
+  const accentShadow = isAdmin
+    ? "rgba(245, 158, 11, 0.35)"
+    : "rgba(59, 130, 246, 0.3)";
 
   return (
     <div
@@ -105,7 +123,7 @@ export default function ResetPassword({ onBackToLogin }) {
           width: "100%",
           maxWidth: "450px",
           background: "var(--panel)",
-          border: "1px solid var(--border)",
+          border: `1px solid ${isAdmin ? "rgba(245, 158, 11, 0.4)" : "var(--border)"}`,
           borderRadius: "16px",
           padding: "36px 32px",
           boxShadow: "var(--shadow)",
@@ -119,15 +137,31 @@ export default function ResetPassword({ onBackToLogin }) {
               width: 52,
               height: 52,
               borderRadius: "14px",
-              background: "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)",
+              background: accentGradient,
               color: "#fff",
               display: "grid",
               placeItems: "center",
               margin: "0 auto 14px",
-              boxShadow: "0 6px 18px rgba(59, 130, 246, 0.3)",
+              boxShadow: `0 6px 18px ${accentShadow}`,
             }}
           >
-            <KeyRound size={26} />
+            {isAdmin ? <KeyRound size={26} /> : <ShieldCheck size={28} />}
+          </div>
+          <div
+            style={{
+              display: "inline-block",
+              fontSize: "10px",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+              padding: "3px 8px",
+              borderRadius: "5px",
+              background: isAdmin ? "rgba(245, 158, 11, 0.15)" : "rgba(59, 130, 246, 0.15)",
+              color: accentColor,
+              marginBottom: "8px",
+            }}
+          >
+            {isAdmin ? "Administrator Portal" : "Account Recovery"}
           </div>
           <h2
             style={{
@@ -137,7 +171,7 @@ export default function ResetPassword({ onBackToLogin }) {
               margin: 0,
             }}
           >
-            Set New Password
+            {isAdmin ? "Set Administrator Password" : "Set New Password"}
           </h2>
           <p
             style={{
@@ -146,7 +180,9 @@ export default function ResetPassword({ onBackToLogin }) {
               marginTop: "6px",
             }}
           >
-            Choose a strong password for your ProofMesh account.
+            {isAdmin
+              ? "Choose a strong password for your ProofMesh administrator account."
+              : "Choose a strong password for your ProofMesh account."}
           </p>
         </div>
 
@@ -189,15 +225,16 @@ export default function ResetPassword({ onBackToLogin }) {
                     margin: 0,
                   }}
                 >
-                  Your account password has been changed. You can now sign in
-                  with your new password.
+                  {isAdmin
+                    ? "Your administrator credentials have been securely updated. You can now access the Admin Portal."
+                    : "Your account password has been changed. You can now sign in with your new password."}
                 </p>
               </div>
             </div>
 
             <button
               type="button"
-              onClick={onBackToLogin}
+              onClick={() => onBackToLogin(isAdmin ? "admin" : "user")}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -207,17 +244,16 @@ export default function ResetPassword({ onBackToLogin }) {
                 padding: "12px",
                 borderRadius: "9px",
                 border: "none",
-                background:
-                  "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
+                background: accentGradient,
                 color: "#fff",
                 fontSize: "13px",
                 fontWeight: 650,
                 cursor: "pointer",
-                boxShadow: "0 4px 14px rgba(37, 99, 235, 0.25)",
+                boxShadow: `0 4px 14px ${accentShadow}`,
               }}
             >
-              <ShieldCheck size={15} />
-              Sign In to ProofMesh
+              {isAdmin ? <KeyRound size={15} /> : <ShieldCheck size={15} />}
+              {isAdmin ? "Sign In to Admin Portal" : "Sign In to ProofMesh"}
             </button>
           </div>
         ) : (
@@ -263,7 +299,7 @@ export default function ResetPassword({ onBackToLogin }) {
                     marginBottom: "6px",
                   }}
                 >
-                  New Password
+                  {isAdmin ? "New Administrator Password" : "New Password"}
                 </label>
                 <div style={{ position: "relative" }}>
                   <Lock
@@ -379,7 +415,7 @@ export default function ResetPassword({ onBackToLogin }) {
                     marginBottom: "6px",
                   }}
                 >
-                  Confirm New Password
+                  Confirm Password
                 </label>
                 <div style={{ position: "relative" }}>
                   <Lock
@@ -462,15 +498,14 @@ export default function ResetPassword({ onBackToLogin }) {
                   padding: "12px",
                   borderRadius: "9px",
                   border: "none",
-                  background:
-                    "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
+                  background: accentGradient,
                   color: "#fff",
                   fontSize: "13px",
                   fontWeight: 650,
                   cursor: loading || !token ? "not-allowed" : "pointer",
                   opacity: loading || !token ? 0.75 : 1,
                   marginTop: "4px",
-                  boxShadow: "0 4px 14px rgba(37, 99, 235, 0.25)",
+                  boxShadow: `0 4px 14px ${accentShadow}`,
                 }}
               >
                 {loading ? (
@@ -481,7 +516,7 @@ export default function ResetPassword({ onBackToLogin }) {
                 ) : (
                   <>
                     <KeyRound size={15} />
-                    Update Password
+                    {isAdmin ? "Update Administrator Password" : "Update Password"}
                   </>
                 )}
               </button>
@@ -500,14 +535,14 @@ export default function ResetPassword({ onBackToLogin }) {
             >
               <button
                 type="button"
-                onClick={onBackToLogin}
+                onClick={() => onBackToLogin(isAdmin ? "admin" : "user")}
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "6px",
                   background: "none",
                   border: "none",
-                  color: "var(--accent)",
+                  color: accentColor,
                   fontWeight: 650,
                   cursor: "pointer",
                   padding: 0,
@@ -515,7 +550,7 @@ export default function ResetPassword({ onBackToLogin }) {
                 }}
               >
                 <ArrowLeft size={14} />
-                Back to Sign In
+                {isAdmin ? "Back to Admin Sign In" : "Back to Sign In"}
               </button>
             </div>
           </>
@@ -524,4 +559,3 @@ export default function ResetPassword({ onBackToLogin }) {
     </div>
   );
 }
-

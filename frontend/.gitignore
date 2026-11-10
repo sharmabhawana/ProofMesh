@@ -1,24 +1,100 @@
-# Logs
-logs
-*.log
+
+# ==========================================
+# PROOFMESH - GIT IGNORE
+# ==========================================
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+secrets/
+*.pem
+*.key
+*.p12
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Python virtual environments
+.venv/
+venv/
+ENV/
+env/
+.python-version
+
+# Node.js dependencies
+node_modules/
+frontend/node_modules/
+
+# Frontend build files
+dist/
+dist-ssr/
+build/
+frontend/dist/
+frontend/build/
+
+# Package manager logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Database files and backups
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal/
+*.bak
+*.backup
+
+# Generated logs
+logs/
+*.log
+
+# Temporary files
+temp/
+tmp/
+*.tmp
 *.local
 
-# Editor directories and files
-.vscode/*
+# Generated audit outputs
+audit_run_results.json
+neo4j_verification_results.json
+generated_reports/
+
+# IDE settings
+.vscode/
 !.vscode/extensions.json
-.idea
+.idea/
+
+# Operating system files
 .DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# Windows and Visual Studio files
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Test and development artifacts
+.tox/
+.nox/
+.cache/
+.mypy_cache/
+
+# ==========================================
+# END OF PROOFMESH GITIGNORE
+# ==========================================

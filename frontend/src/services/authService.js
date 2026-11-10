@@ -114,6 +114,30 @@ export const authService = {
     });
     return response.data;
   },
+
+  /**
+   * Request an administrator password-reset link (verified admin account only).
+   * @param {string} email
+   */
+  async adminForgotPassword(email) {
+    const response = await api.post("/api/auth/admin/forgot-password", {
+      email: email.trim().toLowerCase(),
+    });
+    return response.data;
+  },
+
+  /**
+   * Reset the administrator password using an admin-scoped token.
+   * @param {string} token
+   * @param {string} newPassword
+   */
+  async adminResetPassword(token, newPassword) {
+    const response = await api.post("/api/auth/admin/reset-password", {
+      token,
+      new_password: newPassword,
+    });
+    return response.data;
+  },
 };
 
 export default authService;

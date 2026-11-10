@@ -88,6 +88,7 @@ Managed by SQLAlchemy ORM and Alembic migrations:
 - **`reports`**: Analytical reports, file references, generation timestamps, report types.
 - **`uploads`**: Customer-uploaded files, storage paths, file sizes, SHA-256 snapshot hashes, event counts.
 - **`revoked_tokens`**: Blacklisted JWT token hashes for server-side logout and session invalidation. Indexed for $O(1)$ fast lookups.
+- **`password_reset_tokens`**: Single-use cryptographically hashed recovery tokens with 15-minute expirations and strict `role_scope` ('user' vs 'admin') privilege boundaries.
 
 ### Neo4j (Provenance Knowledge Graph)
 Stores entities and directed provenance relationships:

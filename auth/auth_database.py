@@ -39,6 +39,11 @@ def initialize_database() -> None:
         from sqlalchemy import text
         with engine.connect() as conn:
             conn.execute(text("CREATE UNIQUE INDEX IF NOT EXISTS uq_users_username ON users(username)"))
+            # Schema migration: ensure role_scope column exists on password_reset_tokens
+            try:
+                conn.execute(text("ALTER TABLE password_reset_tokens ADD COLUMN role_scope VARCHAR(16) DEFAULT 'user'"))
+            except Exception:
+                pass  # Column already exists or table freshly created
             conn.commit()
     except Exception:
         pass
@@ -222,10 +227,15 @@ def cleanup_expired_revoked_tokens() -> int:
         return deleted
 
 
-def create_password_reset_token(user_id: int, expires_minutes: int = 15) -> str:
+def create_password_reset_token(
+    user_id: int,
+    role_scope: str = "user",
+    expires_minutes: int = 15
+) -> str:
     """
     Generate a cryptographically secure, single-use password reset token.
     Stores the SHA-256 hash in the database and returns the raw secret token.
+    Binds the token to the given role_scope ('user' or 'admin').
     """
     raw_token = secrets.token_urlsafe(32)
     token_hash = hashlib.sha256(raw_token.encode("utf-8")).hexdigest()
@@ -241,6 +251,7 @@ def create_password_reset_token(user_id: int, expires_minutes: int = 15) -> str:
         reset_record = PasswordResetToken(
             token_hash=token_hash,
             user_id=user_id,
+            role_scope=role_scope,
             expires_at=expires_at,
         )
         session.add(reset_record)
@@ -248,11 +259,15 @@ def create_password_reset_token(user_id: int, expires_minutes: int = 15) -> str:
     return raw_token
 
 
-def verify_password_reset_token(raw_token: str) -> Optional[int]:
+def verify_password_reset_token(
+    raw_token: str,
+    expected_role: Optional[str] = None
+) -> Optional[int]:
     """
     Verify a password reset token:
-    Checks that the token exists, is not expired, and has not been used.
-    Returns the user_id if valid, or None if invalid or expired.
+    Checks that the token exists, is not expired, has not been used,
+    and matches the expected role_scope if specified.
+    Returns the user_id if valid, or None if invalid/expired/role-mismatched.
     """
     if not raw_token or not isinstance(raw_token, str):
         return None
@@ -261,24 +276,28 @@ def verify_password_reset_token(raw_token: str) -> Optional[int]:
     now = datetime.now(timezone.utc)
 
     with get_db_session() as session:
-        record = (
-            session.query(PasswordResetToken)
-            .filter(
-                PasswordResetToken.token_hash == token_hash,
-                PasswordResetToken.used_at.is_(None),
-                PasswordResetToken.expires_at > now,
-            )
-            .first()
+        query = session.query(PasswordResetToken).filter(
+            PasswordResetToken.token_hash == token_hash,
+            PasswordResetToken.used_at.is_(None),
+            PasswordResetToken.expires_at > now,
         )
+        if expected_role:
+            query = query.filter(PasswordResetToken.role_scope == expected_role)
+
+        record = query.first()
         if record:
             return record.user_id
     return None
 
 
-def consume_password_reset_token(raw_token: str, new_password_hash: str) -> bool:
+def consume_password_reset_token(
+    raw_token: str,
+    new_password_hash: str,
+    expected_role: Optional[str] = None
+) -> bool:
     """
-    Atomically validate the reset token, update the user's password hash,
-    and mark the reset token as used (single-use enforcement).
+    Atomically validate the reset token against the database and role_scope,
+    update the user's password hash, and mark the token as used (single-use enforcement).
     """
     if not raw_token or not new_password_hash:
         return False
@@ -287,23 +306,27 @@ def consume_password_reset_token(raw_token: str, new_password_hash: str) -> bool
     now = datetime.now(timezone.utc)
 
     with get_db_session() as session:
-        token_record = (
-            session.query(PasswordResetToken)
-            .filter(
-                PasswordResetToken.token_hash == token_hash,
-                PasswordResetToken.used_at.is_(None),
-                PasswordResetToken.expires_at > now,
-            )
-            .first()
+        query = session.query(PasswordResetToken).filter(
+            PasswordResetToken.token_hash == token_hash,
+            PasswordResetToken.used_at.is_(None),
+            PasswordResetToken.expires_at > now,
         )
+        if expected_role:
+            query = query.filter(PasswordResetToken.role_scope == expected_role)
+
+        token_record = query.first()
         if not token_record:
             return False
 
         user = session.query(User).filter(User.id == token_record.user_id).first()
-        if not user:
+        if not user or not user.is_active:
             return False
 
-        # Update password hash and mark token used
+        # Strictly enforce role boundary: user's current database role must match token's role_scope
+        if expected_role and user.role != expected_role:
+            return False
+
+        # Update password hash and mark token as consumed
         user.password_hash = new_password_hash
         token_record.used_at = now
         return True

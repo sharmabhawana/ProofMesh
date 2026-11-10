@@ -545,6 +545,20 @@ class Neo4jProvenanceLoader:
             )
 
     # ========================================================
+    # RUN
+    # ========================================================
+
+    def run(self, events=None):
+        """
+        Verify connection, load events if not provided, and process into Neo4j graph.
+        """
+        self.verify_connection()
+        if events is None:
+            events = self.load_events()
+        self.process_events(events)
+        self.close()
+
+    # ========================================================
     # CLOSE
     # ========================================================
 

@@ -221,6 +221,7 @@ def execute_workflow(
         "model": request.model_name,
         "evidence_captured": evidence_text,
         "agent_output": output_text,
+        "neo4j_status": neo4j_status,
         "error": error_msg,
         "total_provenance_events": len(logger.events),
     }

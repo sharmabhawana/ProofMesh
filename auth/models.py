@@ -269,6 +269,7 @@ class PasswordResetToken(Base):
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     token_hash = Column(String(64), nullable=False, unique=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    role_scope = Column(String(16), nullable=False, default="user", index=True)  # 'user' | 'admin'
     created_at = Column(
         DateTime(timezone=True),
         nullable=False,
@@ -282,6 +283,7 @@ class PasswordResetToken(Base):
             "id": self.id,
             "token_hash": self.token_hash,
             "user_id": self.user_id,
+            "role_scope": self.role_scope,
             "created_at": str(self.created_at) if self.created_at else "",
             "expires_at": str(self.expires_at) if self.expires_at else "",
             "used_at": str(self.used_at) if self.used_at else None,
