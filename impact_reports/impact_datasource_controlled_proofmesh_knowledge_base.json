@@ -1,7 +1,7 @@
 {
   "project": "ProofMesh",
   "analysis_type": "Dependency-Based Impact Analysis",
-  "generated_at": "2026-11-10T08:25:25.690263+00:00",
+  "generated_at": "2026-11-10T08:59:33.436951+00:00",
   "start_node": {
     "node_id": "node_source_controlled_proofmesh_knowledge_base",
     "node_type": "DataSource",
