@@ -87,6 +87,7 @@ Managed by SQLAlchemy ORM and Alembic migrations:
 - **`workflows`**: Workflow IDs, ownership, task descriptions, duration, completion status, results summary.
 - **`reports`**: Analytical reports, file references, generation timestamps, report types.
 - **`uploads`**: Customer-uploaded files, storage paths, file sizes, SHA-256 snapshot hashes, event counts.
+- **`revoked_tokens`**: Blacklisted JWT token hashes for server-side logout and session invalidation. Indexed for $O(1)$ fast lookups.
 
 ### Neo4j (Provenance Knowledge Graph)
 Stores entities and directed provenance relationships:
@@ -119,6 +120,9 @@ Measured on the local host process environment across target event scales:
 Copy `.env.example` to `.env` and configure your credentials:
 
 ```bash
+# Environment Mode (production / development)
+ENVIRONMENT=development
+
 # Neo4j Provenance Graph
 NEO4J_URI=bolt://127.0.0.1:7687
 NEO4J_USER=neo4j
@@ -128,11 +132,15 @@ NEO4J_DATABASE=proofmesh
 # PostgreSQL Relational Database (SQLAlchemy)
 DATABASE_URL=postgresql+psycopg2://postgres:your_pg_password@localhost:5432/proofmesh
 
-# Authentication & Security
+# Authentication & Security (Min 32 characters, required in production)
 JWT_SECRET_KEY=your-secure-random-jwt-secret-key-at-least-32-characters
 
-# AI Execution Engine (Optional for live Gemini execution)
+# Cross-Origin Resource Sharing (CORS)
+CORS_ORIGINS=http://localhost:3000,http://localhost:5173,https://proofmesh.vercel.app
+
+# AI Execution Engine (Google Gemini 3.5 Flash Lite)
 GEMINI_API_KEY=your_google_gemini_api_key
+GEMINI_MODEL=gemini-3.5-flash-lite
 ```
 
 ---
@@ -200,17 +208,18 @@ cd frontend && npm run build
 
 The repository includes complete technical and academic documentation for final-year defense and evaluation:
 
-1. [**`PROJECT_AUDIT.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/PROJECT_AUDIT.md): Comprehensive system audit, component verification matrix, and defect remediation log.
-2. [**`PROJECT_ARCHITECTURE.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/PROJECT_ARCHITECTURE.md): Multi-tier architecture diagrams, component specifications, and end-to-end data flow sequence.
-3. [**`WEEK_2_TO_12_PROGRESS_REPORT.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/WEEK_2_TO_12_PROGRESS_REPORT.md): Week-by-week development achievements from initial formulation to full-stack integration.
-4. [**`MODULE_DOCUMENTATION.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/MODULE_DOCUMENTATION.md): Deep-dive reference guide for every Python module, engine, and frontend component.
-5. [**`API_DOCUMENTATION.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/API_DOCUMENTATION.md): Complete OpenAPI reference covering all 27 REST endpoints, request/response bodies, and status codes.
-6. [**`TESTING_AND_VALIDATION_REPORT.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/TESTING_AND_VALIDATION_REPORT.md): Granular test execution logs covering all 9 test suites (100% Pass across all suites).
-7. [**`PERFORMANCE_EVALUATION.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/PERFORMANCE_EVALUATION.md): Empirical benchmarks measuring latency, RAM, and throughput across 100 to 10,000 event scales.
-8. [**`SECURITY_AND_LIMITATIONS.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/SECURITY_AND_LIMITATIONS.md): Cryptographic threat mitigation matrix, honest academic scope boundaries, and future roadmap.
-9. [**`FINAL_PROJECT_REPORT_OUTLINE.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/FINAL_PROJECT_REPORT_OUTLINE.md): Standard CSE capstone thesis outline with chapter-by-chapter guidance.
-10. [**`FINAL_DEMO_GUIDE.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/FINAL_DEMO_GUIDE.md): Step-by-step live demonstration script for your academic supervisor and examiners.
-11. [**`FINAL_PRESENTATION_SLIDES_OUTLINE.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/FINAL_PRESENTATION_SLIDES_OUTLINE.md): 15-slide presentation blueprint, talking points, and screenshot checklist for your final review PPT.
+1. [**`AUTHENTICATION_SECURITY_AUDIT.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/AUTHENTICATION_SECURITY_AUDIT.md): Comprehensive security audit report covering password cryptography, JWT revocation, rate limiting, and 20/20 test results.
+2. [**`PROJECT_AUDIT.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/PROJECT_AUDIT.md): Comprehensive system audit, component verification matrix, and defect remediation log.
+3. [**`PROJECT_ARCHITECTURE.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/PROJECT_ARCHITECTURE.md): Multi-tier architecture diagrams, component specifications, and end-to-end data flow sequence.
+4. [**`WEEK_2_TO_12_PROGRESS_REPORT.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/WEEK_2_TO_12_PROGRESS_REPORT.md): Week-by-week development achievements from initial formulation to full-stack integration.
+5. [**`MODULE_DOCUMENTATION.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/MODULE_DOCUMENTATION.md): Deep-dive reference guide for every Python module, engine, and frontend component.
+6. [**`API_DOCUMENTATION.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/API_DOCUMENTATION.md): Complete OpenAPI reference covering all 28 REST endpoints, request/response bodies, and status codes.
+7. [**`TESTING_AND_VALIDATION_REPORT.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/TESTING_AND_VALIDATION_REPORT.md): Granular test execution logs covering all test suites (100% Pass across all suites).
+8. [**`PERFORMANCE_EVALUATION.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/PERFORMANCE_EVALUATION.md): Empirical benchmarks measuring latency, RAM, and throughput across 100 to 10,000 event scales.
+9. [**`SECURITY_AND_LIMITATIONS.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/SECURITY_AND_LIMITATIONS.md): Cryptographic threat mitigation matrix, honest academic scope boundaries, and future roadmap.
+10. [**`FINAL_PROJECT_REPORT_OUTLINE.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/FINAL_PROJECT_REPORT_OUTLINE.md): Standard CSE capstone thesis outline with chapter-by-chapter guidance.
+11. [**`FINAL_DEMO_GUIDE.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/FINAL_DEMO_GUIDE.md): Step-by-step live demonstration script for your academic supervisor and examiners.
+12. [**`FINAL_PRESENTATION_SLIDES_OUTLINE.md`**](file:///c:/Users/BHAWANA%20SHARMA/OneDrive/Desktop/ProofMesh/FINAL_PRESENTATION_SLIDES_OUTLINE.md): 15-slide presentation blueprint, talking points, and screenshot checklist for your final review PPT.
 
 ---
 
@@ -220,6 +229,7 @@ The repository includes complete technical and academic documentation for final-
 |---|---|---|---|
 | `POST` | `/api/auth/register` | Register new user account | No |
 | `POST` | `/api/auth/login` | Acquire JWT bearer token (username or email) | No |
+| `POST` | `/api/auth/logout` | Server-side logout & JWT hash revocation | Yes |
 | `GET` | `/api/auth/me` | Fetch authenticated user profile | Yes |
 | `GET` | `/api/auth/admin/users` | List all users (Admin only) | Admin |
 | `PATCH` | `/api/auth/admin/users/{id}/status` | Enable/disable user account | Admin |

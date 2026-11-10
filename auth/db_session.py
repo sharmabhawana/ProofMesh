@@ -37,8 +37,38 @@ def get_database_url() -> str:
 
 
 def create_db_engine():
-    """Create and configure the SQLAlchemy engine with automatic SQLite fallback."""
+    """
+    Create and configure the SQLAlchemy engine.
+    In production (ENVIRONMENT=production), PostgreSQL is strictly required and
+    failure to connect raises a RuntimeError instead of falling back to SQLite.
+    In development/testing, an automatic fallback to local SQLite is maintained.
+    """
     db_url = get_database_url()
+    is_production = os.getenv("ENVIRONMENT", "").strip().lower() in ("production", "prod")
+
+    if is_production:
+        if not db_url or db_url.startswith("sqlite"):
+            raise RuntimeError(
+                "CRITICAL PRODUCTION CONFIGURATION ERROR: ProofMesh requires a production "
+                "PostgreSQL database (DATABASE_URL) in production mode. Local SQLite fallback is disabled."
+            )
+        try:
+            engine = create_engine(
+                db_url,
+                pool_pre_ping=True,
+                pool_size=10,
+                max_overflow=20,
+                pool_recycle=300,
+                echo=False,
+            )
+            with engine.connect() as conn:
+                conn.execute(text("SELECT 1"))
+            return engine
+        except Exception as pg_err:
+            raise RuntimeError(
+                f"CRITICAL PRODUCTION DATABASE ERROR: Failed to connect to PostgreSQL database: {pg_err}. "
+                "Silent fallback to SQLite is strictly forbidden in production."
+            )
 
     if db_url.startswith("sqlite"):
         engine = create_engine(
@@ -47,7 +77,7 @@ def create_db_engine():
             echo=False,
         )
     else:
-        # PostgreSQL with connection pooling and health pre-ping
+        # Development / Testing PostgreSQL with fallback to SQLite
         try:
             engine = create_engine(
                 db_url,
@@ -62,8 +92,8 @@ def create_db_engine():
                 conn.execute(text("SELECT 1"))
         except Exception as pg_err:
             print(
-                f"[DATABASE NOTICE] PostgreSQL connection not available. "
-                f"Falling back to local SQLite at {DEFAULT_SQLITE_PATH.as_posix()}",
+                f"[DATABASE NOTICE] PostgreSQL connection not available ({pg_err}). "
+                f"Falling back to local SQLite at {DEFAULT_SQLITE_PATH.as_posix()} for local development.",
                 flush=True,
             )
             sqlite_url = f"sqlite:///{DEFAULT_SQLITE_PATH.as_posix()}"

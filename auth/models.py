@@ -235,3 +235,30 @@ class Upload(Base):
 
     def __getitem__(self, key):
         return self.to_dict()[key]
+
+
+class RevokedToken(Base):
+    __tablename__ = "revoked_tokens"
+
+    id = Column(Integer, primary_key=True, autoincrement=True, index=True)
+    token_hash = Column(String(64), nullable=False, unique=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    revoked_at = Column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+    )
+    expires_at = Column(DateTime(timezone=True), nullable=False, index=True)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "token_hash": self.token_hash,
+            "user_id": self.user_id,
+            "revoked_at": str(self.revoked_at) if self.revoked_at else "",
+            "expires_at": str(self.expires_at) if self.expires_at else "",
+        }
+
+    def __getitem__(self, key):
+        return self.to_dict()[key]
+

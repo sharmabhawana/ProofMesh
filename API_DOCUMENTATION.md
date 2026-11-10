@@ -42,25 +42,26 @@ This document provides the complete API specification for the ProofMesh FastAPI 
 
 ### 2.1 User Registration
 - **Endpoint:** `POST /api/auth/register`
-- **Auth:** Public
+- **Auth:** Public (Rate limited: 5 requests/min per IP)
 - **Request Body:**
   ```json
   {
     "username": "researcher_01",
     "email": "researcher@proofmesh.local",
-    "password": "StrongPassword123!",
+    "password": "StrongPassword123!@#",
     "full_name": "Dr. Researcher"
   }
   ```
 - **Responses:**
-  - `201 Created`: User successfully created.
-  - `400 Bad Request`: Invalid email format or password less than 8 characters.
+  - `201 Created`: User successfully created (assigned role `user`).
+  - `400 Bad Request`: Invalid username characters, invalid email, or password fails complexity criteria (requires 8–128 chars, uppercase, lowercase, digit, special symbol).
   - `409 Conflict`: Username or email already registered.
+  - `429 Too Many Requests`: Rate limit exceeded.
   - `422 Unprocessable Entity`: Missing mandatory fields.
 
 ### 2.2 User Login
 - **Endpoint:** `POST /api/auth/login`
-- **Auth:** Public
+- **Auth:** Public (Rate limited: 10 requests/min per IP)
 - **Request Body (Form URL-Encoded):**
   - `username` (string, required): Username or email address.
   - `password` (string, required): Plaintext password.
@@ -80,21 +81,35 @@ This document provides the complete API specification for the ProofMesh FastAPI 
       }
     }
     ```
-  - `401 Unauthorized`: Invalid credentials.
+  - `401 Unauthorized`: Invalid credentials (timing-safe verification).
   - `403 Forbidden`: Account is inactive/disabled.
+  - `429 Too Many Requests`: Rate limit exceeded.
 
-### 2.3 User Profile
+### 2.3 User Logout & Token Revocation
+- **Endpoint:** `POST /api/auth/logout`
+- **Auth:** Bearer Token
+- **Description:** Server-side token invalidation. Computes the SHA-256 hash of the bearer token and persists it in the `revoked_tokens` table until token expiration.
+- **Response `200 OK`:**
+  ```json
+  {
+    "message": "Logged out successfully. Session invalidated.",
+    "revoked": true
+  }
+  ```
+
+### 2.4 User Profile
 - **Endpoint:** `GET /api/auth/me`
 - **Auth:** Bearer Token
 - **Response `200 OK`:** Returns authenticated user profile. Password hashes are strictly omitted.
+- **Response `401 Unauthorized`:** Invalid, expired, or revoked token.
 
-### 2.4 Admin User Management
+### 2.5 Admin User Management
 - **Endpoint:** `GET /api/auth/admin/users`
 - **Auth:** Bearer Token (Requires `admin` role)
 - **Response `200 OK`:** Returns array of all registered user records.
 - **Response `403 Forbidden`:** Standard users cannot access this endpoint.
 
-### 2.5 Toggle User Status
+### 2.6 Toggle User Status
 - **Endpoint:** `PATCH /api/auth/admin/users/{user_id}/status`
 - **Auth:** Bearer Token (Requires `admin` role)
 - **Request Body:** `{"is_active": false}`

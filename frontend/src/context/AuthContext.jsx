@@ -57,10 +57,13 @@ export function AuthProvider({ children }) {
     return await authService.register(username, email, password, fullName);
   };
 
-  const logout = () => {
-    authService.logout();
-    setToken(null);
-    setUser(null);
+  const logout = async () => {
+    try {
+      await authService.logout();
+    } finally {
+      setToken(null);
+      setUser(null);
+    }
   };
 
   const value = {

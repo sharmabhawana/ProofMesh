@@ -58,14 +58,34 @@ export default function Register({ onSwitchToLogin }) {
       return;
     }
 
-    // Password strength check
+    // Password strength check (enterprise security criteria)
     if (password.length < 8) {
       setError("Password must contain at least 8 characters.");
       return;
     }
 
-    if (!/[A-Za-z]/.test(password) || !/[0-9]/.test(password)) {
-      setError("Password must contain at least one letter and one number.");
+    if (password.length > 128) {
+      setError("Password cannot exceed 128 characters.");
+      return;
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      setError("Password must contain at least one uppercase letter (A-Z).");
+      return;
+    }
+
+    if (!/[a-z]/.test(password)) {
+      setError("Password must contain at least one lowercase letter (a-z).");
+      return;
+    }
+
+    if (!/[0-9]/.test(password)) {
+      setError("Password must contain at least one number (0-9).");
+      return;
+    }
+
+    if (!/[!@#$%^&*()_\-+={\}[\]|:;"'<>,.?/~`]/.test(password)) {
+      setError("Password must contain at least one special character (!@#$%^&* etc.).");
       return;
     }
 

@@ -56,12 +56,20 @@ export const authService = {
   },
 
   /**
-   * Logout user and purge local credentials
+   * Logout user, notify backend to revoke token, and purge local credentials
    */
-  logout() {
-    localStorage.removeItem("proofmesh_token");
-    localStorage.removeItem("proofmesh_user");
-    window.dispatchEvent(new CustomEvent("proofmesh-auth-change"));
+  async logout() {
+    try {
+      if (this.getToken()) {
+        await api.post("/api/auth/logout");
+      }
+    } catch {
+      // Ignore network errors during logout to guarantee client session cleanup
+    } finally {
+      localStorage.removeItem("proofmesh_token");
+      localStorage.removeItem("proofmesh_user");
+      window.dispatchEvent(new CustomEvent("proofmesh-auth-change"));
+    }
   },
 
   getToken() {

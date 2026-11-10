@@ -5,11 +5,12 @@ SQLAlchemy ORM database layer supporting PostgreSQL and SQLite.
 Preserves existing method signatures and data contracts.
 """
 
+from datetime import datetime, timezone
 from typing import Optional, List, Dict, Any
 from sqlalchemy import func, or_
 from sqlalchemy.exc import IntegrityError
 
-from auth.models import Base, User
+from auth.models import Base, User, RevokedToken
 from auth.db_session import (
     engine,
     get_db_session,
@@ -166,3 +167,55 @@ def update_user_status(user_id: int, is_active: bool) -> bool:
             return False
         user.is_active = bool(is_active)
         return True
+
+
+def revoke_token(token_hash: str, user_id: int, expires_at: datetime) -> bool:
+    """
+    Record a revoked JWT hash in the revoked_tokens table.
+    Returns True on success.
+    """
+    # Ensure expires_at has timezone info
+    if expires_at.tzinfo is None:
+        expires_at = expires_at.replace(tzinfo=timezone.utc)
+
+    with get_db_session() as session:
+        existing = session.query(RevokedToken).filter(RevokedToken.token_hash == token_hash).first()
+        if existing:
+            return True
+        revoked = RevokedToken(
+            token_hash=token_hash,
+            user_id=user_id,
+            expires_at=expires_at,
+        )
+        session.add(revoked)
+        return True
+
+
+def is_token_revoked(token_hash: str) -> bool:
+    """
+    Check if a JWT token hash exists in the revoked_tokens table and has not passed its expiration window.
+    """
+    now = datetime.now(timezone.utc)
+    with get_db_session() as session:
+        record = (
+            session.query(RevokedToken)
+            .filter(
+                RevokedToken.token_hash == token_hash,
+                RevokedToken.expires_at > now
+            )
+            .first()
+        )
+        return record is not None
+
+
+def cleanup_expired_revoked_tokens() -> int:
+    """Purge expired revoked tokens from the database. Returns count of deleted records."""
+    now = datetime.now(timezone.utc)
+    with get_db_session() as session:
+        deleted = (
+            session.query(RevokedToken)
+            .filter(RevokedToken.expires_at <= now)
+            .delete(synchronize_session=False)
+        )
+        return deleted
+

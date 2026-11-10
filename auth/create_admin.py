@@ -7,7 +7,7 @@ from auth.auth_database import (
     find_user_by_email,
     create_user,
 )
-from auth.security import hash_password
+from auth.security import hash_password, validate_password_strength
 
 
 def main():
@@ -37,8 +37,10 @@ def main():
         print("Passwords do not match.")
         return
 
-    if len(password) < 8 or len(password) > 12:
-        print("Admin password must contain between 8 and 12 characters.")
+    try:
+        validate_password_strength(password)
+    except ValueError as e:
+        print(f"Invalid password: {e}")
         return
 
     password_hash = hash_password(password)

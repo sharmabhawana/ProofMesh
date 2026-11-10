@@ -75,15 +75,28 @@ This document provides an exhaustive reference for all core backend Python modul
 - **`Workflow`:** User workflow executions, `workflow_id`, `status` (`pending`, `running`, `completed`, `failed`), `started_at`, `completed_at`, `execution_duration`, `error_message`, and JSON `results_summary`.
 - **`Report`:** Generated audit artifacts, `report_id`, `report_type`, `report_name`, and canonical `safe_file_reference`.
 - **`Upload`:** Customer-submitted dataset metadata, `upload_id`, `original_filename`, `file_type`, `total_events`, `total_agents`, `processing_status`, and `validation_summary`.
+- **`RevokedToken`:** Server-side invalidated JWT tokens (`token_hash`, `user_id`, `revoked_at`, `expires_at`). Indexed by `token_hash` and `expires_at` for high-throughput lookup.
 
-### 4.2 `auth/db_session.py` — Dual-Database Engine & Session Management
-- **Connection Logic:** Resolves `DATABASE_URL`. If pointing to PostgreSQL, attempts live connection with connection pooling. If unreachable, gracefully falls back to local SQLite (`auth/users.db`) with identical schema definitions.
-- **Context Management:** `get_db_session()` provides atomic commit/rollback session management.
+### 4.2 `auth/db_session.py` — Database Engine & Session Management
+- **Production Strictness:** In production (`ENVIRONMENT=production`), PostgreSQL is strictly required; connection failures raise fatal exceptions to prevent silent fallback to SQLite.
+- **Development Support:** In local development mode, falls back to local SQLite (`auth/users.db`) with identical schema definitions when PostgreSQL is offline.
+- **Context Management:** `get_db_session()` provides atomic commit/rollback session management with connection pre-ping.
 
-### 4.3 `auth/security.py` — Cryptographic Password & Token Management
+### 4.3 `auth/security.py` — Cryptographic Password, JWT & Rate Limiting
 - **Password Hashing:** Standard-library PBKDF2-SHA256 (`260,000` iterations) with automatic Passlib fallback supporting existing Argon2 and BCrypt hashes.
-- **Token Security:** PyJWT generating HS256 signed tokens with 60-minute expiration.
-- **Dependencies:** `get_current_user` extracts Bearer JWT and returns authenticated `User` record; verifies account is active.
+- **Password Strength:** `validate_password_strength()` enforces 8–128 character length, uppercase, lowercase, numbers, and special symbols.
+- **JWT Secret Resolution:** `resolve_jwt_secret()` enforces $\ge 32$-character non-placeholder secrets in production, failing fast on misconfiguration.
+- **Token Security:** PyJWT generating HS256 signed tokens with 60-minute expiration and cryptographically unique `jti` nonces.
+- **Revocation Checking:** `get_current_user` inspects the `revoked_tokens` table; revoked tokens are immediately rejected with HTTP 401.
+- **Rate Limiting:** `InMemoryRateLimiter` enforces sliding-window IP limits (10 req/min for login, 5 req/min for registration).
+
+### 4.4 `auth/auth_routes.py` — Authentication & User Management Endpoints
+- **`POST /api/auth/register`:** User registration with password complexity enforcement, rate limiting, and standard role assignment.
+- **`POST /api/auth/login`:** OAuth2 password grant with rate limiting and constant-time password verification.
+- **`POST /api/auth/logout`:** Server-side logout revoking current JWT hash.
+- **`GET /api/auth/me`:** Returns authenticated user profile (password hash omitted).
+- **`GET /api/auth/admin/users`:** Admin-only listing of registered accounts.
+- **`PATCH /api/auth/admin/users/{id}/status`:** Admin-only account activation/deactivation (prevents self-lockout).
 
 ---
 
