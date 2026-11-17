@@ -199,11 +199,63 @@ def home():
 # 8. HEALTH CHECK ENDPOINT
 # ============================================================
 
+def _check_neo4j_health() -> dict:
+    """
+    Lightweight Neo4j connectivity probe for the health endpoint.
+    Returns a plain dict — never raises, never exposes credentials.
+    """
+    import socket
+    from urllib.parse import urlparse
+
+    driver = None
+    try:
+        uri = NEO4J_URI
+        user = NEO4J_USER
+        password = NEO4J_PASSWORD
+        db = NEO4J_DATABASE
+
+        if not password:
+            return {"status": "disconnected", "reason": "NEO4J_PASSWORD not configured"}
+
+        # Socket pre-check (same timeout logic as get_neo4j_driver)
+        parsed = urlparse(uri)
+        host = parsed.hostname or "127.0.0.1"
+        port = parsed.port or 7687
+        is_cloud = parsed.scheme in ("neo4j+s", "bolt+s", "neo4j+ssc", "bolt+ssc") \
+            or host not in ("127.0.0.1", "localhost")
+        timeout = 3.0 if is_cloud else 0.5
+
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(timeout)
+        s.connect((host, port))
+        s.close()
+
+        # Driver + read-only query check
+        driver = GraphDatabase.driver(uri, auth=(user, password))
+        with driver.session(database=db) as session:
+            result = session.run("RETURN 1 AS connection_test").single()
+            if result is None or result["connection_test"] != 1:
+                return {"status": "disconnected", "reason": "Unexpected query result"}
+
+        return {"status": "connected", "host": host, "database": db}
+
+    except Exception:
+        return {"status": "disconnected", "reason": "Neo4j is offline or unreachable"}
+
+    finally:
+        if driver is not None:
+            try:
+                driver.close()
+            except Exception:
+                pass
+
+
 @app.get("/health")
 @app.get("/api/health")
 def health_check():
 
     db_status = check_db_connection()
+    neo4j_status = _check_neo4j_health()
     env_mode = os.getenv("ENVIRONMENT", "development")
 
     return {
@@ -211,7 +263,8 @@ def health_check():
         "backend": "FastAPI",
         "project": "ProofMesh",
         "environment": env_mode,
-        "database": db_status
+        "database": db_status,
+        "neo4j": neo4j_status,
     }
 
 
