@@ -1,7 +1,7 @@
 [
     {
-        "event_id": "9222dc9f-d12a-4123-b7b0-d0b10a7487c3",
-        "timestamp": "2026-11-17T08:23:34.690900+00:00",
+        "event_id": "eb1a08ea-b49e-41b3-9223-684d692a7326",
+        "timestamp": "2026-11-17T08:54:27.318013+00:00",
         "event_type": "MODEL_DETAILS",
         "agent": "ProofMesh-Agent",
         "model": "gemini-3.5-flash-lite",
@@ -12,28 +12,28 @@
             "model": "gemini-3.5-flash-lite",
             "provider": "Google Gemini",
             "integration": "LangChain",
-            "workflow_id": "wf_344626ee4a1b",
+            "workflow_id": "wf_8f536c13cf03",
             "operator": "admin"
         }
     },
     {
-        "event_id": "2d30d439-c6ef-4fe2-81ad-aabba1210290",
-        "timestamp": "2026-11-17T08:23:34.692582+00:00",
+        "event_id": "327b4258-91b2-4f7f-a922-b99ba4ff262a",
+        "timestamp": "2026-11-17T08:54:27.319712+00:00",
         "event_type": "LLM_CALL_START",
         "agent": "ProofMesh-Agent",
         "model": "gemini-3.5-flash-lite",
         "tool": null,
-        "input": "Explain how provenance tracking verifies data lineage and reduces hallucination in AI agents. [Nonce: audit_1794903814656]",
+        "input": "Explain how Neo4j graph databases represent AI provenance and data lineage. [Nonce: neo4j_audit_1794905667291]",
         "output": null,
         "metadata": {
             "model": "gemini-3.5-flash-lite",
             "provider": "Google Gemini",
-            "workflow_id": "wf_344626ee4a1b"
+            "workflow_id": "wf_8f536c13cf03"
         }
     },
     {
-        "event_id": "06f2259d-3960-49e2-8800-0a9bbc691759",
-        "timestamp": "2026-11-17T08:23:37.446853+00:00",
+        "event_id": "d15e09f6-525a-4438-9597-e1378efd50c1",
+        "timestamp": "2026-11-17T08:54:30.165478+00:00",
         "event_type": "TOOL_START",
         "agent": "ProofMesh-Agent",
         "model": null,
@@ -41,12 +41,12 @@
         "input": "{'topic': 'provenance'}",
         "output": null,
         "metadata": {
-            "run_id": "01a1e89a-bce6-7422-a101-7a54ca598fb8"
+            "run_id": "01a1e8b7-0215-7d82-a36c-e48b92300c87"
         }
     },
     {
-        "event_id": "47ba555d-5b09-40b6-91e8-d0015a410b3c",
-        "timestamp": "2026-11-17T08:23:37.449678+00:00",
+        "event_id": "212f022e-a18a-4620-b13f-9ce6667a31f9",
+        "timestamp": "2026-11-17T08:54:30.169119+00:00",
         "event_type": "TOOL_END",
         "agent": "ProofMesh-Agent",
         "model": null,
@@ -54,12 +54,12 @@
         "input": null,
         "output": "Provenance is the recorded history of the origin, processing, and transformation of information.",
         "metadata": {
-            "run_id": "01a1e89a-bce6-7422-a101-7a54ca598fb8"
+            "run_id": "01a1e8b7-0215-7d82-a36c-e48b92300c87"
         }
     },
     {
-        "event_id": "e0da03c6-279b-4155-9c88-59e6a0e222ec",
-        "timestamp": "2026-11-17T08:23:37.451186+00:00",
+        "event_id": "bdbd27ed-cc5d-4b45-b3c8-5d7abc114917",
+        "timestamp": "2026-11-17T08:54:30.170867+00:00",
         "event_type": "EVIDENCE_CAPTURED",
         "agent": "ProofMesh-Agent",
         "model": null,
@@ -71,27 +71,27 @@
         "metadata": {
             "source": "Controlled ProofMesh Knowledge Base",
             "status": "CAPTURED",
-            "workflow_id": "wf_344626ee4a1b"
+            "workflow_id": "wf_8f536c13cf03"
         }
     },
     {
-        "event_id": "8cfbc223-a4bc-4b19-a458-1e9ea0ba1cc3",
-        "timestamp": "2026-11-17T08:23:45.389363+00:00",
+        "event_id": "d8579a17-7059-4931-9b2c-dfe5534c026c",
+        "timestamp": "2026-11-17T08:54:40.588300+00:00",
         "event_type": "LLM_CALL_END",
         "agent": "ProofMesh-Agent",
         "model": "gemini-3.5-flash-lite",
         "tool": null,
-        "input": "Explain how provenance tracking verifies data lineage and reduces hallucination in AI agents. [Nonce: audit_1794903814656]",
-        "output": "Provenance tracking records the origin, processing, and transformation of data. By maintaining this immutable audit trail, AI agents can transparently verify data lineage—tracing exactly where information came from and how it was modified. This verification ensures retrieval-augmented generation relies on verified, trustworthy sources rather than unvetted inputs. Consequently, it grounds the model's outputs in factual history, significantly reducing hallucinations and improving reliability.",
+        "input": "Explain how Neo4j graph databases represent AI provenance and data lineage. [Nonce: neo4j_audit_1794905667291]",
+        "output": "Neo4j graph databases represent AI provenance and data lineage by storing information as interconnected nodes and relationships. Nodes typically represent data sources, AI models, transformations, and outputs, while directed edges capture the chronological flow of processing and dependencies. This structure mirrors the definition of provenance—the recorded history of origin, processing, and transformation—allowing organizations to query the entire lifecycle of data and machine learning artifacts, trace errors back to their root sources, and ensure end-to-end auditability and compliance for AI systems.",
         "metadata": {
             "model": "gemini-3.5-flash-lite",
             "status": "SUCCESS",
-            "workflow_id": "wf_344626ee4a1b"
+            "workflow_id": "wf_8f536c13cf03"
         }
     },
     {
-        "event_id": "2d5d4dc4-8971-46f6-8dbe-305b7c9a28b8",
-        "timestamp": "2026-11-17T08:23:45.391136+00:00",
+        "event_id": "65582308-083e-4ab2-b8df-5d34bf0629f2",
+        "timestamp": "2026-11-17T08:54:40.590135+00:00",
         "event_type": "INTERMEDIATE_DECISION",
         "agent": "ProofMesh-Agent",
         "model": null,
@@ -102,23 +102,23 @@
         "output": "Evaluated evidence and model output against provenance rules.",
         "metadata": {
             "stage": "Validation",
-            "workflow_id": "wf_344626ee4a1b"
+            "workflow_id": "wf_8f536c13cf03"
         }
     },
     {
-        "event_id": "aab90c25-9ac3-4338-9098-f47ea371e97c",
-        "timestamp": "2026-11-17T08:23:45.392636+00:00",
+        "event_id": "dd1ed084-d48c-445b-b429-9f7f1bf1d0d7",
+        "timestamp": "2026-11-17T08:54:40.592203+00:00",
         "event_type": "DECISION",
         "agent": "ProofMesh-Agent",
         "model": null,
         "tool": null,
         "input": {
-            "request": "Explain how provenance tracking verifies data lineage and reduces hallucination in AI agents. [Nonce: audit_1794903814656]"
+            "request": "Explain how Neo4j graph databases represent AI provenance and data lineage. [Nonce: neo4j_audit_1794905667291]"
         },
-        "output": "Final outcome verified and approved for workflow wf_344626ee4a1b.",
+        "output": "Final outcome verified and approved for workflow wf_8f536c13cf03.",
         "metadata": {
             "status": "RECORDED",
-            "workflow_id": "wf_344626ee4a1b"
+            "workflow_id": "wf_8f536c13cf03"
         }
     }
 ]

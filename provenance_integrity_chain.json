@@ -3,16 +3,16 @@
     "description": "Hash chain for ProofMesh provenance records",
     "record_count": 8,
     "genesis_hash": "0000000000000000000000000000000000000000000000000000000000000000",
-    "chain_head": "1cb5e103ff34cfe022a69198abe54451a20679069bdcb4de56e47ab07d4336cb",
+    "chain_head": "7c94af1d7a84e66627241e0128e48e624c0c8a5d5db0c4eec921e5b9b2b36fec",
     "records": [
         {
             "sequence": 1,
-            "event_id": "9222dc9f-d12a-4123-b7b0-d0b10a7487c3",
+            "event_id": "eb1a08ea-b49e-41b3-9223-684d692a7326",
             "event_type": "MODEL_DETAILS",
             "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
             "event": {
-                "event_id": "9222dc9f-d12a-4123-b7b0-d0b10a7487c3",
-                "timestamp": "2026-11-17T08:23:34.690900+00:00",
+                "event_id": "eb1a08ea-b49e-41b3-9223-684d692a7326",
+                "timestamp": "2026-11-17T08:54:27.318013+00:00",
                 "event_type": "MODEL_DETAILS",
                 "agent": "ProofMesh-Agent",
                 "model": "gemini-3.5-flash-lite",
@@ -23,42 +23,42 @@
                     "model": "gemini-3.5-flash-lite",
                     "provider": "Google Gemini",
                     "integration": "LangChain",
-                    "workflow_id": "wf_344626ee4a1b",
+                    "workflow_id": "wf_8f536c13cf03",
                     "operator": "admin"
                 }
             },
-            "record_hash": "30d8452aa577b69b6408a0f04c98c9b1778cd3356144d63a4be1727ff76337f0"
+            "record_hash": "e038d24ef29ba95d8c484d4b8bcc8734f2c0842d199045bb2371905c6d294c5d"
         },
         {
             "sequence": 2,
-            "event_id": "2d30d439-c6ef-4fe2-81ad-aabba1210290",
+            "event_id": "327b4258-91b2-4f7f-a922-b99ba4ff262a",
             "event_type": "LLM_CALL_START",
-            "previous_hash": "30d8452aa577b69b6408a0f04c98c9b1778cd3356144d63a4be1727ff76337f0",
+            "previous_hash": "e038d24ef29ba95d8c484d4b8bcc8734f2c0842d199045bb2371905c6d294c5d",
             "event": {
-                "event_id": "2d30d439-c6ef-4fe2-81ad-aabba1210290",
-                "timestamp": "2026-11-17T08:23:34.692582+00:00",
+                "event_id": "327b4258-91b2-4f7f-a922-b99ba4ff262a",
+                "timestamp": "2026-11-17T08:54:27.319712+00:00",
                 "event_type": "LLM_CALL_START",
                 "agent": "ProofMesh-Agent",
                 "model": "gemini-3.5-flash-lite",
                 "tool": null,
-                "input": "Explain how provenance tracking verifies data lineage and reduces hallucination in AI agents. [Nonce: audit_1794903814656]",
+                "input": "Explain how Neo4j graph databases represent AI provenance and data lineage. [Nonce: neo4j_audit_1794905667291]",
                 "output": null,
                 "metadata": {
                     "model": "gemini-3.5-flash-lite",
                     "provider": "Google Gemini",
-                    "workflow_id": "wf_344626ee4a1b"
+                    "workflow_id": "wf_8f536c13cf03"
                 }
             },
-            "record_hash": "06af40795839f08218378caad787a1c9def5de26dadb91f3003868a8ba3f86ab"
+            "record_hash": "108cccbe13ccfddfb44d416796b787a63c798cb703342c5b8a824508ceaf988f"
         },
         {
             "sequence": 3,
-            "event_id": "06f2259d-3960-49e2-8800-0a9bbc691759",
+            "event_id": "d15e09f6-525a-4438-9597-e1378efd50c1",
             "event_type": "TOOL_START",
-            "previous_hash": "06af40795839f08218378caad787a1c9def5de26dadb91f3003868a8ba3f86ab",
+            "previous_hash": "108cccbe13ccfddfb44d416796b787a63c798cb703342c5b8a824508ceaf988f",
             "event": {
-                "event_id": "06f2259d-3960-49e2-8800-0a9bbc691759",
-                "timestamp": "2026-11-17T08:23:37.446853+00:00",
+                "event_id": "d15e09f6-525a-4438-9597-e1378efd50c1",
+                "timestamp": "2026-11-17T08:54:30.165478+00:00",
                 "event_type": "TOOL_START",
                 "agent": "ProofMesh-Agent",
                 "model": null,
@@ -66,19 +66,19 @@
                 "input": "{'topic': 'provenance'}",
                 "output": null,
                 "metadata": {
-                    "run_id": "01a1e89a-bce6-7422-a101-7a54ca598fb8"
+                    "run_id": "01a1e8b7-0215-7d82-a36c-e48b92300c87"
                 }
             },
-            "record_hash": "c19e6ded7f4de0154a403168c736fb82ff7abd736af8b165d0c16923b246aeda"
+            "record_hash": "3631728ad5d0ad0b42d2ced9cc1c030999a2af88f2a5743fa4ce4d9d0785437a"
         },
         {
             "sequence": 4,
-            "event_id": "47ba555d-5b09-40b6-91e8-d0015a410b3c",
+            "event_id": "212f022e-a18a-4620-b13f-9ce6667a31f9",
             "event_type": "TOOL_END",
-            "previous_hash": "c19e6ded7f4de0154a403168c736fb82ff7abd736af8b165d0c16923b246aeda",
+            "previous_hash": "3631728ad5d0ad0b42d2ced9cc1c030999a2af88f2a5743fa4ce4d9d0785437a",
             "event": {
-                "event_id": "47ba555d-5b09-40b6-91e8-d0015a410b3c",
-                "timestamp": "2026-11-17T08:23:37.449678+00:00",
+                "event_id": "212f022e-a18a-4620-b13f-9ce6667a31f9",
+                "timestamp": "2026-11-17T08:54:30.169119+00:00",
                 "event_type": "TOOL_END",
                 "agent": "ProofMesh-Agent",
                 "model": null,
@@ -86,19 +86,19 @@
                 "input": null,
                 "output": "Provenance is the recorded history of the origin, processing, and transformation of information.",
                 "metadata": {
-                    "run_id": "01a1e89a-bce6-7422-a101-7a54ca598fb8"
+                    "run_id": "01a1e8b7-0215-7d82-a36c-e48b92300c87"
                 }
             },
-            "record_hash": "55d102e7dff3791c97b60def93cdbfd39836e857121039f13ae68b2a8c8f77c4"
+            "record_hash": "860b3a6fe07f1f7da71b009eff312a48b0d63438adf975365d5ffe2506f3f4df"
         },
         {
             "sequence": 5,
-            "event_id": "e0da03c6-279b-4155-9c88-59e6a0e222ec",
+            "event_id": "bdbd27ed-cc5d-4b45-b3c8-5d7abc114917",
             "event_type": "EVIDENCE_CAPTURED",
-            "previous_hash": "55d102e7dff3791c97b60def93cdbfd39836e857121039f13ae68b2a8c8f77c4",
+            "previous_hash": "860b3a6fe07f1f7da71b009eff312a48b0d63438adf975365d5ffe2506f3f4df",
             "event": {
-                "event_id": "e0da03c6-279b-4155-9c88-59e6a0e222ec",
-                "timestamp": "2026-11-17T08:23:37.451186+00:00",
+                "event_id": "bdbd27ed-cc5d-4b45-b3c8-5d7abc114917",
+                "timestamp": "2026-11-17T08:54:30.170867+00:00",
                 "event_type": "EVIDENCE_CAPTURED",
                 "agent": "ProofMesh-Agent",
                 "model": null,
@@ -110,41 +110,41 @@
                 "metadata": {
                     "source": "Controlled ProofMesh Knowledge Base",
                     "status": "CAPTURED",
-                    "workflow_id": "wf_344626ee4a1b"
+                    "workflow_id": "wf_8f536c13cf03"
                 }
             },
-            "record_hash": "30348c9aa8d38059e41146984a4bfb3dac659cc2d71b362866c69187d11d3d4e"
+            "record_hash": "4a90b0b0a8c0bfe793245c92ef49430e99d29a465003a176971c2116c89a6da6"
         },
         {
             "sequence": 6,
-            "event_id": "8cfbc223-a4bc-4b19-a458-1e9ea0ba1cc3",
+            "event_id": "d8579a17-7059-4931-9b2c-dfe5534c026c",
             "event_type": "LLM_CALL_END",
-            "previous_hash": "30348c9aa8d38059e41146984a4bfb3dac659cc2d71b362866c69187d11d3d4e",
+            "previous_hash": "4a90b0b0a8c0bfe793245c92ef49430e99d29a465003a176971c2116c89a6da6",
             "event": {
-                "event_id": "8cfbc223-a4bc-4b19-a458-1e9ea0ba1cc3",
-                "timestamp": "2026-11-17T08:23:45.389363+00:00",
+                "event_id": "d8579a17-7059-4931-9b2c-dfe5534c026c",
+                "timestamp": "2026-11-17T08:54:40.588300+00:00",
                 "event_type": "LLM_CALL_END",
                 "agent": "ProofMesh-Agent",
                 "model": "gemini-3.5-flash-lite",
                 "tool": null,
-                "input": "Explain how provenance tracking verifies data lineage and reduces hallucination in AI agents. [Nonce: audit_1794903814656]",
-                "output": "Provenance tracking records the origin, processing, and transformation of data. By maintaining this immutable audit trail, AI agents can transparently verify data lineage—tracing exactly where information came from and how it was modified. This verification ensures retrieval-augmented generation relies on verified, trustworthy sources rather than unvetted inputs. Consequently, it grounds the model's outputs in factual history, significantly reducing hallucinations and improving reliability.",
+                "input": "Explain how Neo4j graph databases represent AI provenance and data lineage. [Nonce: neo4j_audit_1794905667291]",
+                "output": "Neo4j graph databases represent AI provenance and data lineage by storing information as interconnected nodes and relationships. Nodes typically represent data sources, AI models, transformations, and outputs, while directed edges capture the chronological flow of processing and dependencies. This structure mirrors the definition of provenance—the recorded history of origin, processing, and transformation—allowing organizations to query the entire lifecycle of data and machine learning artifacts, trace errors back to their root sources, and ensure end-to-end auditability and compliance for AI systems.",
                 "metadata": {
                     "model": "gemini-3.5-flash-lite",
                     "status": "SUCCESS",
-                    "workflow_id": "wf_344626ee4a1b"
+                    "workflow_id": "wf_8f536c13cf03"
                 }
             },
-            "record_hash": "cb8f4c86aff39a13d9085e7dffa95dd8d85713252b9a7d51493d75af1e6ba437"
+            "record_hash": "c7b60f661045a763b5afb31af5ddb363a44accdbadf230f103902240360693b4"
         },
         {
             "sequence": 7,
-            "event_id": "2d5d4dc4-8971-46f6-8dbe-305b7c9a28b8",
+            "event_id": "65582308-083e-4ab2-b8df-5d34bf0629f2",
             "event_type": "INTERMEDIATE_DECISION",
-            "previous_hash": "cb8f4c86aff39a13d9085e7dffa95dd8d85713252b9a7d51493d75af1e6ba437",
+            "previous_hash": "c7b60f661045a763b5afb31af5ddb363a44accdbadf230f103902240360693b4",
             "event": {
-                "event_id": "2d5d4dc4-8971-46f6-8dbe-305b7c9a28b8",
-                "timestamp": "2026-11-17T08:23:45.391136+00:00",
+                "event_id": "65582308-083e-4ab2-b8df-5d34bf0629f2",
+                "timestamp": "2026-11-17T08:54:40.590135+00:00",
                 "event_type": "INTERMEDIATE_DECISION",
                 "agent": "ProofMesh-Agent",
                 "model": null,
@@ -155,33 +155,33 @@
                 "output": "Evaluated evidence and model output against provenance rules.",
                 "metadata": {
                     "stage": "Validation",
-                    "workflow_id": "wf_344626ee4a1b"
+                    "workflow_id": "wf_8f536c13cf03"
                 }
             },
-            "record_hash": "ba8219ef02a885849afd064ffe6550b5170b2b907de1b7a7e2615747b773537e"
+            "record_hash": "b57e222fa39ffe33558b3a3edde102b4fd72d246afbfe1a6917742786d4799e8"
         },
         {
             "sequence": 8,
-            "event_id": "aab90c25-9ac3-4338-9098-f47ea371e97c",
+            "event_id": "dd1ed084-d48c-445b-b429-9f7f1bf1d0d7",
             "event_type": "DECISION",
-            "previous_hash": "ba8219ef02a885849afd064ffe6550b5170b2b907de1b7a7e2615747b773537e",
+            "previous_hash": "b57e222fa39ffe33558b3a3edde102b4fd72d246afbfe1a6917742786d4799e8",
             "event": {
-                "event_id": "aab90c25-9ac3-4338-9098-f47ea371e97c",
-                "timestamp": "2026-11-17T08:23:45.392636+00:00",
+                "event_id": "dd1ed084-d48c-445b-b429-9f7f1bf1d0d7",
+                "timestamp": "2026-11-17T08:54:40.592203+00:00",
                 "event_type": "DECISION",
                 "agent": "ProofMesh-Agent",
                 "model": null,
                 "tool": null,
                 "input": {
-                    "request": "Explain how provenance tracking verifies data lineage and reduces hallucination in AI agents. [Nonce: audit_1794903814656]"
+                    "request": "Explain how Neo4j graph databases represent AI provenance and data lineage. [Nonce: neo4j_audit_1794905667291]"
                 },
-                "output": "Final outcome verified and approved for workflow wf_344626ee4a1b.",
+                "output": "Final outcome verified and approved for workflow wf_8f536c13cf03.",
                 "metadata": {
                     "status": "RECORDED",
-                    "workflow_id": "wf_344626ee4a1b"
+                    "workflow_id": "wf_8f536c13cf03"
                 }
             },
-            "record_hash": "1cb5e103ff34cfe022a69198abe54451a20679069bdcb4de56e47ab07d4336cb"
+            "record_hash": "7c94af1d7a84e66627241e0128e48e624c0c8a5d5db0c4eec921e5b9b2b36fec"
         }
     ]
 }
