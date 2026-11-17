@@ -27,9 +27,11 @@ def get_database_url() -> str:
     if not url:
         return f"sqlite:///{DEFAULT_SQLITE_PATH.as_posix()}"
 
-    # Normalize Heroku/Supabase/legacy postgres:// syntax
+    # Normalize Heroku/Supabase/legacy postgres:// and postgresql+psycopg syntax
     if url.startswith("postgres://"):
         url = url.replace("postgres://", "postgresql+psycopg2://", 1)
+    elif url.startswith("postgresql+psycopg://"):
+        url = url.replace("postgresql+psycopg://", "postgresql+psycopg2://", 1)
     elif url.startswith("postgresql://") and not url.startswith("postgresql+"):
         url = url.replace("postgresql://", "postgresql+psycopg2://", 1)
 

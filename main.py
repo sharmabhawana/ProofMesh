@@ -78,7 +78,7 @@ if env_cors:
         if cleaned and cleaned != "*" and cleaned not in allowed_origins:
             allowed_origins.append(cleaned)
 
-cors_regex = os.getenv("CORS_ORIGIN_REGEX", r"^https:\/\/.*\.vercel\.app$").strip()
+cors_regex = os.getenv("CORS_ORIGIN_REGEX", r"^https:\/\/.*(\.onrender\.com|\.vercel\.app)$").strip()
 
 app.add_middleware(
     CORSMiddleware,
@@ -122,8 +122,10 @@ def get_neo4j_driver():
         parsed = urlparse(NEO4J_URI)
         host = parsed.hostname or "127.0.0.1"
         port = parsed.port or 7687
+        is_cloud = parsed.scheme in ("neo4j+s", "bolt+s") or host not in ("127.0.0.1", "localhost")
+        timeout = 3.0 if is_cloud else 0.5
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(0.3)
+        s.settimeout(timeout)
         s.connect((host, port))
         s.close()
     except Exception:
@@ -198,14 +200,17 @@ def home():
 # ============================================================
 
 @app.get("/health")
+@app.get("/api/health")
 def health_check():
 
     db_status = check_db_connection()
+    env_mode = os.getenv("ENVIRONMENT", "development")
 
     return {
         "status": "healthy",
         "backend": "FastAPI",
         "project": "ProofMesh",
+        "environment": env_mode,
         "database": db_status
     }
 
@@ -498,3 +503,9 @@ def get_impact_analysis(
     finally:
         if driver is not None:
             driver.close()
+
+
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)

@@ -61,6 +61,24 @@ class Neo4jProvenanceLoader:
 
         print("Neo4j connection: OK")
 
+    def ensure_constraints(self):
+        """Ensure required uniqueness constraints exist in Neo4j (compatible with AuraDB & local)."""
+        constraints = [
+            "CREATE CONSTRAINT agent_id_unique IF NOT EXISTS FOR (a:Agent) REQUIRE a.agent_id IS UNIQUE",
+            "CREATE CONSTRAINT tool_id_unique IF NOT EXISTS FOR (t:Tool) REQUIRE t.tool_id IS UNIQUE",
+            "CREATE CONSTRAINT source_id_unique IF NOT EXISTS FOR (s:DataSource) REQUIRE s.source_id IS UNIQUE",
+            "CREATE CONSTRAINT decision_id_unique IF NOT EXISTS FOR (d:Decision) REQUIRE d.decision_id IS UNIQUE",
+        ]
+        try:
+            with self.driver.session(database=DATABASE) as session:
+                for query in constraints:
+                    try:
+                        session.run(query)
+                    except Exception:
+                        pass
+        except Exception:
+            pass
+
     # --------------------------------------------------------
     # Load provenance JSON
     # --------------------------------------------------------
@@ -550,9 +568,10 @@ class Neo4jProvenanceLoader:
 
     def run(self, events=None):
         """
-        Verify connection, load events if not provided, and process into Neo4j graph.
+        Verify connection, ensure schema constraints, load events if not provided, and process into Neo4j graph.
         """
         self.verify_connection()
+        self.ensure_constraints()
         if events is None:
             events = self.load_events()
         self.process_events(events)
