@@ -14,6 +14,7 @@ Verifies:
 
 import sys
 import os
+import pytest
 
 # Ensure project root is on path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -115,5 +116,4 @@ def test_health_contains_required_fields():
 
 
 if __name__ == "__main__":
-    import pytest
     sys.exit(pytest.main([__file__, "-v"]))
