@@ -9,7 +9,7 @@ Verifies:
 - Both "database" and "neo4j" keys are present
 - neo4j.status is "connected" or "disconnected" (never raw exception text)
 - neo4j dict never contains passwords or full URIs with credentials
-- _check_neo4j_health() never raises — it always returns a dict
+- _check_neo4j_health() never raises -- it always returns a dict
 """
 
 import sys
@@ -86,13 +86,10 @@ def test_neo4j_no_credentials_exposed():
     r = client.get("/health")
     body = r.json()
     neo4j = body.get("neo4j", {})
-    # Serialise to string and check for common credential patterns
     neo4j_str = str(neo4j)
-    # Password key must not appear
     assert "password" not in neo4j_str.lower(), (
         "neo4j health response must not contain password field"
     )
-    # Connection strings with embedded credentials (user:pass@) must not appear
     assert "@" not in neo4j_str or "://" not in neo4j_str, (
         "neo4j health response must not contain a full URI with credentials"
     )
