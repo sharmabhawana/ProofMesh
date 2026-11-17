@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import dashboardService from "../services/dashboardService";
 import LoadingState from "../components/LoadingState";
+import { API_BASE_URL } from "../services/api";
 
 export default function SystemHealth({
   healthData,
@@ -54,7 +55,7 @@ export default function SystemHealth({
       details: [
         { label: "Engine", value: "FastAPI / Uvicorn ASGI" },
         { label: "Response Status", value: healthData?.status || "Unavailable" },
-        { label: "Target Host", value: "127.0.0.1:8000" },
+        { label: "Target Host", value: API_BASE_URL },
       ],
     },
     {

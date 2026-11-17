@@ -180,6 +180,44 @@ npm run dev
 
 The application is now accessible at **`http://localhost:5173`**.
 
+### 3. Docker Containerization (Optional / Portable Deployment)
+ProofMesh includes production-ready Docker and Docker Compose configurations:
+
+```bash
+# Build and start all services using Docker Compose
+docker compose up --build
+
+# Or build and run services individually:
+# Backend:
+docker build -t proofmesh-backend .
+docker run -p 8000:8000 --env-file .env proofmesh-backend
+
+# Frontend:
+docker build --build-arg VITE_API_BASE_URL=http://localhost:8000 -t proofmesh-frontend ./frontend
+docker run -p 3000:80 proofmesh-frontend
+```
+- Backend container: `http://localhost:8000` (Healthcheck at `/health`)
+- Frontend container: `http://localhost:3000`
+
+### 4. Cloud Deployment Architecture (Render + Vercel)
+ProofMesh is specifically optimized for simple academic deployment:
+
+1. **FastAPI Backend on Render**:
+   - **Repository Root**: `.` (Root)
+   - **Environment**: Python 3.11+
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+   - **Environment Variables**: `ENVIRONMENT=production`, `JWT_SECRET_KEY`, `DATABASE_URL` (Supabase / Render PostgreSQL), `GEMINI_API_KEY`, `CORS_ORIGINS`, `EMAIL_PROVIDER=resend`, `RESEND_API_KEY`.
+   - *Note on Filesystem*: Free-tier Render disks are ephemeral. The repository includes baseline tracked `provenance_logs.json` and `provenance_integrity_chain.json` ensuring immediate out-of-the-box demonstration upon cold start.
+
+2. **React Frontend on Vercel**:
+   - **Root Directory**: `frontend`
+   - **Framework Preset**: Vite
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+   - **Environment Variable**: `VITE_API_BASE_URL=https://<your-render-app>.onrender.com`
+   - **SPA Routing**: Handled automatically via `frontend/vercel.json` rewrites.
+
 ---
 
 ## 7. Running the Automated Test Suites

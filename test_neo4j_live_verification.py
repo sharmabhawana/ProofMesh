@@ -79,11 +79,11 @@ record_step(1, "Verify Live Neo4j Database Connection", step1_pass, {
 # ----------------------------------------------------------------------------
 # STEP 2: Check ProofMesh Graph Schema and Constraints
 # ----------------------------------------------------------------------------
+required_constraints = ["agent_id_unique", "tool_id_unique", "source_id_unique", "decision_id_unique"]
 try:
     with driver.session(database=NEO4J_DATABASE) as session:
         constraints_data = session.run("SHOW CONSTRAINTS").data()
         constraint_names = [c["name"] for c in constraints_data]
-        required_constraints = ["agent_id_unique", "tool_id_unique", "source_id_unique", "decision_id_unique"]
         missing = [rc for rc in required_constraints if rc not in constraint_names]
         step2_pass = (len(missing) == 0)
 except Exception as e:
@@ -100,10 +100,17 @@ record_step(2, "Check ProofMesh Graph Schema and Constraints", step2_pass, {
 })
 
 # Record node and relationship counts BEFORE workflow execution
-with driver.session(database=NEO4J_DATABASE) as session:
-    initial_nodes = session.run("MATCH (n) RETURN count(n) AS cnt").single()["cnt"]
-    initial_rels = session.run("MATCH ()-[r]->() RETURN count(r) AS cnt").single()["cnt"]
-    initial_decisions = session.run("MATCH (d:Decision) RETURN count(d) AS cnt").single()["cnt"]
+initial_nodes = 0
+initial_rels = 0
+initial_decisions = 0
+if step1_pass:
+    try:
+        with driver.session(database=NEO4J_DATABASE) as session:
+            initial_nodes = session.run("MATCH (n) RETURN count(n) AS cnt").single()["cnt"]
+            initial_rels = session.run("MATCH ()-[r]->() RETURN count(r) AS cnt").single()["cnt"]
+            initial_decisions = session.run("MATCH (d:Decision) RETURN count(d) AS cnt").single()["cnt"]
+    except Exception:
+        pass
 
 # ----------------------------------------------------------------------------
 # STEP 3: Execute a Fresh AI-Agent Workflow

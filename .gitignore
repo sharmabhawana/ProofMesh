@@ -18,12 +18,15 @@ generated_reports/
 trust_reports/
 impact_reports/
 
-# Provenance runtime files
-provenance_logs*.json
-provenance_integrity_chain*.json
+# Provenance baseline files tracked; dynamic run dumps ignored
+provenance_logs_*.json
+provenance_integrity_chain_*.json
 audit_run_results*.json
 neo4j_verification_results*.json
 resend_verification_results*.json
+
+# Presentation Assets & Local Artifacts
+presentation_assets/
 
 # Backup files
 *.bak

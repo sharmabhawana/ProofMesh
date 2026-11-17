@@ -78,9 +78,12 @@ if env_cors:
         if cleaned and cleaned != "*" and cleaned not in allowed_origins:
             allowed_origins.append(cleaned)
 
+cors_regex = os.getenv("CORS_ORIGIN_REGEX", r"^https:\/\/.*\.vercel\.app$").strip()
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
+    allow_origin_regex=cors_regex if cors_regex else None,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allow_headers=["*"],

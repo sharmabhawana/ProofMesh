@@ -1,0 +1,187 @@
+{
+    "algorithm": "SHA-256",
+    "description": "Hash chain for ProofMesh provenance records",
+    "record_count": 8,
+    "genesis_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "chain_head": "44cf927da9b7d7ad95ff50cb2b1f2f3ec6ff71b9668dce5e5e5a76092f2cc809",
+    "records": [
+        {
+            "sequence": 1,
+            "event_id": "54272e03-01f4-4af3-b015-d1ab45fcc350",
+            "event_type": "MODEL_DETAILS",
+            "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+            "event": {
+                "event_id": "54272e03-01f4-4af3-b015-d1ab45fcc350",
+                "timestamp": "2026-11-17T07:35:15.063391+00:00",
+                "event_type": "MODEL_DETAILS",
+                "agent": "ProofMesh-Agent",
+                "model": "gemini-3.5-flash-lite",
+                "tool": null,
+                "input": null,
+                "output": null,
+                "metadata": {
+                    "model": "gemini-3.5-flash-lite",
+                    "provider": "Google Gemini",
+                    "integration": "LangChain",
+                    "workflow_id": "wf_ff767aac8605",
+                    "operator": "stage3_test_user"
+                }
+            },
+            "record_hash": "8516cf4e6ea471b2c975d8d3a8905ab68c9402165bda3a284cbf0697e248f96a"
+        },
+        {
+            "sequence": 2,
+            "event_id": "26ed20d9-432a-4867-98f0-13ddbba1d3f8",
+            "event_type": "LLM_CALL_START",
+            "previous_hash": "8516cf4e6ea471b2c975d8d3a8905ab68c9402165bda3a284cbf0697e248f96a",
+            "event": {
+                "event_id": "26ed20d9-432a-4867-98f0-13ddbba1d3f8",
+                "timestamp": "2026-11-17T07:35:15.065076+00:00",
+                "event_type": "LLM_CALL_START",
+                "agent": "ProofMesh-Agent",
+                "model": "gemini-3.5-flash-lite",
+                "tool": null,
+                "input": "Verify provenance for data source compliance and audit rules.",
+                "output": null,
+                "metadata": {
+                    "model": "gemini-3.5-flash-lite",
+                    "provider": "Google Gemini",
+                    "workflow_id": "wf_ff767aac8605"
+                }
+            },
+            "record_hash": "c68253cdd2999993047d046a875b71f3382b831f4a9d6fa2de79c206751922c2"
+        },
+        {
+            "sequence": 3,
+            "event_id": "6ec59c0d-1fd2-4b3d-9d1e-aaa5bf6abc04",
+            "event_type": "TOOL_START",
+            "previous_hash": "c68253cdd2999993047d046a875b71f3382b831f4a9d6fa2de79c206751922c2",
+            "event": {
+                "event_id": "6ec59c0d-1fd2-4b3d-9d1e-aaa5bf6abc04",
+                "timestamp": "2026-11-17T07:35:17.273835+00:00",
+                "event_type": "TOOL_START",
+                "agent": "ProofMesh-Agent",
+                "model": null,
+                "tool": "knowledge_lookup",
+                "input": "{'topic': 'provenance'}",
+                "output": null,
+                "metadata": {
+                    "run_id": "01a1e86e-7c19-7fe3-b1de-91fdb2498aa1"
+                }
+            },
+            "record_hash": "740561a1b2a0c77107a0b6629355d20fb477c4b87a2e2728d84b12c7bd817bc8"
+        },
+        {
+            "sequence": 4,
+            "event_id": "33e6f1c8-d678-40d9-95cc-cf6c0aa0e9ec",
+            "event_type": "TOOL_END",
+            "previous_hash": "740561a1b2a0c77107a0b6629355d20fb477c4b87a2e2728d84b12c7bd817bc8",
+            "event": {
+                "event_id": "33e6f1c8-d678-40d9-95cc-cf6c0aa0e9ec",
+                "timestamp": "2026-11-17T07:35:17.276189+00:00",
+                "event_type": "TOOL_END",
+                "agent": "ProofMesh-Agent",
+                "model": null,
+                "tool": "knowledge_lookup",
+                "input": null,
+                "output": "Provenance is the recorded history of the origin, processing, and transformation of information.",
+                "metadata": {
+                    "run_id": "01a1e86e-7c19-7fe3-b1de-91fdb2498aa1"
+                }
+            },
+            "record_hash": "338840fdfef2374ebf853ec4f7866522e1ed5d039bad95fe1130be9d45824161"
+        },
+        {
+            "sequence": 5,
+            "event_id": "2a91cc9d-9960-4433-906d-d16cac170681",
+            "event_type": "EVIDENCE_CAPTURED",
+            "previous_hash": "338840fdfef2374ebf853ec4f7866522e1ed5d039bad95fe1130be9d45824161",
+            "event": {
+                "event_id": "2a91cc9d-9960-4433-906d-d16cac170681",
+                "timestamp": "2026-11-17T07:35:17.277403+00:00",
+                "event_type": "EVIDENCE_CAPTURED",
+                "agent": "ProofMesh-Agent",
+                "model": null,
+                "tool": "knowledge_lookup",
+                "input": {
+                    "topic": "provenance"
+                },
+                "output": "Provenance is the recorded history of the origin, processing, and transformation of information.",
+                "metadata": {
+                    "source": "Controlled ProofMesh Knowledge Base",
+                    "status": "CAPTURED",
+                    "workflow_id": "wf_ff767aac8605"
+                }
+            },
+            "record_hash": "9795a2c6b542a1d9d2141205ab456fc8dbff5b32e75815c2bf4712655318871a"
+        },
+        {
+            "sequence": 6,
+            "event_id": "a035c601-3881-4d94-b562-02d346004bf1",
+            "event_type": "LLM_CALL_END",
+            "previous_hash": "9795a2c6b542a1d9d2141205ab456fc8dbff5b32e75815c2bf4712655318871a",
+            "event": {
+                "event_id": "a035c601-3881-4d94-b562-02d346004bf1",
+                "timestamp": "2026-11-17T07:35:20.435026+00:00",
+                "event_type": "LLM_CALL_END",
+                "agent": "ProofMesh-Agent",
+                "model": "gemini-3.5-flash-lite",
+                "tool": null,
+                "input": "Verify provenance for data source compliance and audit rules.",
+                "output": "To verify provenance for data source compliance and audit rules, systematically track the data’s lifecycle from its original source through every processing step and transformation. Maintain an immutable, timestamped audit trail documenting who accessed the data, how it was modified, and where it was stored. Compare these recorded metadata histories against internal governance policies and external regulatory standards (such as GDPR or HIPAA). Automated lineage tools and cryptographic hashing can ensure the integrity and authenticity of the records, enabling auditors to validate data trustworthiness and compliance efficiently.",
+                "metadata": {
+                    "model": "gemini-3.5-flash-lite",
+                    "status": "SUCCESS",
+                    "workflow_id": "wf_ff767aac8605"
+                }
+            },
+            "record_hash": "8e61f6bff435ce011493ae711e25cc66480866e59e6073a8aa3c4dbbf67779ef"
+        },
+        {
+            "sequence": 7,
+            "event_id": "d0365df6-13cd-42a0-83bf-aceec74320c5",
+            "event_type": "INTERMEDIATE_DECISION",
+            "previous_hash": "8e61f6bff435ce011493ae711e25cc66480866e59e6073a8aa3c4dbbf67779ef",
+            "event": {
+                "event_id": "d0365df6-13cd-42a0-83bf-aceec74320c5",
+                "timestamp": "2026-11-17T07:35:20.436308+00:00",
+                "event_type": "INTERMEDIATE_DECISION",
+                "agent": "ProofMesh-Agent",
+                "model": null,
+                "tool": "knowledge_lookup",
+                "input": {
+                    "evidence": "Provenance is the recorded history of the origin, processing, and transformation of information."
+                },
+                "output": "Evaluated evidence and model output against provenance rules.",
+                "metadata": {
+                    "stage": "Validation",
+                    "workflow_id": "wf_ff767aac8605"
+                }
+            },
+            "record_hash": "3dfade4f9526c6d716b91a18cd4bdb362117b6d78b66c505ffb03e97e05cb3f2"
+        },
+        {
+            "sequence": 8,
+            "event_id": "543949a4-08a0-422b-9942-0236b63d9c0c",
+            "event_type": "DECISION",
+            "previous_hash": "3dfade4f9526c6d716b91a18cd4bdb362117b6d78b66c505ffb03e97e05cb3f2",
+            "event": {
+                "event_id": "543949a4-08a0-422b-9942-0236b63d9c0c",
+                "timestamp": "2026-11-17T07:35:20.437604+00:00",
+                "event_type": "DECISION",
+                "agent": "ProofMesh-Agent",
+                "model": null,
+                "tool": null,
+                "input": {
+                    "request": "Verify provenance for data source compliance and audit rules."
+                },
+                "output": "Final outcome verified and approved for workflow wf_ff767aac8605.",
+                "metadata": {
+                    "status": "RECORDED",
+                    "workflow_id": "wf_ff767aac8605"
+                }
+            },
+            "record_hash": "44cf927da9b7d7ad95ff50cb2b1f2f3ec6ff71b9668dce5e5e5a76092f2cc809"
+        }
+    ]
+}

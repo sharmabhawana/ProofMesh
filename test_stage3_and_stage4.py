@@ -34,7 +34,7 @@ r_run = client.post(
     json={
         "workflow_name": "Autonomous Compliance Audit",
         "task_description": "Verify provenance for data source compliance and audit rules.",
-        "model_name": "gemini-3.6-flash",
+        "model_name": "gemini-3.5-flash-lite",
     },
 )
 assert r_run.status_code == 201, f"Workflow execution failed: {r_run.text}"

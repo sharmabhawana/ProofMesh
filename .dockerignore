@@ -1,0 +1,36 @@
+# Secrets and local environments
+.env
+.env.*
+!.env.example
+
+# Databases and cache
+*.db
+*.sqlite
+*.sqlite3
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Version control
+.git/
+.gitignore
+
+# Frontend code (containerized separately via frontend/Dockerfile)
+frontend/
+
+# Local testing and presentation assets
+presentation_assets/
+screenshots/
+*.zip
+*.tar.gz
+*.log
+
+# Temporary helper scripts
+capture_all_screenshots.py
+copy_assets.py
